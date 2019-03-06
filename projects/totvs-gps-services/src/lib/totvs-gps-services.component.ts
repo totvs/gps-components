@@ -167,6 +167,8 @@ export class TotvsGpsServices<T> {
 
     //#region métodos internos para conversão de dados
     private resultFactory(data: any, ttalk?: boolean): T | T[] | TTalkCollection<T> {
+        if (!data)
+            return null;
         if (this.isCollection(data)) {
             let newItems: T[] = data.items.map(item => {return this.itemFactory(item)});
             if (ttalk === true) {
