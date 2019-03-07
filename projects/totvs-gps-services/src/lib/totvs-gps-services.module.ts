@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TotvsGpsServicesService } from './totvs-gps-services.service';
+import { TotvsGpsInterceptorService } from './totvs-gps-interceptor.service';
 
 export let GPS_SERVICES: TotvsGpsServicesService;
 
@@ -10,7 +11,14 @@ export let GPS_SERVICES: TotvsGpsServicesService;
     HttpClientModule
   ],
   exports: [],
-  providers: [TotvsGpsServicesService]
+  providers: [
+    TotvsGpsServicesService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TotvsGpsInterceptorService,
+      multi: true
+    },
+  ]
 })
 export class TotvsGpsServicesModule { 
 

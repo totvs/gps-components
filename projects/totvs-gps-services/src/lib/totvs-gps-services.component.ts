@@ -23,8 +23,7 @@ export class TotvsGpsServices<T> {
     /**
      * Retorna uma nova instância já parametrizada
      * @param type Tipo (Classe) de dados
-     * @param http Instância HttpClient
-     * @param url URL da API
+     * @param url URL da API, que será utilizada ao invocar os métodos HTTP
      */
     public static getInstance<T>(type: any, url?: string): TotvsGpsServices<T> {
         let instance = new TotvsGpsServices<T>(type, GPS_SERVICES.HttpClient).setURL(url);
@@ -32,41 +31,75 @@ export class TotvsGpsServices<T> {
     }
 
     //#region Métodos construtores
+    /**
+     * Construtor. Recomenda-se utilizar o método getInstance() para instanciar a classe.
+     * @param type Tipo (Classe) de dados
+     * @param httpClient Instância HttpClient para invocar métodos HTTP
+     */
     constructor(private type: {new():T}, private httpClient: HttpClient) {
         this._type = type;
         this._http = httpClient;
     }
 
-    public setHttpClient(http: HttpClient): TotvsGpsServices<T> {
-        this._http = http;
+    /**
+     * Atribui a instância do HttpClient para a classe.
+     * Recomenda-se utilizar o método getInstance() que já possui o HttpClient embutido.
+     * @param httpClient Instância HttpClient para invocar métodos HTTP
+     */
+    public setHttpClient(httpClient: HttpClient): TotvsGpsServices<T> {
+        this._http = httpClient;
         return this;
     }
 
+    /**
+     * Atribui a URL para ser utilizada ao invocar os métodos HTTP.
+     * @param url URL da API, que será utilizada ao invocar os métodos HTTP
+     */
     public setURL(url: string): TotvsGpsServices<T> {
         this._url = url;
         return this;
     }
 
+    /**
+     * Atribui o número da página a ser requisitada em um GET de coleção de dados
+     * @param page Número da página a ser requisitada
+     */
     public setPage(page: number): TotvsGpsServices<T> {
         this._page = page;
         return this;
     }
 
+    /**
+     * Atribui o tamanho da página a ser requisitada em um GET de coleção de dados
+     * @param pageSize Tamanho da página a ser requisitada
+     */
     public setPageSize(pageSize: number): TotvsGpsServices<T> {
         this._pageSize = pageSize;
         return this;
     }
 
+    /**
+     * Atribui a lista de campos que serão requisitadas em um GET
+     * @param fields Lista de campos
+     */
     public setFields(fields: string[]): TotvsGpsServices<T> {
         this._fields = fields;
         return this;
     }
 
+    /**
+     * Atribui a lista de campos que serão expandidos em um GET
+     * @param expand Lista de campo
+     */
     public setExpand(expand: string[]): TotvsGpsServices<T> {
         this._expand = expand;
         return this;
     }
 
+    /**
+     * Atribui um objeto que será passado nos parâmetros da URL em um GET
+     * @param queryParams Objeto com os valores
+     */
     public setQueryParams(queryParams: any): TotvsGpsServices<T> {
         this._queryParams = queryParams;
         return this;
@@ -89,14 +122,27 @@ export class TotvsGpsServices<T> {
         });
     }
 
+    /**
+     * Realiza a requisição GET de um objeto ou de uma coleção de objetos (array)
+     * @param url URL do endpoint (caso não informado, será utilizada a URL atribuida como padrão da instância)
+     */
     public get(url?: string): Promise<T> {
         return <Promise<T>>this._get(url, false);
     }
 
+    /**
+     * Realiza a requisição GET de um coleção de objetos, retornando no formato TTalkCollection
+     * @param url URL do endpoint (caso não informado, será utilizada a URL atribuida como padrão da instância)
+     */
     public getCollection(url?: string): Promise<TTalkCollection<T>> {
         return <Promise<TTalkCollection<T>>>this._get(url, true);
     }
 
+    /**
+     * Realiza a requisição POST
+     * @param data Objeto a ser enviado no corpo (body) da requisição
+     * @param url URL do endpoint (caso não informado, será utilizada a URL atribuida como padrão da instância)
+     */
     public post(data: any, url?: string): Promise<T> {
         let requestHttp = this._http;
         let requestUrl = (url || this._url);
@@ -111,6 +157,11 @@ export class TotvsGpsServices<T> {
         });
     }
 
+    /**
+     * Realiza a requisição PUT
+     * @param data Objeto a ser enviado no corpo (body) da requisição
+     * @param url URL do endpoint (caso não informado, será utilizada a URL atribuida como padrão da instância)
+     */
     public put(data: any, url?: string): Promise<T> {
         let requestHttp = this._http;
         let requestUrl = (url || this._url);
@@ -125,6 +176,10 @@ export class TotvsGpsServices<T> {
         });
     }
 
+    /**
+     * Realiza a requisição DELETE
+     * @param url URL do endpoint (caso não informado, será utilizada a URL atribuida como padrão da instância)
+     */
     public delete(url?: string): Promise<T> {
         let requestHttp = this._http;
         let requestUrl = (url || this._url);
