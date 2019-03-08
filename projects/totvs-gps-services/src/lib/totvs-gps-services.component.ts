@@ -4,7 +4,32 @@ import { take } from "rxjs/operators";
 import { TotvsGpsObjectModel, ITotvsGpsJsonParse, TTalkCollection } from "./totvs-gps-services.model";
 
 /**
- * Classe de serviços
+ * @description
+ * Classe de serviços para o produto GPS
+ * 
+ * ### Exemplos de uso
+ * 
+ * #### Fazendo um GET para uma pesquisa
+ * 
+ * ```
+ * TotvsGpsServices
+ *     .getInstance<MyObject[]>(MyObject, '/xyz/v1/myApi/')
+ *     .setQueryParams(searchObject)
+ *     .setPage(pageNumber).setPageSize(pageSize).setFields(fields).setExpand(expand)
+ *     .get()
+ *     .then(result => setDataToMyList(result))
+ *     .catch(error => showErrors(error));
+ * ``` 
+ * 
+ * #### Fazendo um PUT com dados do objeto na URL
+ * ```
+ * TotvsGpsServices
+ *     .getInstance<MyObject>(MyObject, '/xyz/v1/myApi/{{id}}')
+ *     .setPathParams(myInstance)
+ *     .put(myInstance)
+ *     .then(result => showSuccessMessage(result))
+ *     .catch(error => showErrors(error));
+ * ``` 
  */
 export class TotvsGpsServices<T> {
 
@@ -14,6 +39,7 @@ export class TotvsGpsServices<T> {
     private _url: string;
     private _http: HttpClient;
     private _queryParams: any;
+    private _pathParams: any;
     // Parametros padrão T-Talk
     private _page: number;
     private _pageSize: number;
@@ -24,6 +50,11 @@ export class TotvsGpsServices<T> {
      * Retorna uma nova instância já parametrizada
      * @param type Tipo (Classe) de dados
      * @param url URL da API, que será utilizada ao invocar os métodos HTTP
+     * 
+     * @example
+     * ```
+     * let service = TotvsGpsServices.getInstance<MyObject>(MyObject, '/module/v1/myApi');
+     * ```
      */
     public static getInstance<T>(type: any, url?: string): TotvsGpsServices<T> {
         let instance = new TotvsGpsServices<T>(type, GPS_SERVICES.HttpClient).setURL(url);
@@ -43,7 +74,7 @@ export class TotvsGpsServices<T> {
 
     /**
      * Atribui a instância do HttpClient para a classe.
-     * Recomenda-se utilizar o método getInstance() que já possui o HttpClient embutido.
+     * + Recomenda-se utilizar o método getInstance() que já possui o HttpClient injetado
      * @param httpClient Instância HttpClient para invocar métodos HTTP
      */
     public setHttpClient(httpClient: HttpClient): TotvsGpsServices<T> {
@@ -63,6 +94,12 @@ export class TotvsGpsServices<T> {
     /**
      * Atribui o número da página a ser requisitada em um GET de coleção de dados
      * @param page Número da página a ser requisitada
+     * 
+     * @example
+     * ```
+     * instance.setURL('/teste').setPage(3)
+     * ```
+     * - Este exemplo vai montar a URL '/teste?page=3'
      */
     public setPage(page: number): TotvsGpsServices<T> {
         this._page = page;
@@ -72,6 +109,12 @@ export class TotvsGpsServices<T> {
     /**
      * Atribui o tamanho da página a ser requisitada em um GET de coleção de dados
      * @param pageSize Tamanho da página a ser requisitada
+     * 
+     * @example
+     * ```
+     * instance.setURL('/teste').setPageSize(20)
+     * ```
+     * - Este exemplo vai montar a URL '/teste?pageSize=20'
      */
     public setPageSize(pageSize: number): TotvsGpsServices<T> {
         this._pageSize = pageSize;
@@ -81,6 +124,12 @@ export class TotvsGpsServices<T> {
     /**
      * Atribui a lista de campos que serão requisitadas em um GET
      * @param fields Lista de campos
+     * 
+     * @example
+     * ```
+     * instance.setURL('/teste').setFields(['fieldOne','fieldTwo'])
+     * ```
+     * - Este exemplo vai montar a URL '/teste?fields=fieldOne,fieldTwo'
      */
     public setFields(fields: string[]): TotvsGpsServices<T> {
         this._fields = fields;
@@ -90,6 +139,12 @@ export class TotvsGpsServices<T> {
     /**
      * Atribui a lista de campos que serão expandidos em um GET
      * @param expand Lista de campo
+     * 
+     * @example
+     * ```
+     * instance.setURL('/teste').setExpand(['fieldOne','fieldTwo'])
+     * ```
+     * - Este exemplo vai montar a URL '/teste?expand=fieldOne,fieldTwo'
      */
     public setExpand(expand: string[]): TotvsGpsServices<T> {
         this._expand = expand;
@@ -99,9 +154,29 @@ export class TotvsGpsServices<T> {
     /**
      * Atribui um objeto que será passado nos parâmetros da URL em um GET
      * @param queryParams Objeto com os valores
+     * 
+     * @example
+     * ```
+     * instance.setURL('/teste').setQueryParams({id: 1, name: 'example'})
+     * ```
+     * - Este exemplo vai montar a URL '/teste?id=1&name=example'
      */
     public setQueryParams(queryParams: any): TotvsGpsServices<T> {
         this._queryParams = queryParams;
+        return this;
+    }
+    
+    /**
+     * Atribui um objeto que será passado no path da URL, substituindo os campos marcados com `{{ }}`.
+     * @param model Objeto com os atributos base para serem substituidos
+     * @example
+     * ```
+     * instance.setURL('/teste/{{id}}').setPathParams({id: 1, otherField: 'example'})
+     * ```
+     * - Este exemplo vai montar a URL '/teste/1'
+     */
+    public setPathParams(model: any): TotvsGpsServices<T> {
+        this._pathParams = model;
         return this;
     }
     //#endregion
@@ -110,6 +185,7 @@ export class TotvsGpsServices<T> {
     private _get(url?: string, ttalk?:boolean): Promise<T | TTalkCollection<T>> {
         let requestHttp = this._http;
         let requestUrl = (url || this._url);
+        requestUrl = this.appendPathParams(requestUrl);
         requestUrl = this.appendQueryParams(requestUrl);
         let resultFactory = this.resultFactory.bind(this);
         return new Promise(function(resolve, reject) {
@@ -146,6 +222,8 @@ export class TotvsGpsServices<T> {
     public post(data: any, url?: string): Promise<T> {
         let requestHttp = this._http;
         let requestUrl = (url || this._url);
+        requestUrl = this.appendPathParams(requestUrl);
+        requestUrl = this.appendQueryParams(requestUrl);
         let resultFactory = this.resultFactory.bind(this);
         return new Promise(function(resolve, reject) {
             requestHttp.post(requestUrl, data).pipe(take(1)).subscribe(
@@ -165,6 +243,8 @@ export class TotvsGpsServices<T> {
     public put(data: any, url?: string): Promise<T> {
         let requestHttp = this._http;
         let requestUrl = (url || this._url);
+        requestUrl = this.appendPathParams(requestUrl);
+        requestUrl = this.appendQueryParams(requestUrl);
         let resultFactory = this.resultFactory.bind(this);
         return new Promise(function(resolve, reject) {
             requestHttp.put(requestUrl, data).pipe(take(1)).subscribe(
@@ -183,6 +263,8 @@ export class TotvsGpsServices<T> {
     public delete(url?: string): Promise<T> {
         let requestHttp = this._http;
         let requestUrl = (url || this._url);
+        requestUrl = this.appendPathParams(requestUrl);
+        requestUrl = this.appendQueryParams(requestUrl);
         let resultFactory = this.resultFactory.bind(this);
         return new Promise(function(resolve, reject) {
             requestHttp.delete(requestUrl).pipe(take(1)).subscribe(
@@ -196,6 +278,20 @@ export class TotvsGpsServices<T> {
     //#endregion
 
     //#region métodos internos para tratamento da chamada
+    private appendPathParams(url: string): string {
+        let newUrl = url;
+        let params = this._pathParams;
+        if (params) {
+            return newUrl.replace(/{{([\w\d\-]+)}}/gi, function(subs, args: string) { 
+                let value = params[args.trim()];
+                if (value)
+                    return encodeURIComponent(value);
+                return '';
+            });
+        }
+        return newUrl;
+    }
+
     private appendQueryParams(url: string): string {
         let newUrl = url;
         let params = [];
