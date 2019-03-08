@@ -29,6 +29,12 @@
       ],
       "totvs-gps-controls/*": [
         "dist/totvs-gps-controls/*"
+      ],
+      "totvs-gps-utils": [
+        "dist/totvs-gps-utils"
+      ],
+      "totvs-gps-utils/*": [
+        "dist/totvs-gps-utils/*"
       ]
     }
   }

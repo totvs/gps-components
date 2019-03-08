@@ -31,3 +31,15 @@
 - Change the version number in projects/totvs-gps-controls/package.json.
 - Run `npm run build_controls` to build the project. The build artifacts will be stored in the `dist/totvs-gps-controls` directory.
 - Run `npm publish ./dist/totvs-gps-controls/totvs-gps-controls-X.Y.Z.tgz` to publish the pachage.
+
+
+## TotvsGpsUtils
+
+### Features
+- TotvsGpsDateUtils to manipulate Date objects
+- TotvsGpsJsonUtils to manipulate JSON objects
+
+### Build
+- Change the version number in projects/totvs-gps-utils/package.json.
+- Run `npm run build_utils` to build the project. The build artifacts will be stored in the `dist/totvs-gps-utils` directory.
+- Run `npm publish ./dist/totvs-gps-utils/totvs-gps-utils-X.Y.Z.tgz` to publish the pachage.
