@@ -1,7 +1,7 @@
 import { GPS_SERVICES } from "./totvs-gps-services.module";
 import { HttpClient } from "@angular/common/http";
 import { take } from "rxjs/operators";
-import { TotvsGpsObjectModel, ITotvsGpsJsonParse, TTalkCollection, OrderField } from "./totvs-gps-services.model";
+import { TotvsGpsObjectModel, ITotvsGpsJsonParse, TTalkCollection, OrderField, OrderSort } from "./totvs-gps-services.model";
 
 /**
  * @description
@@ -102,7 +102,7 @@ export class TotvsGpsServices<T> {
      * ```
      * - Este exemplo vai montar a URL '/teste?page=3'
      */
-    public setPage(page: number): TotvsGpsServices<T> {
+    public setPage(page?: number): TotvsGpsServices<T> {
         this._page = page;
         return this;
     }
@@ -117,7 +117,7 @@ export class TotvsGpsServices<T> {
      * ```
      * - Este exemplo vai montar a URL '/teste?pageSize=20'
      */
-    public setPageSize(pageSize: number): TotvsGpsServices<T> {
+    public setPageSize(pageSize?: number): TotvsGpsServices<T> {
         this._pageSize = pageSize;
         return this;
     }
@@ -132,7 +132,7 @@ export class TotvsGpsServices<T> {
      * ```
      * - Este exemplo vai montar a URL '/teste?fields=fieldOne,fieldTwo'
      */
-    public setFields(fields: string[]): TotvsGpsServices<T> {
+    public setFields(fields?: string[]): TotvsGpsServices<T> {
         this._fields = fields;
         return this;
     }
@@ -147,13 +147,13 @@ export class TotvsGpsServices<T> {
      * ```
      * - Este exemplo vai montar a URL '/teste?expand=fieldOne,fieldTwo'
      */
-    public setExpand(expand: string[]): TotvsGpsServices<T> {
+    public setExpand(expand?: string[]): TotvsGpsServices<T> {
         this._expand = expand;
         return this;
     }
 
     /**
-     * Atribui a lista de campos para ordenaçã em um GET
+     * Atribui a lista de campos para ordenação em um GET
      * @param order Lista de campos
      * 
      * @example
@@ -162,8 +162,25 @@ export class TotvsGpsServices<T> {
      * ```
      * - Este exemplo vai montar a URL '/teste?order=fieldOne,-fieldTwo'
      */
-    public setOrder(order: OrderField[]): TotvsGpsServices<T> {
+    public setOrder(order?: OrderField[]): TotvsGpsServices<T> {
         this._order = order;
+        return this;
+    }
+
+    /**
+     * Adiciona um campo para ordenação em um GET
+     * @param order Lista de campos
+     * 
+     * @example
+     * ```
+     * instance.setURL('/teste').addOrder(OrderField.create('fieldOne')).addOrder(OrderField.create('fieldTwo',OrderSort.DESCENDING))
+     * ```
+     * - Este exemplo vai montar a URL '/teste?order=fieldOne,-fieldTwo'
+     */
+    public addOrder(order: OrderField): TotvsGpsServices<T> {
+        if (!this._order)
+            this._order = [];
+        this._order.push(order);
         return this;
     }
 
@@ -177,7 +194,7 @@ export class TotvsGpsServices<T> {
      * ```
      * - Este exemplo vai montar a URL '/teste?id=1&name=example'
      */
-    public setQueryParams(queryParams: any): TotvsGpsServices<T> {
+    public setQueryParams(queryParams?: any): TotvsGpsServices<T> {
         this._queryParams = queryParams;
         return this;
     }
@@ -191,7 +208,7 @@ export class TotvsGpsServices<T> {
      * ```
      * - Este exemplo vai montar a URL '/teste/1'
      */
-    public setPathParams(model: any): TotvsGpsServices<T> {
+    public setPathParams(model?: any): TotvsGpsServices<T> {
         this._pathParams = model;
         return this;
     }
@@ -323,7 +340,7 @@ export class TotvsGpsServices<T> {
             params.push('expand=' + this._expand.join(','));
         if (this._order)
             params.push('order=' + this._order.map(item => {
-                if (item.order) 
+                if (item.order == OrderSort.DESCENDING) 
                     return '-' + item.fieldName;
                 return item.fieldName;
             }).join(','));
