@@ -1,7 +1,7 @@
 import { GPS_SERVICES } from "./totvs-gps-services.module";
 import { HttpClient } from "@angular/common/http";
 import { take } from "rxjs/operators";
-import { TotvsGpsObjectModel, ITotvsGpsJsonParse, TTalkCollection } from "./totvs-gps-services.model";
+import { TotvsGpsObjectModel, ITotvsGpsJsonParse, TTalkCollection, OrderField } from "./totvs-gps-services.model";
 
 /**
  * @description
@@ -45,6 +45,7 @@ export class TotvsGpsServices<T> {
     private _pageSize: number;
     private _fields: string[];
     private _expand: string[];
+    private _order: OrderField[];
 
     /**
      * Retorna uma nova instância já parametrizada
@@ -138,7 +139,7 @@ export class TotvsGpsServices<T> {
 
     /**
      * Atribui a lista de campos que serão expandidos em um GET
-     * @param expand Lista de campo
+     * @param expand Lista de campos
      * 
      * @example
      * ```
@@ -148,6 +149,21 @@ export class TotvsGpsServices<T> {
      */
     public setExpand(expand: string[]): TotvsGpsServices<T> {
         this._expand = expand;
+        return this;
+    }
+
+    /**
+     * Atribui a lista de campos para ordenaçã em um GET
+     * @param order Lista de campos
+     * 
+     * @example
+     * ```
+     * instance.setURL('/teste').setOrder([OrderField.create('fieldOne'),OrderField.create('fieldTwo',OrderSort.DESCENDING)])
+     * ```
+     * - Este exemplo vai montar a URL '/teste?order=fieldOne,-fieldTwo'
+     */
+    public setOrder(order: OrderField[]): TotvsGpsServices<T> {
+        this._order = order;
         return this;
     }
 
@@ -305,6 +321,12 @@ export class TotvsGpsServices<T> {
             params.push('fields=' + this._fields.join(','));
         if (this._expand)
             params.push('expand=' + this._expand.join(','));
+        if (this._order)
+            params.push('order=' + this._order.map(item => {
+                if (item.order) 
+                    return '-' + item.fieldName;
+                return item.fieldName;
+            }).join(','));
 
         if (params.length > 0) {
             if (newUrl.indexOf('?') < 0)

@@ -9,6 +9,8 @@
 - Http Interceptor for Datasul-REST
 
 ### Changelog
+#### v0.0.6
+- Fix Interceptor's URL Pattern for T-Talk
 #### v0.0.5
 - Add `setPathParams` method to build path URL with objects
 #### v0.0.4

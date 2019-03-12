@@ -21,7 +21,7 @@ export class TotvsGpsInterceptorService implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    let ttalkRegexp: RegExp = new RegExp(/^h{1}[a-z]+\/v[\d\.]+\//i);
+    let ttalkRegexp: RegExp = new RegExp(/^[\w\d]+\/v[\d\.]+\//i);
 
     let newRequest: HttpRequest<any>;
     // Trata requisições de endereço completo

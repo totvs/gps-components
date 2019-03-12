@@ -21,3 +21,19 @@ export interface TTalkCollection<T> {
   hasNext: boolean;
   items: Array<T>;
 }
+
+export enum OrderSort {
+  ASCENDING = 'asc',
+  DESCENDING = 'desc'
+}
+export class OrderField {
+  fieldName: string;
+  order: OrderSort;
+
+  public static create(fieldName: string, order?: OrderSort): OrderField {
+    let result: OrderField = new OrderField();
+    result.fieldName = fieldName;
+    result.order = (order ? order : OrderSort.ASCENDING);
+    return result;
+  }
+}
