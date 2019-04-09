@@ -318,8 +318,8 @@ export class TotvsGpsServices<T> {
             return newUrl.replace(/{{([\w\d\-]+)}}/gi, function(subs, args: string) { 
                 let value = params[args.trim()];
                 
-                if (typeof value === 'boolean')
-                   return encodeURIComponent(value);
+                if (value instanceof Boolean || typeof(value) === "boolean")
+                    return value.toString();
               
                 if (value) {
                     if (value instanceof Date)
