@@ -317,8 +317,11 @@ export class TotvsGpsServices<T> {
         if (params) {
             return newUrl.replace(/{{([\w\d\-]+)}}/gi, function(subs, args: string) { 
                 let value = params[args.trim()];
-                if (value)
+                if (value) {
+                    if (value instanceof Date)
+                        return (<Date>value).toISOString();
                     return encodeURIComponent(value);
+                }
                 return '';
             });
         }
