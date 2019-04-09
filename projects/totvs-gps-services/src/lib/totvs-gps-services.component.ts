@@ -318,7 +318,7 @@ export class TotvsGpsServices<T> {
             return newUrl.replace(/{{([\w\d\-]+)}}/gi, function(subs, args: string) { 
                 let value = params[args.trim()];
                 
-                if (value instanceof Boolean)
+                if (typeof value === 'boolean')
                    return encodeURIComponent(value);
               
                 if (value) {
