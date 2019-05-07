@@ -336,7 +336,7 @@ export class TotvsGpsServices<T> {
         let newUrl = url;
         let params = [];
         if (this._queryParams)
-            Object.keys(this._queryParams).forEach(key => params.push(key + '=' + encodeURIComponent(this._queryParams[key])));
+            Object.keys(this._queryParams).filter(key => this._queryParams[key] !== null).forEach(key => params.push(key + '=' + encodeURIComponent(this._queryParams[key])));
         if (this._page)
             params.push('page=' + this._page.toString());
         if (this._pageSize)
