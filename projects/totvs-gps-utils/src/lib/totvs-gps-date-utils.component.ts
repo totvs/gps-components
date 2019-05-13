@@ -89,7 +89,23 @@ export class TotvsGpsDateUtils {
    * @param value String a ser verificada
    */
   public isISODate(value: string): boolean {
-    return this.ISO8601_DATE_REGEX.test(value);
+    let v = this.ISO8601_DATE_REGEX.exec(value);
+    if (v) {
+      // testa se o ano é >= 1900
+      let i = Number.parseInt(v[1]);
+      if (i < 1900)
+        return false;
+      // testa se o mês é valido
+      i = Number.parseInt(v[2]);
+      if ((i < 1)||(i > 12))
+        return false;
+      // testa se o dia é valido
+      i = Number.parseInt(v[3]);
+      if ((i < 1)||(i > 31))
+        return false;
+      return true;
+    }
+    return false;
   }
 
 }
