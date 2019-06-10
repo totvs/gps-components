@@ -336,7 +336,7 @@ export class TotvsGpsServices<T> {
         let newUrl = url;
         let params = [];
         if (this._queryParams)
-            Object.keys(this._queryParams).filter(key => this._queryParams[key] !== null).forEach(key => params.push(key + '=' + encodeURIComponent(this._queryParams[key])));
+            Object.keys(this._queryParams).filter(key => ((this._queryParams[key] !== undefined)&&(this._queryParams[key] !== null))).forEach(key => params.push(key + '=' + this.encodeQueryParam(this._queryParams[key])));
         if (this._page)
             params.push('page=' + this._page.toString());
         if (this._pageSize)
@@ -363,6 +363,15 @@ export class TotvsGpsServices<T> {
     //#endregion
 
     //#region métodos internos para conversão de dados
+    private encodeQueryParam(data: any): string {
+        if ((data != undefined)&&(data != null)) {
+            if (data instanceof Date)
+                return [data.getFullYear,data.getMonth()+1,data.getDate()].join('-');
+            return encodeURIComponent(data);
+        }
+        return '';
+    }
+
     private resultFactory(data: any, ttalk?: boolean): T | T[] | TTalkCollection<T> {
         if (!data)
             return null;

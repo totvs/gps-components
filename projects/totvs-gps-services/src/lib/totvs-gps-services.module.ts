@@ -26,4 +26,8 @@ export class TotvsGpsServicesModule {
     GPS_SERVICES = this.gpsServices;
   }
 
+  get GpsServices(): TotvsGpsServicesService {
+    return GPS_SERVICES;
+  }
+
 }
