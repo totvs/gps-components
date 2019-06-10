@@ -366,7 +366,7 @@ export class TotvsGpsServices<T> {
     private encodeQueryParam(data: any): string {
         if ((data != undefined)&&(data != null)) {
             if (data instanceof Date)
-                return [data.getFullYear,data.getMonth()+1,data.getDate()].join('-');
+                return [data.getFullYear(),data.getMonth()+1,data.getDate()].join('-');
             return encodeURIComponent(data);
         }
         return '';
