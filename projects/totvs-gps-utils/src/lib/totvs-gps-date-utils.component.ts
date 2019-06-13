@@ -12,6 +12,8 @@ export class TotvsGpsDateUtils {
 
   private readonly ISO8601_DATE_REGEX: RegExp =
     /^(\d{4})-?(\d\d)-?(\d\d)(?:T(\d\d)(?::?(\d\d)(?::?(\d\d)(?:\.(\d+))?)?)?(Z|([+-])(\d\d):?(\d\d))?)?$/;
+  private readonly DATE_REGEX: RegExp =
+    /^(\d{4})-(\d\d)-(\d\d)(?:T(\d\d)(?::?(\d\d)(?::?(\d\d)(?:\.(\d+))?)?)?(Z|([+-])(\d\d):?(\d\d))?)?$/;
 
   /**
    * Milissegundos contidos em um dia
@@ -89,7 +91,8 @@ export class TotvsGpsDateUtils {
    * @param value String a ser verificada
    */
   public isISODate(value: string): boolean {
-    let v = this.ISO8601_DATE_REGEX.exec(value);
+    return this.DATE_REGEX.test(value);
+    /*let v = this.ISO8601_DATE_REGEX.exec(value);
     if (v) {
       // testa se o ano é >= 1900
       let i = Number.parseInt(v[1]);
@@ -105,7 +108,7 @@ export class TotvsGpsDateUtils {
         return false;
       return true;
     }
-    return false;
+    return false;*/
   }
 
 }
