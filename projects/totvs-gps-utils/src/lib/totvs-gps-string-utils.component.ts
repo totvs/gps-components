@@ -265,6 +265,10 @@ export class TotvsMaskString {
     return this.proccess(value).valid;
   }
 
+}
+
+export class GpsStringUtils {
+
   public getSeparators(text:String):string{
     if(text){
       if(text.includes('/')){
