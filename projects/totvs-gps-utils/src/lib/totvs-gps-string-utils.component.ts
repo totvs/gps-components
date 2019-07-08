@@ -264,5 +264,25 @@ export class TotvsMaskString {
   public validate(value: string): boolean {
     return this.proccess(value).valid;
   }
-
+  
+  public getSeparators(text:String):string{
+    if(text){
+      if(text.includes('/')){
+        return '/';
+      }
+      if(text.includes(";")){
+        return ';';
+      }
+      if(text.includes("\\")){
+        return '\\';
+      }
+      if(text.includes('-')){
+        return '-';
+      }
+      if(text.includes(',')){
+        return ',';
+      }
+    }        
+    return "/";
+  }
 }
