@@ -265,6 +265,10 @@ export class TotvsMaskString {
     return this.proccess(value).valid;
   }
   
+}
+
+export class TotvsStringUtils {
+  
   public getSeparators(text:String):string{
     if(text){
       if(text.includes('/')){
@@ -285,4 +289,5 @@ export class TotvsMaskString {
     }        
     return "/";
   }
+
 }
