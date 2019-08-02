@@ -2,6 +2,8 @@ import { GPS_SERVICES } from "./totvs-gps-services.module";
 import { HttpClient } from "@angular/common/http";
 import { take } from "rxjs/operators";
 import { TotvsGpsObjectModel, ITotvsGpsJsonParse, TTalkCollection, OrderField, OrderSort } from "./totvs-gps-services.model";
+import { encodeURLParam } from "./totvs-gps-services.utils";
+import { isNullOrUndefined } from "util";
 
 /**
  * @description
@@ -317,16 +319,7 @@ export class TotvsGpsServices<T> {
         if (params) {
             return newUrl.replace(/{{([\w\d\-]+)}}/gi, function(subs, args: string) { 
                 let value = params[args.trim()];
-                
-                if (value instanceof Boolean || typeof(value) === "boolean")
-                    return value.toString();
-              
-                if (value) {
-                    if (value instanceof Date)
-                        return (<Date>value).toISOString();
-                    return encodeURIComponent(value);
-                }
-                return '';
+                return encodeURLParam(value);
             });
         }
         return newUrl;
@@ -336,7 +329,7 @@ export class TotvsGpsServices<T> {
         let newUrl = url;
         let params = [];
         if (this._queryParams)
-            Object.keys(this._queryParams).filter(key => ((this._queryParams[key] !== undefined)&&(this._queryParams[key] !== null))).forEach(key => params.push(key + '=' + this.encodeQueryParam(this._queryParams[key])));
+            Object.keys(this._queryParams).filter(key => !isNullOrUndefined(this._queryParams[key])).forEach(key => params.push(key + '=' + encodeURLParam(this._queryParams[key])));
         if (this._page)
             params.push('page=' + this._page.toString());
         if (this._pageSize)
@@ -363,26 +356,14 @@ export class TotvsGpsServices<T> {
     //#endregion
 
     //#region métodos internos para conversão de dados
-    private encodeQueryParam(data: any): string {
-        if ((data != undefined)&&(data != null)) {
-            if (data instanceof Date)
-                return [data.getFullYear(),data.getMonth()+1,data.getDate()].join('-');
-            return encodeURIComponent(data);
-        }
-        return '';
-    }
-
     private resultFactory(data: any, ttalk?: boolean): T | T[] | TTalkCollection<T> {
         if (!data)
             return null;
         if (this.isCollection(data)) {
             let newItems: T[] = data.items.map(item => {return this.itemFactory(item)});
             if (ttalk === true) {
-                let result: TTalkCollection<T> = {
-                    items: newItems,
-                    hasNext: data.hasNext
-                };
-                return result;
+                let result: TTalkCollection<T> = { items: null, hasNext: false };
+                return Object.assign(result, data, {items: newItems});
             }
             return newItems;
         }

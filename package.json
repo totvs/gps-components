@@ -25,7 +25,8 @@
     "@angular/router": "~7.0.0",
     "core-js": "^2.5.4",
     "rxjs": "~6.3.3",
-    "zone.js": "~0.8.26"
+    "zone.js": "~0.8.26",
+    "totvs-gps-utils": "^0.1.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.10.0",
