@@ -47,6 +47,8 @@
 - GPS components
 
 ### Changelog
+#### v0.1.1
+- Add ChangeDetectionRef in gps-order-list to avoid warnings
 #### v0.1.0
 - Add gps-order-list component
 
