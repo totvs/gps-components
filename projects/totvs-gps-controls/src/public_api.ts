@@ -3,4 +3,5 @@
  */
 
 export * from './lib/totvs-gps-controls.component';
+export * from './lib/totvs-gps-controls.model';
 export * from './lib/totvs-gps-controls.module';
