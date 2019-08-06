@@ -1,4 +1,4 @@
-import { Component, OnChanges, Input, Output, EventEmitter } from "@angular/core";
+import { Component, OnChanges, Input, Output, EventEmitter, ChangeDetectorRef } from "@angular/core";
 import { ThfTableColumn } from "@totvs/thf-ui";
 import { isNullOrUndefined } from "util";
 import { IOrderListItem } from "../totvs-gps-controls.model";
@@ -42,9 +42,13 @@ export class GpsOrderListComponent implements OnChanges {
         }
     ];  
 
+    constructor(private changeDetectorRef: ChangeDetectorRef) {
+    };
+
     ngOnChanges() {
         this.refreshList();
         this.tableColumns[0].label = (this.columnLabel || 'Valor');
+        this.changeDetectorRef.detectChanges();
     }
 
     public getOrderedList(): IOrderListItem[] {
