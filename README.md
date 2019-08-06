@@ -7,8 +7,22 @@
 ### Features
 - Get/Post/Put/Delete service factory
 - Http Interceptor for Datasul-REST
+- GenericZoom
 
 ### Changelog
+#### v0.1.0
+- Add GenericZoom feature
+- Fix in Date type in Path/Query params
+#### v0.0.12
+- Fix PathParam with Date
+#### v0.0.11
+- Omit undefined values in query params
+#### v0.0.10
+- Omit null values in query params
+#### v0.0.9
+- PathParam with Boolean
+#### v0.0.8
+- PathParam with Date
 #### v0.0.7
 - Add setOrder() to build path
 #### v0.0.6
@@ -30,6 +44,11 @@
 
 ### Features
 - Form validator
+- GPS components
+
+### Changelog
+#### v0.1.0
+- Add gps-order-list component
 
 ### Build
 - Change the version number in projects/totvs-gps-controls/package.json.
@@ -42,6 +61,16 @@
 ### Features
 - TotvsGpsDateUtils to manipulate Date objects
 - TotvsGpsJsonUtils to manipulate JSON objects
+- TotvsStringUtils
+- TotvsMaskString
+
+### Changelog
+#### v0.1.1
+- Add getSeparators() in TotvsStringUtils
+#### v0.1.0
+- TotvsMaskString
+#### v0.0.2
+- isISODate() fix
 
 ### Build
 - Change the version number in projects/totvs-gps-utils/package.json.
