@@ -8,8 +8,12 @@
 - Get/Post/Put/Delete service factory
 - Http Interceptor for Datasul-REST
 - GenericZoom
+- Cache Service
 
 ### Changelog
+#### v0.2.0
+- Add TotvsGpsCacheService
+- Interfaces for TotvsGpsCacheService
 #### v0.1.0
 - Add GenericZoom feature
 - Fix in Date type in Path/Query params
