@@ -3,7 +3,8 @@ export interface ICacheService {
 }
 
 export interface ICacheModel {
-    primaryKeys: string[];
+    readonly primaryKeys: string[];
+    readonly ENTITY: string;
 }
 
 export interface ICacheValue {

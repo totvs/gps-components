@@ -13,15 +13,14 @@ export class TotvsGpsCacheService {
         this._list = [];
     }
     
-    public addService(modelType: {new():Object}, service: ICacheService) {
-        let modelName: string = Object(modelType).name;
-        this._services[modelName] = service;
+    public addService(model: ICacheModel, service: ICacheService) {
+        this._services[model.ENTITY] = service;
     }
 
     public get(model: ICacheModel): any {
         if (isNullOrUndefined(model))
             return null;
-        let modelName = Object(model).constructor.name;
+        let modelName = model.ENTITY;
         // Verifica se existe lista para o model, senao cria uma
         let cacheList = this._list[modelName];
         if (isNullOrUndefined(cacheList)) {
