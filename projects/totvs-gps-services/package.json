@@ -1,6 +1,6 @@
 {
   "name": "totvs-gps-services",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "peerDependencies": {
     "@angular/common": "^7.0.0",
     "@angular/core": "^7.0.0",
