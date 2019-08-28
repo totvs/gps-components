@@ -37,8 +37,14 @@ export class TotvsGpsCacheService {
         // se valor ja existe, usa o da lista
         let value: ICacheValue = (cacheList.values.find(item => item.index == index));
         if (!isNullOrUndefined(value)) {
-            if (!isNullOrUndefined(callback))
-                callback(value.data);
+            if (!isNullOrUndefined(callback)) {
+                // se tiver função de callback, e a informação já está pronta, chama o callback
+                if (value.ready)
+                    callback(value.data);
+                // senao, adiciona na lista para ser chamado posteriormente
+                else
+                    value.onReady.push((v:ICacheValue) => { callback(v.data) });
+            }
             return value.data;
         }
         // se nao existe, pesquisa
@@ -48,15 +54,22 @@ export class TotvsGpsCacheService {
                 callback(null);
             return null;
         }
-        value = { index: index, data: new Object() };
+        value = { index: index, data: new Object(), ready: false, onReady: [] };
+        if (!isNullOrUndefined(callback))
+            value.onReady.push((v:ICacheValue) => { callback(v.data) });
         cacheList.values.push(value);
         service.get(...params)
             .then(result => {
                 Object.assign(value.data, result);
-                if (!isNullOrUndefined(callback))
-                    callback(value.data);
+                this.callOnReady(value);
             });
         return value.data;
+    }
+
+    private callOnReady(value: ICacheValue) {
+        value.ready = true;
+        value.onReady.forEach(f => f(value));
+        value.onReady = [];
     }
 
   
