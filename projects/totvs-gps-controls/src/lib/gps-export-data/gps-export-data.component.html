@@ -1,0 +1,14 @@
+<thf-modal #modal
+    t-title="Exportação de Dados"
+    [t-primary-action]="confirmAction"
+    [t-secondary-action]="cancelAction">
+    <div class="thf-row">
+        <gps-order-list 
+            #orderListComponent
+            class="thf-md-12"
+            columnLabel="Ordem dos Campos"
+            [items]="originalColumns"
+            [canChoose]="canChoose">
+        </gps-order-list>
+    </div>
+</thf-modal>

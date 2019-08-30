@@ -1,6 +1,8 @@
 <thf-table
     class="thf-md-12"
     t-striped="true"
+    [t-checkbox]="canChoose"
+    [t-single-select]="false"
     [t-columns]="tableColumns"
     [(t-items)]="itemList">
 </thf-table>

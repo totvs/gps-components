@@ -17,6 +17,7 @@ export class GpsOrderListComponent implements OnChanges {
     @Input('columnLabel') columnLabel: string;
     @Input('orderedItems') orderedItems: IOrderListItem[] = [];
     @Output('orderedItemsChange') orderedItemsChange: EventEmitter<IOrderListItem[]> = new EventEmitter();
+    @Input('canChoose') canChoose: boolean = false;
 
     private readonly TABLE_ACTIONS = {
         ABOVE: 'above',
@@ -52,6 +53,7 @@ export class GpsOrderListComponent implements OnChanges {
     }
 
     public getOrderedList(): IOrderListItem[] {
+        this.updateOutputList();
         return this.orderedItems;
     }
 
@@ -77,6 +79,8 @@ export class GpsOrderListComponent implements OnChanges {
                         order: (item.order || (this.itemList.length + 1)), 
                         $actions: [this.TABLE_ACTIONS.ABOVE,this.TABLE_ACTIONS.BELOW]
                     };
+                    // deixa o item como selecionado
+                    newItem['$selected'] = true;
                     this.itemList.push(newItem);
                 }
                 newItem.label = item.label;
@@ -93,6 +97,8 @@ export class GpsOrderListComponent implements OnChanges {
             this.itemList[idAux].order = this.itemList[idAux].order - 1;
             this.sortList();
         }
+        window.event.cancelBubble = true; //IE
+        event.stopPropagation(); //Navegadores
     }
     
     private onAbove(param: IOrderListItemActions) {
@@ -102,6 +108,8 @@ export class GpsOrderListComponent implements OnChanges {
             this.itemList[idAux-2].order = this.itemList[idAux-2].order + 1;
             this.sortList();
         }
+        window.event.cancelBubble = true; //IE
+        event.stopPropagation(); //Navegadores
     }
 
     private sortList() {
@@ -112,7 +120,16 @@ export class GpsOrderListComponent implements OnChanges {
     }
 
     private updateOutputList() {
-        this.orderedItems = this.itemList.map(item => {
+        let selected;
+        if (this.canChoose) {
+            selected = this.itemList.filter(item => item['$selected']);
+            if (selected.length == 0)
+                selected = this.itemList;
+        }
+        else
+            selected = this.itemList;
+
+        this.orderedItems = selected.map(item => {
             return <IOrderListItem>{
                 order: item.order,
                 value: item.value,

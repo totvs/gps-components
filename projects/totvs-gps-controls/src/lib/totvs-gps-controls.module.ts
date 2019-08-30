@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ThfModule } from '@totvs/thf-ui';
 import { GpsOrderListComponent } from './gps-order-list/gps-order-list.component';
+import { GpsExportDataComponent } from './gps-export-data/gps-export-data.component';
 
 @NgModule({
   imports: [
@@ -13,10 +14,12 @@ import { GpsOrderListComponent } from './gps-order-list/gps-order-list.component
     ThfModule
   ],
   declarations: [
-    GpsOrderListComponent
+    GpsOrderListComponent,
+    GpsExportDataComponent
   ],
   exports: [
-    GpsOrderListComponent
+    GpsOrderListComponent,
+    GpsExportDataComponent
   ]
 })
 export class TotvsGpsControlsModule { }
