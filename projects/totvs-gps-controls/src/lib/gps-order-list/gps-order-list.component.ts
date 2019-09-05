@@ -1,6 +1,6 @@
 import { Component, OnChanges, Input, Output, EventEmitter, ChangeDetectorRef } from "@angular/core";
 import { ThfTableColumn } from "@totvs/thf-ui";
-import { isNullOrUndefined } from "util";
+import { isNullOrUndefined, isBoolean } from "util";
 import { IOrderListItem } from "../totvs-gps-controls.model";
 
 interface IOrderListItemActions extends IOrderListItem {
@@ -17,7 +17,11 @@ export class GpsOrderListComponent implements OnChanges {
     @Input('columnLabel') columnLabel: string;
     @Input('orderedItems') orderedItems: IOrderListItem[] = [];
     @Output('orderedItemsChange') orderedItemsChange: EventEmitter<IOrderListItem[]> = new EventEmitter();
-    @Input('canChoose') canChoose: boolean = false;
+    @Input('canChoose') 
+        get canChoose() { return this._canChoose }
+        set canChoose(value:any) { this._canChoose = isBoolean(value) ? value : (value != 'false') }
+
+    private _canChoose: boolean = false;
 
     private readonly TABLE_ACTIONS = {
         ABOVE: 'above',

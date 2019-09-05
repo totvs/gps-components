@@ -1,5 +1,5 @@
 import { Component, Input, ViewChild, PipeTransform, ChangeDetectorRef } from "@angular/core";
-import { isNullOrUndefined } from "util";
+import { isNullOrUndefined, isBoolean } from "util";
 import { ThfModalComponent, ThfModalAction } from "@totvs/thf-ui";
 import { IOrderListItem } from "../totvs-gps-controls.model";
 import { GpsOrderListComponent } from "../gps-order-list/gps-order-list.component";
@@ -20,8 +20,12 @@ export class GpsExportDataComponent {
 
     @Input('data') data: any[];
     @Input('columns') columns: IExportColumn[];
-    @Input('canChoose') canChoose: boolean = false;
     @Input('fileName') fileName: string = 'file.csv';
+    @Input('canChoose') 
+        get canChoose() { return this._canChoose }
+        set canChoose(value:any) { this._canChoose = isBoolean(value) ? value : (value != 'false') }
+
+    private _canChoose: boolean = false;
 
     @ViewChild('modal') modal: ThfModalComponent;
     @ViewChild('orderListComponent') orderListComponent: GpsOrderListComponent;
