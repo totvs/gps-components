@@ -1,7 +1,7 @@
 import { GPS_SERVICES } from "./totvs-gps-services.module";
 import { HttpClient } from "@angular/common/http";
 import { take } from "rxjs/operators";
-import { TotvsGpsObjectModel, ITotvsGpsJsonParse, TTalkCollection, OrderField, OrderSort } from "./totvs-gps-services.model";
+import { TotvsGpsObjectModel, ITotvsGpsJsonParse, TTalkCollection, OrderField, OrderSort, IServiceRequest, HTTPMethod } from "./totvs-gps-services.model";
 import { encodeURLParam } from "./totvs-gps-services.utils";
 import { isNullOrUndefined } from "util";
 
@@ -218,10 +218,10 @@ export class TotvsGpsServices<T> {
 
     //#region Métodos de chamada HTTP
     private _get(url?: string, ttalk?:boolean): Promise<T | TTalkCollection<T>> {
-        let requestHttp = this._http;
         let requestUrl = (url || this._url);
         requestUrl = this.appendPathParams(requestUrl);
         requestUrl = this.appendQueryParams(requestUrl);
+        let requestHttp = this.getServiceRequest(requestUrl);
         let resultFactory = this.resultFactory.bind(this);
         return new Promise(function(resolve, reject) {
             requestHttp.get(requestUrl).pipe(take(1)).subscribe(
@@ -255,10 +255,10 @@ export class TotvsGpsServices<T> {
      * @param url URL do endpoint (caso não informado, será utilizada a URL atribuida como padrão da instância)
      */
     public post(data: any, url?: string): Promise<T> {
-        let requestHttp = this._http;
         let requestUrl = (url || this._url);
         requestUrl = this.appendPathParams(requestUrl);
         requestUrl = this.appendQueryParams(requestUrl);
+        let requestHttp = this.getServiceRequest(requestUrl);
         let resultFactory = this.resultFactory.bind(this);
         return new Promise(function(resolve, reject) {
             requestHttp.post(requestUrl, data).pipe(take(1)).subscribe(
@@ -276,10 +276,10 @@ export class TotvsGpsServices<T> {
      * @param url URL do endpoint (caso não informado, será utilizada a URL atribuida como padrão da instância)
      */
     public put(data: any, url?: string): Promise<T> {
-        let requestHttp = this._http;
         let requestUrl = (url || this._url);
         requestUrl = this.appendPathParams(requestUrl);
         requestUrl = this.appendQueryParams(requestUrl);
+        let requestHttp = this.getServiceRequest(requestUrl);
         let resultFactory = this.resultFactory.bind(this);
         return new Promise(function(resolve, reject) {
             requestHttp.put(requestUrl, data).pipe(take(1)).subscribe(
@@ -296,10 +296,10 @@ export class TotvsGpsServices<T> {
      * @param url URL do endpoint (caso não informado, será utilizada a URL atribuida como padrão da instância)
      */
     public delete(url?: string): Promise<T> {
-        let requestHttp = this._http;
         let requestUrl = (url || this._url);
         requestUrl = this.appendPathParams(requestUrl);
         requestUrl = this.appendQueryParams(requestUrl);
+        let requestHttp = this.getServiceRequest(requestUrl);
         let resultFactory = this.resultFactory.bind(this);
         return new Promise(function(resolve, reject) {
             requestHttp.delete(requestUrl).pipe(take(1)).subscribe(
@@ -385,6 +385,15 @@ export class TotvsGpsServices<T> {
 
     private isCollection(arg: Object): arg is TTalkCollection<T> {
         return (arg as TTalkCollection<T>).items !== undefined;
+    }
+    //#endregion
+
+    //#region métodos internos para requisições de mock
+    private getServiceRequest(url:string): IServiceRequest {
+        let req = GPS_SERVICES.getMockRequest(url);
+        if (!isNullOrUndefined(req))
+            return req;
+        return this._http;
     }
     //#endregion
 
