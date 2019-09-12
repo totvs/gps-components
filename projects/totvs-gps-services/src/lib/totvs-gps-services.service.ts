@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, isDevMode } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { TotvsGpsMockRequest } from './totvs-gps-mock-request.component';
 import { isNullOrUndefined } from 'util';
@@ -10,6 +10,7 @@ export class TotvsGpsDataService {
 
   private _httpClient: HttpClient;
   private _mockRequests: { url:string, request:TotvsGpsMockRequest }[] = [];
+  private _mockInProductionMode: boolean = false;
 
   constructor(private httpClient: HttpClient) {
     this._httpClient = this.httpClient;
@@ -17,6 +18,10 @@ export class TotvsGpsDataService {
 
   public get HttpClient() { 
     return this._httpClient;
+  }
+
+  public enableMockInProductionMode() {
+    this._mockInProductionMode = true;
   }
 
   public clearMockRequests() {
@@ -28,9 +33,11 @@ export class TotvsGpsDataService {
   }
 
   public getMockRequest(url:string): TotvsGpsMockRequest {
-    let result = this._mockRequests.find(r => url.startsWith(r.url));
-    if (!isNullOrUndefined(result))
+    if (isDevMode() || this._mockInProductionMode) {
+      let result = this._mockRequests.find(r => url.startsWith(r.url));
+      if (!isNullOrUndefined(result))
       return result.request;
+    }
     return;
   }
   
