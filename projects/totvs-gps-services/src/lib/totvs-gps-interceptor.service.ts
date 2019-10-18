@@ -18,6 +18,10 @@ export class TotvsGpsInterceptorService implements HttpInterceptor {
    * Verificar se expirou a sessão e recarrega a página (window.location.reload) caso necessário
    */
   static JOSSO_SESSION_RELOAD: boolean = false;
+  /**
+   * URL do contexto padrao datasul
+   */
+  private readonly URL_DATASUL = '/dts';
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
@@ -25,7 +29,7 @@ export class TotvsGpsInterceptorService implements HttpInterceptor {
 
     let newRequest: HttpRequest<any>;
     // Trata requisições de endereço completo
-    if (request.url.startsWith('http')) {
+    if (request.url.startsWith('http') || request.url.startsWith(this.URL_DATASUL)) {
       newRequest = request.clone({ url: request.url });
     }
     else {
