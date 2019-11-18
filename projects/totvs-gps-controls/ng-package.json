@@ -3,5 +3,9 @@
   "dest": "../../dist/totvs-gps-controls",
   "lib": {
     "entryFile": "src/public_api.ts"
-  }
+  },
+  "whitelistedNonPeerDependencies": [
+    "@portinari/portinari-ui",
+    "@totvs/portinari-theme"
+  ]
 }
