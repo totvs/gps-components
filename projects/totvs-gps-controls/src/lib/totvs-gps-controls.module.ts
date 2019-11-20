@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ThfModule } from '@totvs/thf-ui';
+import { PoModule } from '@portinari/portinari-ui';
 import { GpsOrderListComponent } from './gps-order-list/gps-order-list.component';
 import { GpsExportDataComponent } from './gps-export-data/gps-export-data.component';
 
@@ -11,7 +11,7 @@ import { GpsExportDataComponent } from './gps-export-data/gps-export-data.compon
     BrowserModule,
     CommonModule,
     FormsModule,
-    ThfModule
+    PoModule
   ],
   declarations: [
     GpsOrderListComponent,
