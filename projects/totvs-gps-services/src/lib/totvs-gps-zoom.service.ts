@@ -23,6 +23,9 @@ export class GenericZoomService<T> {
 
   public setUrl(url) {
     this._url = url;
+
+    if(this._url.substring(this._url.length - 1) != "/")
+      this._url = this._url + "/";
   }
 
   public setZoomTable(zoomTable) {
@@ -234,9 +237,6 @@ export class GenericZoom implements IZoomService {
         if(!isNullOrUndefined(filterParams)) {
           this.copyObjectValues(temporaryObject, filterParams);
         }
-        else {
-          this.copyObjectValues(temporaryObject, this.genericZoomEntity);
-        }
         return result;
       }
 
@@ -248,8 +248,17 @@ export class GenericZoom implements IZoomService {
       return result;
     }
 
+    result = this.service.getObjectById(this.genericZoomEntity);
+
+    if(!isNullOrUndefined(genericZoomOption.filterParams)){
     this.copyObjectValues(temporaryObject, filterParams);
-    return this.service.getObjectById(this.genericZoomEntity);
+    }
+
+    if(isNullOrUndefined(genericZoomOption.filterParams)){
+        this.copyObjectValues(temporaryObject,this.genericZoomEntity,);
+    }
+
+    return result;
   }
 
   /*public getSelectedObject() {

@@ -148,7 +148,7 @@ export function getODataFilter<T>(instance:T,filter:string,genericZoomEntity:Gen
     return {"$filter": oDataFilter.toString()};
 }
 
-function addValueToODataFilter(oDataFilter:String,object,value):String{
+export function addValueToODataFilter(oDataFilter:String,object,value):String{
 
     if(object instanceof String
     || typeof object === "string"
@@ -191,7 +191,7 @@ function hasColumnField(propertyKey: string,genericZoomEntity:GenericZoomEntity)
     return false;
 }
 
-function isValidValue(object): boolean{
+export function isValidValue(object): boolean{
     if(isNullOrUndefined(object))
         return false;
 
