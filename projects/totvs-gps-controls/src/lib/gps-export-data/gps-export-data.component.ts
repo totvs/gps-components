@@ -1,6 +1,6 @@
 import { Component, Input, ViewChild, PipeTransform, ChangeDetectorRef } from "@angular/core";
 import { isNullOrUndefined, isBoolean } from "util";
-import { PoModalComponent, PoModalAction } from "@portinari/portinari-ui";
+import { ThfModalComponent, ThfModalAction } from "@totvs/thf-ui";
 import { IOrderListItem } from "../totvs-gps-controls.model";
 import { GpsOrderListComponent } from "../gps-order-list/gps-order-list.component";
 
@@ -27,18 +27,18 @@ export class GpsExportDataComponent {
 
     private _canChoose: boolean = false;
 
-    @ViewChild('modal') modal: PoModalComponent;
+    @ViewChild('modal') modal: ThfModalComponent;
     @ViewChild('orderListComponent') orderListComponent: GpsOrderListComponent;
 
     originalColumns: IOrderListItem[] = [];
     orderedColumns: IOrderListItem[] = [];
 
-    confirmAction: PoModalAction = {
+    confirmAction: ThfModalAction = {
         label: 'Exportar',
         action: () => { this.doExport(this.getColumns()) }
     }
 
-    cancelAction: PoModalAction = {
+    cancelAction: ThfModalAction = {
         label: 'Cancelar',
         action: () => { this.closeModal(); }
     }

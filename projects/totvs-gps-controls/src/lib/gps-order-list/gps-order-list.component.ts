@@ -1,5 +1,5 @@
 import { Component, OnChanges, Input, Output, EventEmitter, ChangeDetectorRef } from "@angular/core";
-import { PoTableColumn } from "@portinari/portinari-ui";
+import { ThfTableColumn } from "@totvs/thf-ui";
 import { isNullOrUndefined, isBoolean } from "util";
 import { IOrderListItem } from "../totvs-gps-controls.model";
 
@@ -29,18 +29,18 @@ export class GpsOrderListComponent implements OnChanges {
     };
 
     itemList: IOrderListItemActions[] = [];
-    tableColumns: Array<PoTableColumn> = [
-        { property: 'label', label: '' },
-        { property: '$actions', label: ' ', type: 'icon', width: '5rem', icons:
+    tableColumns: Array<ThfTableColumn> = [
+        { column: 'label', label: '' },
+        { column: '$actions', label: ' ', type: 'icon', width: '5rem', icons:
             [
                 { 
                     value: this.TABLE_ACTIONS.ABOVE,
-                    icon: 'po-icon-arrow-down',
+                    icon: 'thf-icon-arrow-down',
                     action: this.onBelow.bind(this)
                 },
                 { 
                     value: this.TABLE_ACTIONS.BELOW,
-                    icon: 'po-icon-arrow-up',
+                    icon: 'thf-icon-arrow-up',
                     action: this.onAbove.bind(this)
                 }
             ]
