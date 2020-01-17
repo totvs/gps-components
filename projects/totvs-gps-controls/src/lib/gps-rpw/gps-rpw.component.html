@@ -1,0 +1,122 @@
+<form #fOption="ngForm">
+    <thf-list-view [t-items]="[{title:'Execução'}]" t-property-title="title">
+        <ng-template t-list-view-content-template let-item>
+            <div class="thf-row">
+                <thf-input name="outputFile" [(ngModel)]="model.outputFile" (ngModelChange)="rpwNgModelChange()"
+                    t-label="Nome do arquivo de saída" t-required *ngIf="!model.fileNameHidden"
+                    class="thf-xl-12 thf-lg-12 thf-md-12 thf-sm-12" ngDefaultControl>
+                </thf-input>
+                <thf-radio-group class="thf-xl-6 thf-lg-6 thf-md-6 thf-sm-6" name="executionTime"
+                    [(ngModel)]="model.executionTime" (ngModelChange)="rpwNgModelChange()" t-required
+                    t-label="Data de execução"
+                    [t-options]="[{ label: 'Executar hoje', value: '1' }, { label: 'Agendar execução', value: '2' }]"
+                    ngDefaultControl>
+                </thf-radio-group>
+
+                <thf-datepicker *ngIf="model.executionTime == '2'" [t-start]="currentDate"
+                    class="thf-xl-3 thf-lg-3 thf-md-3 thf-sm-3" name="executionAppointmentDate"
+                    [(ngModel)]="model.executionAppointmentDate" (ngModelChange)="rpwNgModelChange()" t-required
+                    t-label="Agendar para" ngDefaultControl>
+                </thf-datepicker>
+                <thf-input *ngIf="model.executionTime == '2'" name="executionAppointmentHour"
+                    [(ngModel)]="model.executionAppointmentHour" (ngModelChange)="rpwNgModelChange()" t-label="Hora"
+                    t-required t-mask="99:99" t-mask-format-model="true"
+                    t-pattern="^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$" class="thf-xl-3 thf-lg-3 thf-md-3 thf-sm-3"
+                    ngDefaultControl>
+                </thf-input>
+            </div>
+            <div class="thf-row">
+                <thf-combo class="thf-xl-12 thf-lg-12 thf-md-12 thf-sm-12" name="executionServer"
+                    [(ngModel)]="model.executionServer" t-required (ngModelChange)="rpwNgModelChange()"
+                    t-label="Servidor de execução" [t-options]="rpwServerOptions" ngDefaultControl>
+                </thf-combo>
+            </div>
+            <div class="thf-row">
+                <thf-switch name="repeatExec" t-label-on="Repetir ocorrência" t-label-off="Repetir ocorrência"
+                    [(ngModel)]="model.repeatExecution" (ngModelChange)="rpwNgModelChange()" *ngIf="!repeatExecHidden"
+                    class="thf-xl-6 thf-lg-6 thf-md-6 thf-sm-6" ngDefaultControl>
+                </thf-switch>
+            </div>
+            <div class="thf-row">
+                <thf-widget *ngIf="model.repeatExecution" class="thf-xl-12 thf-lg-12 thf-md-12 thf-sm-12" t-no-shadow>
+                    <div class="thf-row">
+                        <div class="thf-xl-12 thf-lg-12 thf-md-12 thf-sm-12">
+                            <thf-tabs>
+                                <thf-tab t-label="Diária" [t-active]="model.activeTab === 1" [t-disabled]="isDisabled(1)"
+                                    [t-hide]="isHidden(1)" (p-click)="setActiveTab(1)">
+                                    <div class="thf-font-subtitle">
+                                        <thf-combo class="thf-xl-6 thf-lg-6 thf-md-6 thf-sm-6"
+                                            name="repeatExecAppointmentDaily"
+                                            [(ngModel)]="model.repeatExecAppointmentDaily"
+                                            (ngModelChange)="rpwNgModelChange()" t-required t-label="Repete a cada"
+                                            [t-options]="repeatEachDailyOptions" ngDefaultControl>
+                                        </thf-combo>
+                                        <thf-input name="repeatExecAppointmentHourDaily"
+                                            [(ngModel)]="model.repeatExecAppointmentHourDaily"
+                                            (ngModelChange)="rpwNgModelChange()" t-label="Horário" t-mask="99:99"
+                                            t-required t-mask-format-model="true"
+                                            t-pattern="^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$"
+                                            class="thf-xl-6 thf-lg-6 thf-md-6 thf-sm-6" ngDefaultControl>
+                                        </thf-input>
+                                    </div>
+                                </thf-tab>
+
+                                <thf-tab t-label="Mensal" [t-active]="model.activeTab === 2" [t-disabled]="isDisabled(2)"
+                                    [t-hide]="isHidden(2)" (p-click)="setActiveTab(2)">
+                                    <div class="thf-font-subtitle">
+                                        <thf-combo class="thf-xl-6 thf-lg-6 thf-md-6 thf-sm-6"
+                                            name="repeatExecAppointmentMonthly"
+                                            [(ngModel)]="model.repeatExecAppointmentMonthly"
+                                            (ngModelChange)="rpwNgModelChange()" t-required t-label="Repete a cada"
+                                            [t-options]="repeatEachMonthlyOptions" ngDefaultControl>
+                                        </thf-combo>
+                                        <thf-input name="repeatExecAppointmentHourMonthly"
+                                            [(ngModel)]="model.repeatExecAppointmentHourMonthly"
+                                            (ngModelChange)="rpwNgModelChange()" t-label="Horário" t-required
+                                            t-mask="99:99" t-mask-format-model="true"
+                                            t-pattern="^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$"
+                                            class="thf-xl-6 thf-lg-6 thf-md-6 thf-sm-6" ngDefaultControl>
+                                        </thf-input>
+                                        <thf-combo class="thf-xl-6 thf-lg-6 thf-md-6 thf-sm-6"
+                                            name="repeatExecOnLastDayOfMonth"
+                                            [(ngModel)]="model.repeatExecOnLastDayOfMonth"
+                                            (ngModelChange)="rpwNgModelChange()" t-label="Sempre no dia" t-required
+                                            [t-options]="[{label:'Último dia do mês', value:1},{label:'Escolher Dia', value:2}]"
+                                            ngDefaultControl>
+                                        </thf-combo>
+                                        <thf-input *ngIf="model.repeatExecOnLastDayOfMonth == 2"
+                                            name="repeatExecMonthlyDay" [(ngModel)]="model.repeatExecMonthlyDay"
+                                            (ngModelChange)="rpwNgModelChange()" t-label="Dia do mês" t-mask="99"
+                                            t-mask-format-model="true" t-required t-pattern="([1-9]|[12]\d|3[01])"
+                                            class="thf-xl-6 thf-lg-6 thf-md-6 thf-sm-6" ngDefaultControl>
+                                        </thf-input>
+                                    </div>
+                                </thf-tab>
+                            </thf-tabs>
+                        </div>
+                    </div>
+                    <div class="thf-row">
+                        <div class="thf-xl-12 thf-lg-12 thf-md-12 thf-sm-12">
+                            <thf-datepicker [t-start]="currentDate" class="thf-xl-3 thf-lg-3 thf-md-3 thf-sm-3" t-required
+                                name="repeatExecFinalDate" [(ngModel)]="model.repeatExecFinalDate"
+                                (ngModelChange)="rpwNgModelChange()" t-label="Até o dia" ngDefaultControl>
+                            </thf-datepicker>
+                        </div>
+                    </div>
+                </thf-widget>
+            </div>
+            <div class="thf-row">
+                <thf-switch class="thf-xl-2 thf-lg-2 thf-md-2 thf-sm-2" name="multisession" t-label-on="Multisessão"
+                    t-label-off="Multisessão" [(ngModel)]="model.multisession" *ngIf="model.allowMultipleSessions"
+                    (ngModelChange)="rpwNgModelChange()" ngDefaultControl>
+                </thf-switch>
+            </div>
+            <div class="thf-row">
+                <thf-number *ngIf="model.multisession" name="numberOfSessions" [(ngModel)]="model.numberOfSessions"
+                    (ngModelChange)="rpwNgModelChange()" t-label="Número Sessões" t-min="1" t-max="99" t-required
+                    class="thf-xl-2 thf-lg-2 thf-md-2 thf-sm-2" ngDefaultControl>
+                </thf-number>
+            </div>
+        </ng-template>
+    </thf-list-view>
+</form>
