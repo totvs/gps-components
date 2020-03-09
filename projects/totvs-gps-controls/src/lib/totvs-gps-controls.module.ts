@@ -7,6 +7,18 @@ import { GpsOrderListComponent } from './gps-order-list/gps-order-list.component
 import { GpsExportDataComponent } from './gps-export-data/gps-export-data.component';
 import { GpsRpwComponent } from './gps-rpw/gps-rpw.component';
 import { TotvsGpsServicesModule } from 'totvs-gps-services';
+import { GpsAdvancedSearchDirective } from './gps-page/directives/gps-advanced-search.directive';
+import { GpsPageListComponent } from './gps-page/gps-page-list/gps-page-list.component';
+
+const components = [
+  GpsOrderListComponent,
+  GpsExportDataComponent,
+  GpsRpwComponent,
+  GpsPageListComponent
+];
+const directives = [
+  GpsAdvancedSearchDirective
+]
 
 @NgModule({
   imports: [
@@ -17,14 +29,12 @@ import { TotvsGpsServicesModule } from 'totvs-gps-services';
     TotvsGpsServicesModule
   ],
   declarations: [
-    GpsOrderListComponent,
-    GpsExportDataComponent,
-    GpsRpwComponent
+    ...components,
+    ...directives
   ],
   exports: [
-    GpsOrderListComponent,
-    GpsExportDataComponent,
-    GpsRpwComponent
+    ...components,
+    ...directives
   ]
 })
 export class TotvsGpsControlsModule { }

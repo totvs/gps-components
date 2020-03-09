@@ -1,0 +1,35 @@
+<po-page-list
+    [p-breadcrumb]="parameterBreadcrumb"
+    [p-disclaimer-group]="internalDisclaimerGroup"
+    [p-literals]="parameterLiterals"
+    [p-filter]="internalFilter"
+    [p-actions]="parameterActions"
+    [p-title]="parameterTitle">
+    <po-loading-overlay
+        p-screen-lock="true"
+        [p-text]="loadingStatus.message"
+        [hidden]="!loadingStatus.active">
+    </po-loading-overlay>
+    <form #mainForm="ngForm">
+        <ng-content></ng-content>
+    </form>
+    <form #advancedSearchForm="ngForm" (keypress)="advancedSearchKeyPress($event)">
+        <ng-container *ngTemplateOutlet="advancedSearchTemplate"></ng-container>
+    </form>
+</po-page-list>
+
+<ng-template #advancedSearchTemplate>
+    <ng-container *ngIf="hasAdvancedSearch">
+        <po-modal #advancedSearchModal
+            p-title="Busca avançada"
+            p-click-out="false"
+            p-hide-close
+            [p-primary-action]="modalSearchAction"
+            [p-secondary-action]="modalSearchCloseAction">
+            <ng-template 
+                [ngTemplateOutlet]="advancedSearchTemplateRef.templateRef"
+                [ngTemplateOutletContext]="{ $implicit: parameterGpsFilter }">
+            </ng-template>
+        </po-modal>
+    </ng-container>
+</ng-template>
