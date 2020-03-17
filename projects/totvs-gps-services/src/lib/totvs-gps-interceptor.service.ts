@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, isDevMode } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { isNullOrUndefined } from 'util';
 
 @Injectable()
 export class TotvsGpsInterceptorService implements HttpInterceptor {
@@ -19,6 +20,11 @@ export class TotvsGpsInterceptorService implements HttpInterceptor {
    */
   static JOSSO_SESSION_RELOAD: boolean = false;
   /**
+   * URL para servidor de mock de dados
+   * @example 'http://localhost:8080'
+   */
+  static MOCK_SERVER: string = '';
+  /**
    * URL do contexto padrao datasul
    */
   private readonly URL_DATASUL = '/dts';
@@ -26,6 +32,7 @@ export class TotvsGpsInterceptorService implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
     let ttalkRegexp: RegExp = new RegExp(/^[\w\d]+\/v[\d\.]+\//i);
+    let ttalkRelativePath: string = '';
 
     let newRequest: HttpRequest<any>;
     // Trata requisições de endereço completo
@@ -39,7 +46,8 @@ export class TotvsGpsInterceptorService implements HttpInterceptor {
         _url = _url.substring(1);
       // Trata requisição de api t-talk
       if (ttalkRegexp.test(_url)) {
-        newRequest = request.clone({ url: TotvsGpsInterceptorService.URL_TTALK + _url });
+        ttalkRelativePath = _url;
+        newRequest = request.clone({ url: TotvsGpsInterceptorService.URL_TTALK + ttalkRelativePath });
       }
       // Trata requisições de fachadas (antigas)
       else {
@@ -51,11 +59,25 @@ export class TotvsGpsInterceptorService implements HttpInterceptor {
     }
 
     if (!TotvsGpsInterceptorService.JOSSO_SESSION_RELOAD)
-      return next.handle(newRequest);
+      return next.handle(newRequest).pipe(
+        catchError(error => {
+          // tratamento para redirecionar para servidor de mock
+          if (error instanceof HttpErrorResponse) {
+            if ((ttalkRelativePath!='')&&(this.shouldRedirecToMockServer(error))) {
+              let _server = TotvsGpsInterceptorService.MOCK_SERVER;
+              if (!_server.endsWith('/'))
+                _server += '/';
+              newRequest = request.clone({ url: _server + ttalkRelativePath });
+              return next.handle(newRequest);
+            }
+          }
+          throw error;
+        })
+      );
     else {
       return next.handle(newRequest).pipe(
         catchError(error => {
-          // trata retorno do timeout de sessao
+          // trata retorno do timeout de sessao do JOSSO
           if (error instanceof HttpErrorResponse) {
             if (error.status == 200) {
               if (error.url.indexOf('josso_security_check') > 0) {
@@ -67,6 +89,17 @@ export class TotvsGpsInterceptorService implements HttpInterceptor {
         })
       );
     }
+  }
+
+  private shouldRedirecToMockServer(error: HttpErrorResponse) {
+    if (isDevMode()&&!isNullOrUndefined(TotvsGpsInterceptorService.MOCK_SERVER)&&(TotvsGpsInterceptorService.MOCK_SERVER!='')) {
+      if ((error.status >= 400)&&(JSON.stringify(error).indexOf('not found')>0)) {
+        // 500 - {"message":"Internal server error","detailedMessage":"ERROR condition: ** \"hvp/api/v1/XYZ\" was not found. (293) (7211)","code":"INTERNAL_SERVER_ERROR"}
+        // 400 - {"code":"BAD_REQUEST", "message":"Bad request", "detailedMessage":"Method not found"}
+        return true;
+      }
+    }
+    return false;
   }
 
 }
