@@ -145,8 +145,11 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
     //#region disclaimers
     private _defaultDisclaimerGroup: PoDisclaimerGroup = { disclaimers: [], title: 'Apresentando resultados filtrados por:', hideRemoveAll: true };
     private _parameterGpsDisclaimerConfig: IDisclaimerConfig[];
+    private _disclaimersVisible: boolean = true;
 
     get internalDisclaimerGroup() {
+        if (!this._disclaimersVisible)
+            return null;
         if (isNullOrUndefined(this.parameterDisclaimerGroup))
             return this._defaultDisclaimerGroup;
         return this.parameterDisclaimerGroup;
@@ -157,6 +160,15 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
             this._defaultDisclaimerGroup.disclaimers = [];
         else
             this._defaultDisclaimerGroup.disclaimers = this.parseDisclaimers(this._parameterGpsFilter, this._parameterGpsDisclaimerConfig);
+    }
+
+    hideDisclaimers() {
+        this._disclaimersVisible = false;
+    }
+
+    showDisclaimers() {
+        this._disclaimersVisible = true;
+        this.refreshDisclaimers();
     }
 
     private parseDisclaimers(obj, config: IDisclaimerConfig[]): PoDisclaimer[] {
