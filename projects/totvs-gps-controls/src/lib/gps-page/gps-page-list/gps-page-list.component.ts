@@ -174,24 +174,40 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
     private parseDisclaimers(obj, config: IDisclaimerConfig[]): PoDisclaimer[] {
         let disclaimers: PoDisclaimer[] = [];
         config.forEach(param => {
-            if (!isNullOrUndefined(obj[param.property])) {
+            if (!isNullOrUndefined(obj[param.property])||(param.type === 'function')) {
                 let value = '';
                 if (param.type === 'date')
                     value = TotvsGpsDateUtils.getInstance().getLocaleDate(obj[param.property])
+                else if (param.type === 'boolean')
+                    value = (obj[param.property] ? 'Sim' : 'Não')
+                else if (param.type === 'true') {
+                    if (!obj[param.property])
+                        return;
+                    value = 'true';
+                }
+                else if (param.type === 'function') {
+                    if (!isNullOrUndefined(param.value))
+                        value = param.value(obj);
+                    else
+                        value = '';
+                }
                 else
                     value = String(obj[param.property]).valueOf();
-                if (value === '')
+                if ((value === '')&&(isNullOrUndefined(value)))
                     return;
-                if (!isNullOrUndefined(param.value))
+                if ((param.type != 'function')&&(!isNullOrUndefined(param.value)))
                     value = param.value(value);
-                let item: PoDisclaimer = disclaimers.find(item => item.property == (param.group || param.property));
+                let item: PoDisclaimer = disclaimers.find(item => item.property == (param.group || param.property || param.label));
                 if (isNullOrUndefined(item)) {
-                    item = { property: (param.group || param.property), hideClose: true, value: value };
+                    item = { property: (param.group || param.property || param.label), hideClose: true, value: value };
                     disclaimers.push(item);
                 }
                 else
                     item.value += (param.separator || '') + value;
-                item.label = `${param.label}: ${item.value}`;
+                if (param.type === 'true')
+                    item.label = param.label;
+                else
+                    item.label = `${param.label}: ${item.value}`;
             }
         });
         return disclaimers;
