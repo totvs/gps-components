@@ -9,16 +9,24 @@ import { GpsRpwComponent } from './gps-rpw/gps-rpw.component';
 import { TotvsGpsServicesModule } from 'totvs-gps-services';
 import { GpsAdvancedSearchDirective } from './gps-page/directives/gps-advanced-search.directive';
 import { GpsPageListComponent } from './gps-page/gps-page-list/gps-page-list.component';
+import { GpsPageDetailComponent } from './gps-page/gps-page-detail/gps-page-detail.component';
+import { GpsPageEditComponent } from './gps-page/gps-page-edit/gps-page-edit.component';
+import { BooleanPipe } from './pipes/boolean.pipe';
 
 const components = [
   GpsOrderListComponent,
   GpsExportDataComponent,
   GpsRpwComponent,
-  GpsPageListComponent
+  GpsPageListComponent,
+  GpsPageDetailComponent,
+  GpsPageEditComponent
 ];
 const directives = [
   GpsAdvancedSearchDirective
-]
+];
+const pipes = [
+  BooleanPipe
+];
 
 @NgModule({
   imports: [
@@ -30,11 +38,13 @@ const directives = [
   ],
   declarations: [
     ...components,
-    ...directives
+    ...directives,
+    ...pipes
   ],
   exports: [
     ...components,
-    ...directives
+    ...directives,
+    ...pipes
   ]
 })
 export class TotvsGpsControlsModule { }
