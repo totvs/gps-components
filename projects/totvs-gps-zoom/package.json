@@ -1,0 +1,13 @@
+{
+  "name": "totvs-gps-zoom",
+  "version": "2.0.0",
+  "peerDependencies": {
+    "@angular/common": "~8.0.0",
+    "@angular/core": "~8.0.0",
+    "@portinari/portinari-ui": "^1.22.0",
+    "@totvs/portinari-theme": "^1.22.0",
+    "totvs-gps-services": "^2.0.0",
+    "totvs-gps-api": ">=0.0.83",
+    "totvs-gps-api-v2": ">=0.0.4"
+  }
+}

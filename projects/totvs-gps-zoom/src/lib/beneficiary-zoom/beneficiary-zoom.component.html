@@ -1,0 +1,58 @@
+<po-modal 
+  #modalSearch
+  p-click-out="false"
+  p-hide-close
+  [p-title]="title"
+  [p-primary-action]="modalPrimaryAction"
+  [p-secondary-action]="modalSecondaryAction">
+  <div class="po-row">
+    <form #beneficiaryZoomContentForm="ngForm" name="beneficiaryZoomContent" class="po-row" (keypress)="onKeyUp($event)">
+      <ng-content></ng-content>
+      <ng-container *ngIf="!customContent && filter">
+        <ng-container *ngIf="!hasCustomFilter">
+          <div class="po-row">
+            <po-number 
+              class="po-xl-4 po-lg-4 po-md-4 po-sm-4" 
+              name="beneficiaryZoomCode"
+              [(ngModel)]="filter.code" 
+              p-label="Código">
+            </po-number>
+            <po-input 
+              class="po-xl-8 po-lg-8 po-md-8 po-sm-8" 
+              name="beneficiaryZoomTaxpayerRegistry"
+              [(ngModel)]="filter.taxpayerRegistry" 
+              p-label="CPF">
+            </po-input>        
+          </div>
+          <div class="po-row">
+            <po-input 
+              class="po-xl-9 po-lg-9 po-md-9 po-sm-9" 
+              name="beneficiaryZoomName"
+              [(ngModel)]="filter.name" 
+              p-label="Nome">
+            </po-input>
+            <po-button
+              class="po-xl-3 po-lg-3 po-md-3 po-sm-3 po-mt-4"
+              p-icon ="po-icon po-icon-search"
+              (p-click)="onSearch()">
+            </po-button>
+          </div>
+        </ng-container>
+        <po-table
+          p-checkbox
+          [p-columns]="tableColumns"
+          p-height="350px"
+          p-hide-detail="false"
+          [p-hide-select-all]="!multiple"
+          p-hide-text-overflow
+          [p-items]="listItems"
+          [p-loading]="listIsLoading"
+          [p-show-more-disabled]="!listHasNext"
+          [p-single-select]="!multiple"
+          (p-show-more)="onListShowMore()">
+        </po-table>
+      </ng-container>
+    </form>
+    <ng-content select="[data-content]"></ng-content>
+  </div>
+</po-modal>

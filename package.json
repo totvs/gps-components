@@ -10,7 +10,8 @@
     "e2e": "ng e2e",
     "build_services": "ng build totvs-gps-services && cd dist/totvs-gps-services && npm pack",
     "build_controls": "ng build totvs-gps-controls && cd dist/totvs-gps-controls && npm pack",
-    "build_utils": "ng build totvs-gps-utils && cd dist/totvs-gps-utils && npm pack"
+    "build_utils": "ng build totvs-gps-utils && cd dist/totvs-gps-utils && npm pack",
+    "build_zoom": "ng build totvs-gps-zoom && cd dist/totvs-gps-zoom && npm pack"
   },
   "private": true,
   "dependencies": {
@@ -54,6 +55,8 @@
     "tsickle": ">=0.29.0",
     "tslib": "^1.9.0",
     "tslint": "~5.11.0",
-    "typescript": "~3.4.0"
+    "typescript": "~3.4.0",
+    "totvs-gps-api": "./library/totvs-gps-api-0.0.83.tgz",
+    "totvs-gps-api-v2": "./library/totvs-gps-api-v2-0.0.4.tgz"
   }
 }
