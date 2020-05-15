@@ -1,0 +1,13 @@
+<po-page-detail 
+    [p-breadcrumb]="parameterBreadcrumb"
+    [p-literals]="parameterLiterals"
+    [p-title]="parameterTitle">
+    <po-loading-overlay
+        p-screen-lock="true"
+        [p-text]="loadingStatus.message"
+        [hidden]="!loadingStatus.active">
+    </po-loading-overlay>
+    <form #mainForm="ngForm">
+        <ng-content></ng-content>
+    </form>
+</po-page-detail>

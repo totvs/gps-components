@@ -1,3 +1,5 @@
+import { Observable } from "rxjs";
+
 /**
  * Objeto interno para instanciar a classe determinada
  */
@@ -12,6 +14,23 @@ export class TotvsGpsObjectModel<T> {
  */
 export interface ITotvsGpsJsonParse<T> {
   parseJsonToObject(data:any): T;
+}
+
+/**
+ * Dados para requisições HTTP
+ */
+export interface IServiceRequest {
+  get(url:string): Observable<Object>;
+  post(url:string, data:Object): Observable<Object>;
+  put(url:string, data:Object): Observable<Object>;
+  delete(url:string): Observable<Object>;
+}
+
+export enum HTTPMethod {
+  GET = 'GET',
+  POST = 'POST',
+  PUT = 'PUT',
+  DELETE = 'DELETE'
 }
 
 /**

@@ -1,0 +1,14 @@
+<po-modal #modal
+    p-title="Exportação de Dados"
+    [p-primary-action]="confirmAction"
+    [p-secondary-action]="cancelAction">
+    <div class="po-row">
+        <gps-order-list 
+            #orderListComponent
+            class="po-md-12"
+            columnLabel="Ordem dos Campos"
+            [items]="originalColumns"
+            [canChoose]="canChoose">
+        </gps-order-list>
+    </div>
+</po-modal>

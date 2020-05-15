@@ -1,0 +1,122 @@
+<form #fOption="ngForm">
+    <po-list-view [p-items]="[{title:'Execução'}]" p-property-title="title">
+        <ng-template p-list-view-content-template let-item>
+            <div class="po-row">
+                <po-input name="outputFile" [(ngModel)]="model.outputFile" (ngModelChange)="rpwNgModelChange()"
+                    p-label="Nome do arquivo de saída" p-required *ngIf="!model.fileNameHidden"
+                    class="po-xl-12 po-lg-12 po-md-12 po-sm-12" ngDefaultControl>
+                </po-input>
+                <po-radio-group class="po-xl-6 po-lg-6 po-md-6 po-sm-6" name="executionTime"
+                    [(ngModel)]="model.executionTime" (ngModelChange)="rpwNgModelChange()" p-required
+                    p-label="Data de execução"
+                    [p-options]="[{ label: 'Executar hoje', value: '1' }, { label: 'Agendar execução', value: '2' }]"
+                    ngDefaultControl>
+                </po-radio-group>
+
+                <po-datepicker *ngIf="model.executionTime == '2'" [p-min-date]="currentDate"
+                    class="po-xl-3 po-lg-3 po-md-3 po-sm-3" name="executionAppointmentDate"
+                    [(ngModel)]="model.executionAppointmentDate" (ngModelChange)="rpwNgModelChange()" p-required
+                    p-label="Agendar para" ngDefaultControl>
+                </po-datepicker>
+                <po-input *ngIf="model.executionTime == '2'" name="executionAppointmentHour"
+                    [(ngModel)]="model.executionAppointmentHour" (ngModelChange)="rpwNgModelChange()" p-label="Hora"
+                    p-required p-mask="99:99" p-mask-format-model="true"
+                    p-pattern="^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$" class="po-xl-3 po-lg-3 po-md-3 po-sm-3"
+                    ngDefaultControl>
+                </po-input>
+            </div>
+            <div class="po-row">
+                <po-combo class="po-xl-12 po-lg-12 po-md-12 po-sm-12" name="executionServer"
+                    [(ngModel)]="model.executionServer" p-required (ngModelChange)="rpwNgModelChange()"
+                    p-label="Servidor de execução" [p-options]="rpwServerOptions" ngDefaultControl>
+                </po-combo>
+            </div>
+            <div class="po-row">
+                <po-switch name="repeatExec" p-label-on="Repetir ocorrência" p-label-off="Repetir ocorrência"
+                    [(ngModel)]="model.repeatExecution" (ngModelChange)="rpwNgModelChange()" *ngIf="!repeatExecHidden"
+                    class="po-xl-6 po-lg-6 po-md-6 po-sm-6" ngDefaultControl>
+                </po-switch>
+            </div>
+            <div class="po-row">
+                <po-widget *ngIf="model.repeatExecution" class="po-xl-12 po-lg-12 po-md-12 po-sm-12" p-no-shadow>
+                    <div class="po-row">
+                        <div class="po-xl-12 po-lg-12 po-md-12 po-sm-12">
+                            <po-tabs>
+                                <po-tab p-label="Diária" [p-active]="model.activeTab === 1" [p-disabled]="isDisabled(1)"
+                                    [p-hide]="isHidden(1)" (p-click)="setActiveTab(1)">
+                                    <div class="po-font-subtitle">
+                                        <po-combo class="po-xl-6 po-lg-6 po-md-6 po-sm-6"
+                                            name="repeatExecAppointmentDaily"
+                                            [(ngModel)]="model.repeatExecAppointmentDaily"
+                                            (ngModelChange)="rpwNgModelChange()" p-required p-label="Repete a cada"
+                                            [p-options]="repeatEachDailyOptions" ngDefaultControl>
+                                        </po-combo>
+                                        <po-input name="repeatExecAppointmentHourDaily"
+                                            [(ngModel)]="model.repeatExecAppointmentHourDaily"
+                                            (ngModelChange)="rpwNgModelChange()" p-label="Horário" p-mask="99:99"
+                                            p-required p-mask-format-model="true"
+                                            p-pattern="^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$"
+                                            class="po-xl-6 po-lg-6 po-md-6 po-sm-6" ngDefaultControl>
+                                        </po-input>
+                                    </div>
+                                </po-tab>
+
+                                <po-tab p-label="Mensal" [p-active]="model.activeTab === 2" [p-disabled]="isDisabled(2)"
+                                    [p-hide]="isHidden(2)" (p-click)="setActiveTab(2)">
+                                    <div class="po-font-subtitle">
+                                        <po-combo class="po-xl-6 po-lg-6 po-md-6 po-sm-6"
+                                            name="repeatExecAppointmentMonthly"
+                                            [(ngModel)]="model.repeatExecAppointmentMonthly"
+                                            (ngModelChange)="rpwNgModelChange()" p-required p-label="Repete a cada"
+                                            [p-options]="repeatEachMonthlyOptions" ngDefaultControl>
+                                        </po-combo>
+                                        <po-input name="repeatExecAppointmentHourMonthly"
+                                            [(ngModel)]="model.repeatExecAppointmentHourMonthly"
+                                            (ngModelChange)="rpwNgModelChange()" p-label="Horário" p-required
+                                            p-mask="99:99" p-mask-format-model="true"
+                                            p-pattern="^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$"
+                                            class="po-xl-6 po-lg-6 po-md-6 po-sm-6" ngDefaultControl>
+                                        </po-input>
+                                        <po-combo class="po-xl-6 po-lg-6 po-md-6 po-sm-6"
+                                            name="repeatExecOnLastDayOfMonth"
+                                            [(ngModel)]="model.repeatExecOnLastDayOfMonth"
+                                            (ngModelChange)="rpwNgModelChange()" p-label="Sempre no dia" p-required
+                                            [p-options]="[{label:'Último dia do mês', value:1},{label:'Escolher Dia', value:2}]"
+                                            ngDefaultControl>
+                                        </po-combo>
+                                        <po-input *ngIf="model.repeatExecOnLastDayOfMonth == 2"
+                                            name="repeatExecMonthlyDay" [(ngModel)]="model.repeatExecMonthlyDay"
+                                            (ngModelChange)="rpwNgModelChange()" p-label="Dia do mês" p-mask="99"
+                                            p-mask-format-model="true" p-required p-pattern="([1-9]|[12]\d|3[01])"
+                                            class="po-xl-6 po-lg-6 po-md-6 po-sm-6" ngDefaultControl>
+                                        </po-input>
+                                    </div>
+                                </po-tab>
+                            </po-tabs>
+                        </div>
+                    </div>
+                    <div class="po-row">
+                        <div class="po-xl-12 po-lg-12 po-md-12 po-sm-12">
+                            <po-datepicker [p-min-date]="currentDate" class="po-xl-3 po-lg-3 po-md-3 po-sm-3" p-required
+                                name="repeatExecFinalDate" [(ngModel)]="model.repeatExecFinalDate"
+                                (ngModelChange)="rpwNgModelChange()" p-label="Até o dia" ngDefaultControl>
+                            </po-datepicker>
+                        </div>
+                    </div>
+                </po-widget>
+            </div>
+            <div class="po-row">
+                <po-switch class="po-xl-2 po-lg-2 po-md-2 po-sm-2" name="multisession" p-label-on="Multisessão"
+                    p-label-off="Multisessão" [(ngModel)]="model.multisession" *ngIf="model.allowMultipleSessions"
+                    (ngModelChange)="rpwNgModelChange()" ngDefaultControl>
+                </po-switch>
+            </div>
+            <div class="po-row">
+                <po-number *ngIf="model.multisession" name="numberOfSessions" [(ngModel)]="model.numberOfSessions"
+                    (ngModelChange)="rpwNgModelChange()" p-label="Número Sessões" p-min="1" p-max="99" p-required
+                    class="po-xl-2 po-lg-2 po-md-2 po-sm-2" ngDefaultControl>
+                </po-number>
+            </div>
+        </ng-template>
+    </po-list-view>
+</form>

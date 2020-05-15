@@ -1,7 +1,9 @@
 import { GPS_SERVICES } from "./totvs-gps-services.module";
 import { HttpClient } from "@angular/common/http";
 import { take } from "rxjs/operators";
-import { TotvsGpsObjectModel, ITotvsGpsJsonParse, TTalkCollection, OrderField, OrderSort } from "./totvs-gps-services.model";
+import { TotvsGpsObjectModel, ITotvsGpsJsonParse, TTalkCollection, OrderField, OrderSort, IServiceRequest, HTTPMethod } from "./totvs-gps-services.model";
+import { encodeURLParam } from "./totvs-gps-services.utils";
+import { isNullOrUndefined } from "util";
 
 /**
  * @description
@@ -216,10 +218,10 @@ export class TotvsGpsServices<T> {
 
     //#region Métodos de chamada HTTP
     private _get(url?: string, ttalk?:boolean): Promise<T | TTalkCollection<T>> {
-        let requestHttp = this._http;
         let requestUrl = (url || this._url);
         requestUrl = this.appendPathParams(requestUrl);
         requestUrl = this.appendQueryParams(requestUrl);
+        let requestHttp = this.getServiceRequest(requestUrl);
         let resultFactory = this.resultFactory.bind(this);
         return new Promise(function(resolve, reject) {
             requestHttp.get(requestUrl).pipe(take(1)).subscribe(
@@ -253,10 +255,10 @@ export class TotvsGpsServices<T> {
      * @param url URL do endpoint (caso não informado, será utilizada a URL atribuida como padrão da instância)
      */
     public post(data: any, url?: string): Promise<T> {
-        let requestHttp = this._http;
         let requestUrl = (url || this._url);
         requestUrl = this.appendPathParams(requestUrl);
         requestUrl = this.appendQueryParams(requestUrl);
+        let requestHttp = this.getServiceRequest(requestUrl);
         let resultFactory = this.resultFactory.bind(this);
         return new Promise(function(resolve, reject) {
             requestHttp.post(requestUrl, data).pipe(take(1)).subscribe(
@@ -274,10 +276,10 @@ export class TotvsGpsServices<T> {
      * @param url URL do endpoint (caso não informado, será utilizada a URL atribuida como padrão da instância)
      */
     public put(data: any, url?: string): Promise<T> {
-        let requestHttp = this._http;
         let requestUrl = (url || this._url);
         requestUrl = this.appendPathParams(requestUrl);
         requestUrl = this.appendQueryParams(requestUrl);
+        let requestHttp = this.getServiceRequest(requestUrl);
         let resultFactory = this.resultFactory.bind(this);
         return new Promise(function(resolve, reject) {
             requestHttp.put(requestUrl, data).pipe(take(1)).subscribe(
@@ -294,10 +296,10 @@ export class TotvsGpsServices<T> {
      * @param url URL do endpoint (caso não informado, será utilizada a URL atribuida como padrão da instância)
      */
     public delete(url?: string): Promise<T> {
-        let requestHttp = this._http;
         let requestUrl = (url || this._url);
         requestUrl = this.appendPathParams(requestUrl);
         requestUrl = this.appendQueryParams(requestUrl);
+        let requestHttp = this.getServiceRequest(requestUrl);
         let resultFactory = this.resultFactory.bind(this);
         return new Promise(function(resolve, reject) {
             requestHttp.delete(requestUrl).pipe(take(1)).subscribe(
@@ -317,16 +319,7 @@ export class TotvsGpsServices<T> {
         if (params) {
             return newUrl.replace(/{{([\w\d\-]+)}}/gi, function(subs, args: string) { 
                 let value = params[args.trim()];
-                
-                if (value instanceof Boolean || typeof(value) === "boolean")
-                    return value.toString();
-              
-                if (value) {
-                    if (value instanceof Date)
-                        return (<Date>value).toISOString();
-                    return encodeURIComponent(value);
-                }
-                return '';
+                return encodeURLParam(value);
             });
         }
         return newUrl;
@@ -336,7 +329,7 @@ export class TotvsGpsServices<T> {
         let newUrl = url;
         let params = [];
         if (this._queryParams)
-            Object.keys(this._queryParams).filter(key => ((this._queryParams[key] !== undefined)&&(this._queryParams[key] !== null))).forEach(key => params.push(key + '=' + this.encodeQueryParam(this._queryParams[key])));
+            Object.keys(this._queryParams).filter(key => !isNullOrUndefined(this._queryParams[key])).forEach(key => params.push(key + '=' + encodeURLParam(this._queryParams[key])));
         if (this._page)
             params.push('page=' + this._page.toString());
         if (this._pageSize)
@@ -363,26 +356,14 @@ export class TotvsGpsServices<T> {
     //#endregion
 
     //#region métodos internos para conversão de dados
-    private encodeQueryParam(data: any): string {
-        if ((data != undefined)&&(data != null)) {
-            if (data instanceof Date)
-                return [data.getFullYear(),data.getMonth()+1,data.getDate()].join('-');
-            return encodeURIComponent(data);
-        }
-        return '';
-    }
-
     private resultFactory(data: any, ttalk?: boolean): T | T[] | TTalkCollection<T> {
         if (!data)
             return null;
         if (this.isCollection(data)) {
             let newItems: T[] = data.items.map(item => {return this.itemFactory(item)});
             if (ttalk === true) {
-                let result: TTalkCollection<T> = {
-                    items: newItems,
-                    hasNext: data.hasNext
-                };
-                return result;
+                let result: TTalkCollection<T> = { items: null, hasNext: false };
+                return Object.assign(result, data, {items: newItems});
             }
             return newItems;
         }
@@ -404,6 +385,15 @@ export class TotvsGpsServices<T> {
 
     private isCollection(arg: Object): arg is TTalkCollection<T> {
         return (arg as TTalkCollection<T>).items !== undefined;
+    }
+    //#endregion
+
+    //#region métodos internos para requisições de mock
+    private getServiceRequest(url:string): IServiceRequest {
+        let req = GPS_SERVICES.getMockRequest(url);
+        if (!isNullOrUndefined(req))
+            return req;
+        return this._http;
     }
     //#endregion
 

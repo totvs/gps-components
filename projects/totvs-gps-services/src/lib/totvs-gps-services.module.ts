@@ -1,18 +1,17 @@
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { TotvsGpsServicesService } from './totvs-gps-services.service';
+import { TotvsGpsDataService } from './totvs-gps-services.service';
 import { TotvsGpsInterceptorService } from './totvs-gps-interceptor.service';
 
-export let GPS_SERVICES: TotvsGpsServicesService;
+export let GPS_SERVICES: TotvsGpsDataService;
 
 @NgModule({
   declarations: [],
   imports: [
     HttpClientModule
   ],
-  exports: [],
   providers: [
-    TotvsGpsServicesService,
+    TotvsGpsDataService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TotvsGpsInterceptorService,
@@ -22,11 +21,11 @@ export let GPS_SERVICES: TotvsGpsServicesService;
 })
 export class TotvsGpsServicesModule { 
 
-  constructor(private gpsServices: TotvsGpsServicesService) {
+  constructor(private gpsServices: TotvsGpsDataService) {
     GPS_SERVICES = this.gpsServices;
   }
 
-  get GpsServices(): TotvsGpsServicesService {
+  get GpsServices(): TotvsGpsDataService {
     return GPS_SERVICES;
   }
 
