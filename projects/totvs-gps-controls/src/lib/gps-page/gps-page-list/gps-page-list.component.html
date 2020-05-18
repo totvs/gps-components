@@ -10,10 +10,10 @@
         [p-text]="loadingStatus.message"
         [hidden]="!loadingStatus.active">
     </po-loading-overlay>
-    <form #mainForm="ngForm">
+    <form #mainForm>
         <ng-content></ng-content>
     </form>
-    <form #advancedSearchForm="ngForm" (keypress)="advancedSearchKeyPress($event)">
+    <form #advancedSearchForm (keypress)="advancedSearchKeyPress($event)">
         <ng-container *ngTemplateOutlet="advancedSearchTemplate"></ng-container>
     </form>
 </po-page-list>

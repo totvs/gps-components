@@ -1,4 +1,4 @@
-import { Component, Input, ViewContainerRef, Output, EventEmitter, OnInit } from "@angular/core";
+import { Component, Input, Output, EventEmitter, OnInit } from "@angular/core";
 import { GpsPageBaseComponent } from "../gps-page-base.component";
 import { ILoadingData } from "../gps-page.internal-model";
 
@@ -17,23 +17,8 @@ export class GpsPageDetailComponent extends GpsPageBaseComponent implements OnIn
     //#endregion
 
     //#region startup
-    constructor(
-        private _viewContainerRef: ViewContainerRef
-    ) {
-        super();
-        this._parentContext = this._viewContainerRef['_view']['component'];
-    }
-
     ngOnInit() {
         this.setupActions();
-    }
-
-    private _parentContext: ViewContainerRef;
-    protected get parentContext(): ViewContainerRef {
-        return this._parentContext;
-    }
-    protected set parentContext(value) {
-        this._parentContext = value;
     }
     //#endregion
 

@@ -1,6 +1,6 @@
 import { Component, Input, ViewChild, PipeTransform, ChangeDetectorRef } from "@angular/core";
 import { isNullOrUndefined, isBoolean } from "util";
-import { PoModalComponent, PoModalAction } from "@portinari/portinari-ui";
+import { PoModalComponent, PoModalAction } from "@po-ui/ng-components";
 import { IOrderListItem } from "../totvs-gps-controls.model";
 import { GpsOrderListComponent } from "../gps-order-list/gps-order-list.component";
 

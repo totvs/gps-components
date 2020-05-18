@@ -1,5 +1,5 @@
-import { Component, Input, ViewContainerRef, ChangeDetectorRef, ViewChild, ContentChild, Output, EventEmitter } from "@angular/core";
-import { PoPageFilter, PoDisclaimer, PoDisclaimerGroup, PoModalComponent, PoModalAction } from "@portinari/portinari-ui";
+import { Component, Input, ChangeDetectorRef, ViewChild, ContentChild, Output, EventEmitter } from "@angular/core";
+import { PoPageFilter, PoDisclaimer, PoDisclaimerGroup, PoModalComponent, PoModalAction } from "@po-ui/ng-components";
 import { isNullOrUndefined } from "util";
 import { GpsPageBaseComponent } from "../gps-page-base.component";
 import { TotvsGpsDateUtils } from "totvs-gps-utils";
@@ -21,9 +21,6 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
     @Input('p-disclaimer-group') parameterDisclaimerGroup;
     @Input('p-literals') parameterLiterals;
     @Input('p-actions') parameterActions;
-    @Input('p-filter')
-        get parameterFilter(): PoPageFilter { return this._parameterFilter }
-        set parameterFilter(value) { this._parameterFilter = value; this.updateFilterAction() };
     //#endregion
 
     //#region specific properties
@@ -42,20 +39,11 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
 
     //#region startup
     constructor(
-        private _viewContainerRef: ViewContainerRef,
         private _changeDetectorRef: ChangeDetectorRef
     ) {
         super();
-        this._parentContext = this._viewContainerRef['_view']['component'];
     }
 
-    private _parentContext: ViewContainerRef;
-    protected get parentContext(): ViewContainerRef {
-        return this._parentContext;
-    }
-    protected set parentContext(value) {
-        this._parentContext = value;
-    }
     //#endregion
 
     //#region loading
@@ -77,54 +65,20 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
     }
     set filterModel(value) {
         this._filterModel = value;
-        if (!isNullOrUndefined(this._parameterFilter) && !isNullOrUndefined(this._parameterFilter.ngModel) && (this._parameterFilter.ngModel != ''))
-            this.parentContext[this._parameterFilter.ngModel] = value;
     }
     //#endregion
 
     //#region filter parameter
-    private _parameterFilter: PoPageFilter;
     private _internalFilter: PoPageFilter;
     get internalFilter() {
         return this._internalFilter;
     }
 
     private updateFilterAction() {
-        if (!isNullOrUndefined(this._parameterFilter))
-            this.setPortinariFilter();
-        else if (this.onSearch.observers.length > 0)
+        if (this.onSearch.observers.length > 0)
             this.setGpsFilter();
         else 
             this._internalFilter = null;
-    }
-
-    private setPortinariFilter() {
-        this._internalFilter = {
-            advancedAction: this._parameterFilter.advancedAction,
-            ngModel: 'filterModel',
-            placeholder: this._parameterFilter.placeholder
-        }
-        if (this._parameterFilter.action instanceof Function) {
-            let _f: Function = this._parameterFilter.action;
-            this._internalFilter.action = () => {
-                _f();
-            };
-        }
-        else {
-            this._internalFilter.action = this._parameterFilter.action;
-            this[this._internalFilter.action] = this.parentContext[this._internalFilter.action];
-        }
-        if (this._parameterFilter.advancedAction instanceof Function) {
-            let _f: Function = this._parameterFilter.advancedAction;
-            this._internalFilter.advancedAction = () => {
-                _f();
-            };
-        }
-        else {
-            this._internalFilter.advancedAction = this._parameterFilter.advancedAction;
-            this[this._internalFilter.advancedAction] = this.parentContext[this._internalFilter.advancedAction];
-        }
-        this._changeDetectorRef.detectChanges();
     }
 
     private setGpsFilter() {

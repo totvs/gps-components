@@ -1,6 +1,6 @@
 import { Component, Input, Output, ViewChild, EventEmitter } from "@angular/core";
 import { isNullOrUndefined } from "util";
-import { PoModalComponent, PoNotificationService, PoModalAction, PoTableColumn } from "@portinari/portinari-ui";
+import { PoModalComponent, PoNotificationService, PoModalAction, PoTableColumn } from "@po-ui/ng-components";
 import { TotvsGpsCacheService } from "totvs-gps-services";
 import { TotvsMaskString } from "totvs-gps-utils";
 import { KinshipDegreeService, KinshipDegree } from "totvs-gps-api";

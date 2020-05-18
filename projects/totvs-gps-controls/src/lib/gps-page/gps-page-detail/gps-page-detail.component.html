@@ -7,7 +7,7 @@
         [p-text]="loadingStatus.message"
         [hidden]="!loadingStatus.active">
     </po-loading-overlay>
-    <form #mainForm="ngForm">
+    <form #mainForm>
         <ng-content></ng-content>
     </form>
 </po-page-detail>

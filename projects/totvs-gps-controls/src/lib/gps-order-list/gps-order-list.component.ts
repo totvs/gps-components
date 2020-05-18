@@ -1,5 +1,5 @@
 import { Component, OnChanges, Input, Output, EventEmitter, ChangeDetectorRef } from "@angular/core";
-import { PoTableColumn } from "@portinari/portinari-ui";
+import { PoTableColumn } from "@po-ui/ng-components";
 import { isNullOrUndefined, isBoolean } from "util";
 import { IOrderListItem } from "../totvs-gps-controls.model";
 

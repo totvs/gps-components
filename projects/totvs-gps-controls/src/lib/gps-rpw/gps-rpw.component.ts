@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { GpsRpwService } from './gps-rpw.service';
 import { TotvsGpsRpw } from "../totvs-gps-controls.model"
-import { PoComboOption } from '@portinari/portinari-ui';
+import { PoComboOption } from '@po-ui/ng-components';
 
 @Component({
   selector: 'gps-rpw',
