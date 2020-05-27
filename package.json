@@ -11,7 +11,8 @@
     "build_services": "ng build totvs-gps-services && cd dist/totvs-gps-services && npm pack",
     "build_controls": "ng build totvs-gps-controls && cd dist/totvs-gps-controls && npm pack",
     "build_utils": "ng build totvs-gps-utils && cd dist/totvs-gps-utils && npm pack",
-    "build_zoom": "ng build totvs-gps-zoom && cd dist/totvs-gps-zoom && npm pack"
+    "build_zoom": "ng build totvs-gps-zoom && cd dist/totvs-gps-zoom && npm pack",
+    "build_crud": "ng build totvs-gps-crud && cd dist/totvs-gps-crud && npm pack"
   },
   "private": true,
   "dependencies": {
