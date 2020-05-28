@@ -51,8 +51,22 @@ Angular 9 compatibility
 - TotvsGpsJsonUtils to manipulate JSON objects
 - TotvsStringUtils
 - TotvsMaskString
+- GpsMaintenanceUrl to manipulate and generate url's used on CRUD
 
 ### Build
 - Change the version number in projects/totvs-gps-utils/package.json.
 - Run `npm run build_utils` to build the project. The build artifacts will be stored in the `dist/totvs-gps-utils` directory.
 - Run `npm publish ./dist/totvs-gps-utils/totvs-gps-utils-X.Y.Z.tgz` to publish the pachage.
+
+## TotvsGpsCRUD
+
+### Features
+- GPSPageFilter - controller for page filter (size,page,disclairmer) and other properties sended on GET request e.g. fiels, expands, query
+- GPSPageNavigation - Controller used to navigate through page routes
+- GpsCRUDListModel - Model used on CRUD list page
+- GpsCRUDMaintenancePage - Controller that is responsible to store active route and to instanciate object on CRUD Edit\Detail Pages.
+
+### Build
+- Change the version number in projects/totvs-gps-crud/package.json.
+- Run `npm run build_crud` to build the project. The build artifacts will be stored in the `dist/totvs-gps-crud` directory.
+- Run `npm publish ./dist/totvs-gps-crud/totvs-gps-crud-X.Y.Z.tgz` to publish the pachage.
