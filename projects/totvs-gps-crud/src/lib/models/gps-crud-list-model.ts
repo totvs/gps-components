@@ -1,4 +1,4 @@
-import {PoPageAction, PoTableColumn} from '@portinari/portinari-ui';
+import {PoPageAction, PoTableColumn} from '@po-ui/ng-components';
 
 export class GpsCRUDListModel<T>{
 
@@ -12,6 +12,4 @@ export class GpsCRUDListModel<T>{
     { label: 'Adicionar', url: '/new' }
   ];
 
-  constructor(){
-  }
 }

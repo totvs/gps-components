@@ -1,12 +1,11 @@
 {
   "name": "totvs-gps-crud",
-  "version": "0.0.1",
+  "version": "3.1.0",
   "peerDependencies": {
-    "@angular/common": "~8.0.0",
-    "@angular/core": "~8.0.0",
-    "@portinari/portinari-ui": "^1.22.0",
-    "@totvs/portinari-theme": "^1.22.0",
-    "totvs-gps-utils": "../library/totvs-gps-utils-2.1.0.tgz",
-    "totvs-gps-controls": "2.2.0"
+    "@angular/common": "~9.1.0",
+    "@angular/core": "~9.1.0",
+    "@po-ui/ng-components": "^2.0.0",
+    "totvs-gps-utils": "^3.1.0",
+    "totvs-gps-controls": "^3.1.0"
   }
 }

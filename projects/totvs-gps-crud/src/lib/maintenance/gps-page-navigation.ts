@@ -1,7 +1,7 @@
 import { Router } from '@angular/router';
-import { GPSMaintenanceUrl } from 'totvs-gps-utils';
+import { GpsMaintenanceUrl } from 'totvs-gps-utils';
 
-export class GPSPageNavigation{
+export class GpsPageNavigation {
 
     private route:string;
     private router:Router;
@@ -35,11 +35,11 @@ export class GPSPageNavigation{
     }
 
     public detailRegisterPage(crudObject){
-        this.navigate(GPSMaintenanceUrl.getNavigationUrl(crudObject,'/'));
+        this.navigate(GpsMaintenanceUrl.getNavigationUrl(crudObject,'/'));
     }
 
     public editRegisterPage(crudObject){
-        this.navigate(GPSMaintenanceUrl.getNavigationUrl(crudObject,'/edit'));
+        this.navigate(GpsMaintenanceUrl.getNavigationUrl(crudObject,'/edit'));
     }
 
     public navigate(route:string){

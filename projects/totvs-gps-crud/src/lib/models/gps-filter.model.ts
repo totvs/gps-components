@@ -1,14 +1,15 @@
 import { isNullOrUndefined } from "util";
+import { IDisclaimerConfig } from "totvs-gps-controls";
 
-export class GPSPageFilter<T>{
+export class GpsPageFilter<T>{
 
-    private _listHasNext:Boolean = false;
+    private _listHasNext:boolean = false;
     private _listPage:number = 1;
     public listSize:number;
     public filter = this.createAdvancedFilterInstance();
     public fields:Array<string>;
     public expand:Array<string>
-    public disclaimerConfig:any[] = [];
+    public disclaimerConfig:IDisclaimerConfig[] = [];
 
     get listPage():number{
         return this._listPage;

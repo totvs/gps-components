@@ -1,6 +1,6 @@
 import { isNullOrUndefined } from 'util';
 
-export class GPSMaintenanceUrl{
+export class GpsMaintenanceUrl {
 
     private static prepareUrl(url:string){
         let _url:string = '';

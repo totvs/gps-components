@@ -4,8 +4,8 @@ export class GpsCRUDMaintenancePage<T>{
 
   constructor(
     public readonly activatedRoute: ActivatedRoute,
-    public readonly crudObjectType: (new () => T)) {
-  }
+    public readonly crudObjectType: (new () => T)
+  ) { }
 
   public getObjectFromRouteParams():Promise<T>{
     return new Promise(resolve => {
