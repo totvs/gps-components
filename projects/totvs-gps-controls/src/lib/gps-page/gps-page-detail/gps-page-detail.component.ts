@@ -1,6 +1,7 @@
-import { Component, Input, Output, EventEmitter, OnInit } from "@angular/core";
+import { Component, Input, Output, EventEmitter, OnInit, ViewChild } from "@angular/core";
 import { GpsPageBaseComponent } from "../gps-page-base.component";
 import { ILoadingData } from "../gps-page.internal-model";
+import { PoPageDetailComponent } from "@po-ui/ng-components";
 
 @Component({
     selector: 'gps-page-detail',
@@ -9,6 +10,7 @@ import { ILoadingData } from "../gps-page.internal-model";
 export class GpsPageDetailComponent extends GpsPageBaseComponent implements OnInit {
 
     //#region Portinari properties
+    @ViewChild(PoPageDetailComponent, {static:true}) poPageDetailComponent: PoPageDetailComponent;
     @Input('p-breadcrumb') parameterBreadcrumb;
     @Input('p-literals') parameterLiterals;
     @Output('p-back') parameterOnBack? = new EventEmitter();
@@ -35,29 +37,10 @@ export class GpsPageDetailComponent extends GpsPageBaseComponent implements OnIn
     //#endregion
 
     //#region Page Actions
-    private _back(event) {
-        this.parameterOnBack.emit(event);
-    }
-    private _edit(event) {
-        this.parameterOnEdit.emit(event);
-    }
-    private _remove(event) {
-        this.parameterOnRemove.emit(event);
-    }
-
     private setupActions() {
-        if (this.parameterOnBack.observers.length > 0)
-            this['back'] = this._back.bind(this);
-        else
-            delete this['back'];
-        if (this.parameterOnEdit.observers.length > 0)
-            this['edit'] = this._edit.bind(this);
-        else
-            delete this['edit'];
-        if (this.parameterOnRemove.observers.length > 0)
-            this['remove'] = this._remove.bind(this);
-        else
-            delete this['remove'];
+        this.poPageDetailComponent.back = this.parameterOnBack;
+        this.poPageDetailComponent.edit = this.parameterOnEdit;
+        this.poPageDetailComponent.remove = this.parameterOnRemove;
     }
     //#endregion
 
