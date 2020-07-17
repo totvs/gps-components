@@ -99,6 +99,7 @@ export class GenericZoom implements IZoomService {
   public FIELD_LABEL: string = '';
   public FIELD_VALUE: string = '';
   private selectedObject: any;
+  public allowZeroSearchValue:boolean = false; 
   private service: GenericZoomService<GenericZoomEntity>;
   private objectPosition: number = 0;
 
@@ -207,6 +208,10 @@ export class GenericZoom implements IZoomService {
     let result;
     let genericZoomOption: GenericZoomOption = new GenericZoomOption();
 
+    if(!this.isSearchValueValid(value)){
+        return Observable.create(new GenericZoomEntity());
+    }
+
     genericZoomOption.filterParams = filterParams;
     if(isNullOrUndefined(genericZoomOption.filterParams)){
       this.copyObjectValues(this.genericZoomEntity,temporaryObject);
@@ -302,5 +307,16 @@ export class GenericZoom implements IZoomService {
     Object.keys(source).forEach(key => {
       target[key] = source[key];
     });
+  }
+
+  public isSearchValueValid(value):Boolean{
+    
+    if(isNullOrUndefined(value) || value == "")
+        return false;
+        
+    if(!this.allowZeroSearchValue && !isNaN(Number(value)) && Number(value) == 0)
+        return false;
+
+    return true;
   }
 }
