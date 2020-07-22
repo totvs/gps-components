@@ -1,0 +1,9 @@
+.float-button {
+    position: fixed; 
+    right: 8px;
+    bottom: 8px;
+    width: 32px;
+    height: 32px;
+    opacity: .5;
+    cursor: pointer;
+}

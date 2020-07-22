@@ -1,0 +1,22 @@
+<ng-container *ngIf="canActivate">
+    <po-modal
+        #modal
+        p-title="Obter dados de preenchimento"
+        [p-primary-action]="primaryAction"
+        [p-secondary-action]="secondaryAction">
+        <po-table 
+            #table
+            class="po-md-12"
+            [p-columns]="columns"
+            [p-items]="model"
+            p-single-select
+            p-selectable>
+        </po-table>
+    </po-modal>
+
+    <div class="float-button">
+        <img 
+            src="data:image/png;base64,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" 
+            width="32" height="32" (click)="onClick()"/>
+    </div>
+</ng-container>

@@ -70,3 +70,12 @@ export class TotvsGpsRpw {
     }
 
 }
+
+/**
+ * Mock model, usado no gps-mock-fill
+ */
+export interface IModelFillData {
+    description: string,
+    model: any,
+    url: string
+}
