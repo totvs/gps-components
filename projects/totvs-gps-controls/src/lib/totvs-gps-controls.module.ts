@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { PoModule } from '@po-ui/ng-components';
 import { GpsOrderListComponent } from './gps-order-list/gps-order-list.component';
 import { GpsExportDataComponent } from './gps-export-data/gps-export-data.component';
+import { GpsModelFillComponent } from './gps-model-fill/gps-model-fill.component';
 import { GpsRpwComponent } from './gps-rpw/gps-rpw.component';
 import { TotvsGpsServicesModule } from 'totvs-gps-services';
 import { GpsAdvancedSearchDirective } from './gps-page/directives/gps-advanced-search.directive';
@@ -16,6 +17,7 @@ import { BooleanPipe } from './pipes/boolean.pipe';
 const components = [
   GpsOrderListComponent,
   GpsExportDataComponent,
+  GpsModelFillComponent,
   GpsRpwComponent,
   GpsPageListComponent,
   GpsPageDetailComponent,
