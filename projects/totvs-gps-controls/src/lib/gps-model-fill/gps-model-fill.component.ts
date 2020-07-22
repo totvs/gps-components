@@ -5,7 +5,8 @@ import { IModelFillData } from '../totvs-gps-controls.model';
 
 @Component({
   selector: 'gps-model-fill',
-  templateUrl: './gps-model-fill.component.html'
+  templateUrl: './gps-model-fill.component.html',
+  styleUrls: ['./gps-model-fill.component.css']
 })
 export class GpsModelFillComponent implements AfterViewInit {
 
