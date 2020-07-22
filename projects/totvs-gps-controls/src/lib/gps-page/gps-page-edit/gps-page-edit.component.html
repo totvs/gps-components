@@ -11,6 +11,7 @@
         [p-text]="loadingStatus.message"
         [hidden]="!loadingStatus.active">
     </po-loading-overlay>
+    <gps-model-fill [model]="parameterModelFill"></gps-model-fill>
     <form #mainForm="ngForm">
         <ng-content></ng-content>
     </form>

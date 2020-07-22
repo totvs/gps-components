@@ -6,6 +6,8 @@ export * from './lib/gps-export-data/gps-export-data.component';
 
 export * from './lib/gps-order-list/gps-order-list.component';
 
+export * from './lib/gps-model-fill/gps-model-fill.component';
+
 export * from './lib/gps-rpw/gps-rpw.component';
 
 export * from './lib/gps-page/directives/gps-advanced-search.directive';

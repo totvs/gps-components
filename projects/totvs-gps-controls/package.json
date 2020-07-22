@@ -1,6 +1,6 @@
 {
   "name": "totvs-gps-controls",
-  "version": "2.3.0",
+  "version": "2.4.1",
   "peerDependencies": {
     "@angular/common": "~8.0.0",
     "@angular/core": "~8.0.0",

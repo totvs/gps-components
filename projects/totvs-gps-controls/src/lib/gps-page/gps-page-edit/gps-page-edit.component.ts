@@ -1,6 +1,7 @@
 import { Component, Input, ViewContainerRef, Output, EventEmitter, OnInit } from "@angular/core";
 import { GpsPageBaseComponent } from "../gps-page-base.component";
 import { ILoadingData } from "../gps-page.internal-model";
+import { IModelFillData } from "../../totvs-gps-controls.model";
 
 @Component({
     selector: 'gps-page-edit',
@@ -15,6 +16,10 @@ export class GpsPageEditComponent extends GpsPageBaseComponent implements OnInit
     @Output('p-cancel') parameterOnCancel? = new EventEmitter();
     @Output('p-save') parameterOnSave? = new EventEmitter();
     @Output('p-save-new') parameterOnSaveNew? = new EventEmitter();
+    //#endregion
+
+    //#region Custom properties
+    @Input('model-fill') parameterModelFill: Array<IModelFillData>;
     //#endregion
 
     //#region startup
