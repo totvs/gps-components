@@ -13,6 +13,7 @@
         <ng-content></ng-content>
         <ng-container *ngIf="hasCustomFields">
             <po-dynamic-form
+                class="po-sm-12 po-md-12 po-lg-6 po-xl-6 po-offset-lg-3 po-offset-xl-3 po-p-0"
                 p-group-form    
                 [p-fields]="customFields.fields"
                 [p-value]="customFields.values">

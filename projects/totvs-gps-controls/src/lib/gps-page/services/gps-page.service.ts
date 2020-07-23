@@ -7,7 +7,7 @@ export class GpsPageService {
 
     private readonly _urlCustom = 'hgp/v1/custom';
     private readonly _urlCustomGetFields = this._urlCustom + '/{{program}}/{{context}}';
-    private readonly _urlCustomGetValues = this._urlCustom + '/save/{{program}}/{{context}}';
+    private readonly _urlCustomGetValues = this._urlCustom + '/{{program}}/{{context}}';
     private readonly _urlCustomBeforeSave = this._urlCustom + '/before/{{program}}/{{context}}';
     private readonly _urlCustomSaveFields = this._urlCustom + '/save/{{program}}/{{context}}';
     
@@ -35,25 +35,25 @@ export class GpsPageService {
             .get();
     }
 
-    getCustomFieldValues(program:string,data:any): Promise<any[]> {
+    getCustomFieldValues(program:string,key:any): Promise<any[]> {
         return TotvsGpsServices
             .getInstance<any[]>(Object, this._urlCustomGetValues)
             .setPathParams(this.parseProgramName(program))
-            .post(data);
+            .post({ key: key });
     }
 
-    beforeSaveCustomFields(program:string,data:any): Promise<any> {
+    beforeSaveCustomFields(program:string,key:any,values:any): Promise<any> {
         return TotvsGpsServices
             .getInstance<any>(Object, this._urlCustomBeforeSave)
             .setPathParams(this.parseProgramName(program))
-            .post(data);
+            .post({ key: key, values: values });
     }
 
-    saveCustomFields(program:string,data:any): Promise<any> {
+    saveCustomFields(program:string,key:any,values:any): Promise<any> {
         return TotvsGpsServices
             .getInstance<any>(Object, this._urlCustomSaveFields)
             .setPathParams(this.parseProgramName(program))
-            .post(data);
+            .post({ key: key, values: values });
     }
 
 }

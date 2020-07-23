@@ -140,50 +140,66 @@ export class GpsPageEditComponent extends GpsPageBaseComponent implements OnInit
         this.customSaveEvent.subscribe(() => {
             let validate: Promise<any>;
             if (this.hasCustomFields) {
-                let data = { key: this.service.convertParamMap(this.activatedRoute.snapshot.paramMap), values: this.customFields.values };
-                validate = this.service.beforeSaveCustomFields(this._program, data);
+                this.showLoading('Validando dados...');
+                validate = this.service.beforeSaveCustomFields(this._program, this.service.convertParamMap(this.activatedRoute.snapshot.paramMap), this.customFields.values);
             }
             else {
                 validate = Promise.resolve();
             }
             validate.then(() => {
+                this.showLoading('Salvando dados...');
                 let result = this._actionSave();
                 if (result instanceof Promise) {
                     result
                         .then(value => { 
-                            this.saveCustomFields().then(() => { this.onSave.emit(value) });
+                            this.saveCustomFields()
+                                .then(() => { this.onSave.emit(value) })
+                                .finally(() => this.hideLoading());
                         })
-                        .catch(error => { this.onSaveError.emit(error) });
+                        .catch(error => { 
+                            this.hideLoading();
+                            this.onSaveError.emit(error) 
+                        });
                 }
                 else {
+                    this.hideLoading();
                     this.onSave.emit(result);
                 }
-            });
+            })
+            .catch(() => this.hideLoading());
         });
 
         this.customSaveNewEvent = new EventEmitter();
         this.customSaveNewEvent.subscribe(() => {
             let validate: Promise<any>;
             if (this.hasCustomFields) {
-                let data = { key: this.service.convertParamMap(this.activatedRoute.snapshot.paramMap), values: this.customFields.values };
-                validate = this.service.beforeSaveCustomFields(this._program, data);
+                this.showLoading('Validando dados...');
+                validate = this.service.beforeSaveCustomFields(this._program, this.service.convertParamMap(this.activatedRoute.snapshot.paramMap), this.customFields.values);
             }
             else {
                 validate = Promise.resolve();
             }
             validate.then(() => {
+                this.showLoading('Salvando dados...');
                 let result = this._actionSaveNew();
                 if (result instanceof Promise) {
                     result
                         .then(value => { 
-                            this.saveCustomFields().then(() => { this.onSaveNew.emit(value) });
+                            this.saveCustomFields()
+                                .then(() => { this.onSaveNew.emit(value) })
+                                .finally(() => this.hideLoading());
                         })
-                        .catch(error => { this.onSaveNewError.emit(error) });
+                        .catch(error => { 
+                            this.hideLoading();
+                            this.onSaveNewError.emit(error) 
+                        });
                 }
                 else {
+                    this.hideLoading();
                     this.onSaveNew.emit(result);
                 }
-            });
+            })
+            .catch(() => this.hideLoading());
         });
 
         this.customCancelEvent = new EventEmitter();
@@ -202,7 +218,6 @@ export class GpsPageEditComponent extends GpsPageBaseComponent implements OnInit
 
     private loadCustomFields() {
         this.hasCustomFields = false;
-        /* TODO
         this.service.getCustomFields(this._program).then(values => {
             if (values?.length > 0) {
                 this.customFields = { fields: values  };
@@ -210,21 +225,19 @@ export class GpsPageEditComponent extends GpsPageBaseComponent implements OnInit
                 this.loadCustomValues();
             }
         });
-        */
     }
 
     private loadCustomValues() {
-        // this.service.getCustomFieldValues(this._program,  this.service.convertParamMap(this.activatedRoute.snapshot.paramMap)).then(values => {
-        //     this.customFields.values = {};
-        //     values.forEach(value => this.customFields.values[value.property] = value.value);
-        // });
+        this.service.getCustomFieldValues(this._program,  this.service.convertParamMap(this.activatedRoute.snapshot.paramMap)).then(values => {
+            this.customFields.values = {};
+            values.forEach(value => this.customFields.values[value.property] = value.value);
+        });
     }
 
     private saveCustomFields() {
-        // if (this.hasCustomFields) {
-        //     let data = { key: this.service.convertParamMap(this.activatedRoute.snapshot.paramMap), values: this.customFields.values };
-        //     return this.service.saveCustomFields(this._program, data);
-        // }
+        if (this.hasCustomFields) {
+            return this.service.saveCustomFields(this._program, this.service.convertParamMap(this.activatedRoute.snapshot.paramMap), this.customFields.values);
+        }
         return Promise.resolve();
     }
     //#endregion
