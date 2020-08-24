@@ -26,6 +26,7 @@
     "@angular/router": "^10.0.3",
     "@po-ui/ng-components": "3.2.0",
     "rxjs": "~6.5.5",
+    "totvs-gps-services": "^4.0.0",
     "totvs-gps-utils": "^4.0.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.3"
