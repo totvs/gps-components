@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit, ViewChild } from "@angular/core";
 import { GpsPageBaseComponent } from "../gps-page-base.component";
-import { ILoadingData } from "../gps-page.internal-model";
+import { ILoadingData, ICustomFields } from "../gps-page.internal-model";
 import { PoPageDetailComponent } from "@po-ui/ng-components";
 
 @Component({
@@ -43,5 +43,9 @@ export class GpsPageDetailComponent extends GpsPageBaseComponent implements OnIn
         this.poPageDetailComponent.remove = this.parameterOnRemove;
     }
     //#endregion
-
+    //#region Custom fields
+    hasCustomFields = false;
+    customFields: ICustomFields;
+    //#endregion
+    
 }

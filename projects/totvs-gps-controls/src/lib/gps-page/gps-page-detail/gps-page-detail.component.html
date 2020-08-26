@@ -9,5 +9,11 @@
     </po-loading-overlay>
     <form #mainForm>
         <ng-content></ng-content>
+        <ng-container *ngIf="hasCustomFields">
+            <po-dynamic-view
+                [p-fields]="customFields.fields"
+                [p-value]="customFields.values">
+            </po-dynamic-view>
+        </ng-container>
     </form>
 </po-page-detail>
