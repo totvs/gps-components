@@ -11,14 +11,6 @@ export interface ICRUDService<T> {
 }
 
 /**
- * Dados enviados pela tela para o backend
- */
-export interface ICRUDCustomData {
-    key: any;
-    data: any;
-}
-
-/**
  * Tipo para metodo de validação de dados ao salvar registro
  */
 export type ValidateAction = () => boolean | Promise<boolean>;

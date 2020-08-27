@@ -30,7 +30,7 @@
     "totvs-gps-api-v2": "file:./library/totvs-gps-api-v2-0.0.4.tgz",
     "totvs-gps-controls": "4.0.0",
     "totvs-gps-services": "4.0.0",
-    "totvs-gps-utils": "4.0.0",
+    "totvs-gps-utils": "4.0.1",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.3"
   },

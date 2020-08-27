@@ -1,15 +1,12 @@
 import { Injectable } from '@angular/core';
 import { ParamMap } from '@angular/router';
 import { TotvsGpsServices } from 'totvs-gps-services';
+import { ICustomFields } from '../gps-page/gps-page.internal-model';
 
 @Injectable()
 export class GpsCRUDCustomService {
 
-    // private readonly _urlCustom = 'hgp/v1/custom';
-    // private readonly _urlCustomGetFields = this._urlCustom + '/{{program}}/{{context}}';
-    // private readonly _urlCustomGetValues = this._urlCustom + '/save/{{program}}/{{context}}';
-    // private readonly _urlCustomBeforeSave = this._urlCustom + '/before/{{program}}/{{context}}';
-    // private readonly _urlCustomSaveFields = this._urlCustom + '/save/{{program}}/{{context}}';
+    private readonly _urlCustom = 'hgp/v1/customFields/{{program}}/{{context}}';
 
     private parseProgramName(program: string): { program, context } | null {
         let programParams = program.replace('\\', '/').split('/');
@@ -22,46 +19,44 @@ export class GpsCRUDCustomService {
         return;
     }
 
+    private getUrl(keys: any): string {
+        let url = this._urlCustom.split('/');
+        let pathKeys = Object.values(keys);
+        return [...url,...pathKeys].join('/');
+    }
+
     convertParamMap(param: ParamMap): any {
         let result = {};
         param?.keys.forEach(k => { result[k] = param.get(k) });
         return result;
     }
 
-    getFields(program: string): Promise<any[]> {
-        // TODO - aguardando alteracoes fsw
-        // return TotvsGpsServices
-        //     .getInstance<any[]>(Object, this._urlCustomGetFields)
-        //     .setPathParams(this.parseProgramName(program))
-        //     .get();
-        return Promise.resolve([]);
+    getFields(program: string, keys: any): Promise<ICustomFields> {
+        return TotvsGpsServices
+            .getInstance<ICustomFields>(Object, this.getUrl(keys))
+            .setPathParams(this.parseProgramName(program))
+            .get();
     }
 
-    getValues(program: string, data: any): Promise<any[]> {
-        // TODO - aguardando alteracoes fsw
-        // return TotvsGpsServices
-        //     .getInstance<any[]>(Object, this._urlCustomGetValues)
-        //     .setPathParams(this.parseProgramName(program))
-        //     .post(data);
-        return Promise.resolve([]);
+    validate(program: string, keys: any, formValues: any, customValues: any): Promise<any> {
+        return TotvsGpsServices
+            .getInstance<any>(Object, this.getUrl(keys))
+            .setPathParams(this.parseProgramName(program))
+            .put(Object.assign({},customValues,{$data:formValues}));
     }
 
-    validate(program: string, data: any, values: any): Promise<any> {
-        // TODO - aguardando alteracoes fsw
-        // return TotvsGpsServices
-        //     .getInstance<any>(Object, this._urlCustomBeforeSave)
-        //     .setPathParams(this.parseProgramName(program))
-        //     .post(data);
-        return Promise.resolve();
+    save(program: string, keys: any, formValues: any, customValues: any): Promise<any> {
+        return TotvsGpsServices
+            .getInstance<any>(Object, this.getUrl(keys))
+            .setPathParams(this.parseProgramName(program))
+            .post(Object.assign({},customValues,{$data:formValues}));
     }
 
-    save(program: string, data: any, values: any): Promise<any> {
-        // TODO - aguardando alteracoes fsw
-        // return TotvsGpsServices
-        //     .getInstance<any>(Object, this._urlCustomSaveFields)
-        //     .setPathParams(this.parseProgramName(program))
-        //     .post(data);
-        return Promise.resolve();
+    delete(program: string, keys: any): Promise<any> {
+        return TotvsGpsServices
+            .getInstance<any>(Object, this.getUrl(keys))
+            .setPathParams(this.parseProgramName(program))
+            .delete();
     }
 
 }
