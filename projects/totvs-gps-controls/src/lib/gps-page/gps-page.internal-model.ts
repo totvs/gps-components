@@ -7,5 +7,3 @@ export interface ICustomFields {
     fields?:any[];
     values?:any;
 }
-
-export declare type GpsPageAction = () => Promise<any> | any;

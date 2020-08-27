@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output, AfterContentInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Params } from "@angular/router";
 import { PoNotificationService, PoDialogService } from "@po-ui/ng-components";
+import { TotvsStringUtils } from "totvs-gps-utils";
 import { ICRUDService } from "./gps-crud.model";
 import { GpsCRUDNavigation } from "./gps-crud-navigation.service";
 import { GpsCRUDCustomService } from "./gps-crud.service";
@@ -26,7 +27,14 @@ export class GpsCrudDetailComponent extends GpsPageDetailComponent implements Af
 
     @Output('on-data') onData: EventEmitter<any> = new EventEmitter();
 
+    @Input('custom-enable') 
+    get customEnable() { return this._customEnable }
+    set customEnable(value) { this.setCustomEnable(value)  }
+
     messageLiterals: {removeQuestion,removeSuccess};
+    routeParams: Params;
+    private routeChanged = false;
+    private totvsStringUtils: TotvsStringUtils = TotvsStringUtils.getInstance();
 
     //#region Startup
     constructor(
@@ -38,6 +46,7 @@ export class GpsCrudDetailComponent extends GpsPageDetailComponent implements Af
     ) {
         super();
         this.initLiterals();
+        this.subscribeRoute();
     }
 
     ngAfterContentInit() {
@@ -50,35 +59,34 @@ export class GpsCrudDetailComponent extends GpsPageDetailComponent implements Af
             removeSuccess: 'Registro removido com sucesso!'
         };
     }
+
+    private subscribeRoute() {
+        this.activatedRoute.params.subscribe(params => this.initData(params));
+    }
     //#endregion
 
-    private initData() {
-        this.getObjectFromRouteParams()
-            .then(result => {
-                this.initializePage(result);
-            })
-            .catch(() => this.crudNavigation.back());
-    }
-
-    private getObjectFromRouteParams(): Promise<any> {
-        return new Promise(resolve => {
-            this.activatedRoute.params.subscribe(params => {
-                if (Object.keys(params).length == 0) {
-                    resolve(null);
-                }
-                resolve(Object.assign({}, params));
-            });
-        });
+    private initData(params?:Params) {
+        if (params) {
+            this.routeParams = params;
+            this.routeChanged = true;
+            this.initializePage(params);
+        }
+        else {
+            this.crudNavigation.back()
+        }
     }
 
     private initializePage(args:any) {
-        this.showLoading('Carregando...');
-        this._crudService?.get(...Object.values(args))
-            .then(result => {
-                this.hideLoading();
-                this.setData(result);
-            })
-            .catch(() => this.crudNavigation.back());
+        if (this._crudService && this.routeChanged) {
+            this.routeChanged = false;
+            this.showLoading('Carregando...');
+            this._crudService?.get(...Object.values(args))
+                .then(result => {
+                    this.hideLoading();
+                    this.setData(result);
+                })
+                .catch(() => this.crudNavigation.back());
+        }
     }
 
     //#region Service
@@ -86,14 +94,13 @@ export class GpsCrudDetailComponent extends GpsPageDetailComponent implements Af
 
     private setCrudService(value?: ICRUDService<any>) {
         this._crudService = value;
-        if (this._crudService) {
-            this.initData();
-        }
+        this.initializePage(this.routeParams);
     }
     //#endregion
 
     //#region Custom fields
     private _program = ''; // programa/contexto (especifico progress = hgp\custom\programa\contexto.p)
+    private _customEnable: boolean = true;
 
     private setProgram(value?: string) {
         if (value != this._program) {
@@ -102,47 +109,57 @@ export class GpsCrudDetailComponent extends GpsPageDetailComponent implements Af
         }
     }
 
-    private loadCustomFields() {
-        this.hasCustomFields = false;
-        if ((this._program && this._program != '') && (this._crudService)) {
-            this.customService.getFields(this._program).then(values => {
-                if (values?.length > 0) {
-                    this.customFields = { fields: values  };
-                    this.hasCustomFields = true;
-                    this.loadCustomValues(); 
-                }
-            });
+    private setCustomEnable(value:any) {
+        let bValue = this.totvsStringUtils.toBoolean(value);
+        if (bValue != this._customEnable) {
+            this._customEnable = bValue;
+            this.loadCustomFields();
         }
     }
 
-    private loadCustomValues() {
-        if (this.hasCustomFields && this._crudService && !this.customFields.values) {
-            this.customFields.values = {};
-            this.customService.getValues(this._program, this.customService.convertParamMap(this.activatedRoute.snapshot.paramMap)).then(values => {
-                values.forEach(value => this.customFields.values[value.property] = value.value);
+    private loadCustomFields() {
+        this.hasCustomFields = false;
+        if ((this._program && this._program != '') && (this._crudService) && (this.crudData) && (this._customEnable)) {
+            this.customService.getFields(this._program, this.routeParams).then(result => {
+                if (result?.fields?.length > 0) {
+                    this.customFields = { fields: result.fields, values: (result.values || {})  };
+                    this.hasCustomFields = true;
+                }
             });
         }
     }
     //#endregion
 
-    private actionRemove() {
-        this.getObjectFromRouteParams()
+    private removeCustom(): Promise<boolean> {
+        if (!this.hasCustomFields) {
+            return Promise.resolve(true);
+        }
+        else {
+            return this.customService.delete(this._program, this.routeParams)
+                .then(() => true)
+                .catch(() => false);
+        }
+    }
+
+    private remove(): Promise<any> {
+        this.showLoading('Removendo...');
+        return this.crudService.remove(...Object.values(this.routeParams))
             .then(result => {
-                this.dialogService.confirm({
-                    title: 'Remover',
-                    message: this.messageLiterals.removeQuestion,
-                    confirm: () => {
-                        this.showLoading('Removendo...');
-                        this.crudService.remove(...Object.values(result))
-                            .then(result => {
-                                this.notificationService.success(this.messageLiterals.removeSuccess);
-                                this.crudNavigation.back();
-                            })
-                            .finally(() => this.hideLoading());
-                    }
+                this.removeCustom().finally(() => {
+                    this.hideLoading();
+                    this.notificationService.success(this.messageLiterals.removeSuccess);
+                    this.crudNavigation.back();
                 });
             })
-            .catch(() => this.crudNavigation.back());
+            .catch(() => this.hideLoading());
+    }
+
+    private actionRemove() {
+        this.dialogService.confirm({
+            title: 'Remover',
+            message: this.messageLiterals.removeQuestion,
+            confirm: () => { this.remove() }
+        });
     }
 
     private actionEdit() {
@@ -163,7 +180,7 @@ export class GpsCrudDetailComponent extends GpsPageDetailComponent implements Af
         this.crudData = value;
         this.crudDataChange.emit(this.crudData);
         this.onData.emit(this.crudData);
-        this.loadCustomValues();
+        this.loadCustomFields();
     }
 
 } 

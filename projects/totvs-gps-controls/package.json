@@ -1,10 +1,11 @@
 {
   "name": "totvs-gps-controls",
-  "version": "3.3.0",
+  "version": "3.4.0",
   "peerDependencies": {
     "@angular/common": "~9.1.0",
     "@angular/core": "~9.1.0",
     "@po-ui/ng-components": "^2.0.0",
-    "totvs-gps-services": "^3.1.0"
+    "totvs-gps-services": "^3.1.0",
+    "totvs-gps-utils": "^3.1.1"
   }
 }

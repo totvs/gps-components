@@ -1,10 +1,12 @@
 import { Component, EventEmitter, Input, Output, AfterContentInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Params } from "@angular/router";
 import { PoNotificationService } from "@po-ui/ng-components";
+import { TotvsStringUtils } from "totvs-gps-utils";
 import { GpsPageEditComponent } from "../gps-page/gps-page-edit/gps-page-edit.component";
 import { ICRUDService, ValidateAction } from "./gps-crud.model";
 import { GpsCRUDNavigation } from "./gps-crud-navigation.service";
 import { GpsCRUDCustomService } from "./gps-crud.service";
+
 
 @Component({
     selector: 'gps-crud-edit',
@@ -24,10 +26,19 @@ export class GpsCrudEditComponent extends GpsPageEditComponent implements AfterC
     @Input('crud-data') crudData: any;
     @Output('crud-dataChange') crudDataChange: EventEmitter<any> = new EventEmitter();
 
+    @Input('is-new') isNew: boolean = true;
+    @Output('is-newChange') isNewChange: EventEmitter<boolean> = new EventEmitter();
+
     @Input('validate') crudValidate: ValidateAction;
 
-    isNew: boolean = true;
+    @Input('custom-enable') 
+    get customEnable() { return this._customEnable }
+    set customEnable(value) { this.setCustomEnable(value)  }
+
     messageLiterals: {insertSuccess,updateSuccess};
+    routeParams: Params;
+    private routeChanged = false;
+    private totvsStringUtils: TotvsStringUtils = TotvsStringUtils.getInstance();
 
     //#region Startup
     constructor(
@@ -38,6 +49,7 @@ export class GpsCrudEditComponent extends GpsPageEditComponent implements AfterC
     ) {
         super();
         this.initLiterals();
+        this.subscribeRoute();
     }
 
     ngAfterContentInit() {
@@ -50,29 +62,25 @@ export class GpsCrudEditComponent extends GpsPageEditComponent implements AfterC
             updateSuccess: 'Registro alterado com sucesso!'
         };
     }
+
+    private subscribeRoute() {
+        this.activatedRoute.params.subscribe(params => this.initData(params));
+    }
     //#endregion
 
-    private initData() {
-        this.getObjectFromRouteParams()
-            .then(result => {
-                this.initializePage(Object.values(result));
-            })
-            .catch(() => this.crudNavigation.back());
+    private setIsNew(value: boolean) {
+        this.isNew = value;
+        this.isNewChange.emit(this.isNew);
     }
 
-    private getObjectFromRouteParams(): Promise<any> {
-        return new Promise(resolve => {
-            this.activatedRoute.params.subscribe(params => {
-                if (Object.keys(params).length == 0) {
-                    resolve(null);
-                }
-                resolve(Object.assign({}, params));
-            });
-        });
+    private initData(params?:Params) {
+        this.routeParams = params;
+        this.routeChanged = true;
+        this.initializePage(params);
     }
 
-    private initializePage(args?:any) {
-        if (!args) {
+    private initializePage(args:any) {
+        if (Object.values(args).length == 0) {
             this.initializeAddPage();
         }
         else {
@@ -81,19 +89,23 @@ export class GpsCrudEditComponent extends GpsPageEditComponent implements AfterC
     }
 
     private initializeAddPage() {
-        this.isNew = true;
+        this.setIsNew(true);
+        this.routeChanged = false;
         this.setData();
     }
 
     private initializeEditPage(args:any) {
-        this.showLoading('Carregando...');
-        this._crudService.get(...Object.values(args))
-            .then(result => {
-                this.hideLoading();
-                this.isNew = false;
-                this.setData(result);
-            })
-            .catch(() => this.crudNavigation.back());
+        if (this._crudService && this.routeChanged) {
+            this.routeChanged = false;
+            this.showLoading('Carregando...');
+            this._crudService.get(...Object.values(args))
+                .then(result => {
+                    this.hideLoading();
+                    this.setIsNew(false);
+                    this.setData(result);
+                })
+                .catch(() => this.crudNavigation.back());
+        }
     }
 
     private newModelInstance() {
@@ -105,14 +117,13 @@ export class GpsCrudEditComponent extends GpsPageEditComponent implements AfterC
 
     private setCrudService(value?: ICRUDService<any>) {
         this._crudService = value;
-        if (this._crudService) {
-            this.initData();
-        }
+        this.initializePage(this.routeParams);
     }
     //#endregion
 
     //#region Custom fields
     private _program = ''; // programa/contexto (especifico progress = hgp\custom\programa\contexto.p)
+    private _customEnable: boolean = true;
 
     private setProgram(value?: string) {
         if (value != this._program) {
@@ -121,24 +132,23 @@ export class GpsCrudEditComponent extends GpsPageEditComponent implements AfterC
         }
     }
 
-    private loadCustomFields() {
-        this.hasCustomFields = false;
-        if ((this._program && this._program != '') && (this._crudService)) {
-            this.customService.getFields(this._program).then(values => {
-                if (values?.length > 0) {
-                    this.customFields = { fields: values  };
-                    this.hasCustomFields = true;
-                    this.loadCustomValues(); 
-                }
-            });
+    private setCustomEnable(value:any) {
+        let bValue = this.totvsStringUtils.toBoolean(value);
+        if (bValue != this._customEnable) {
+            this._customEnable = bValue;
+            this.loadCustomFields();
         }
     }
 
-    private loadCustomValues() {
-        if (this.hasCustomFields && this._crudService && !this.customFields.values) {
-            this.customFields.values = {};
-            this.customService.getValues(this._program, this.customService.convertParamMap(this.activatedRoute.snapshot.paramMap)).then(values => {
-                values.forEach(value => this.customFields.values[value.property] = value.value);
+    private loadCustomFields() {
+        this.hasCustomFields = false;
+        this.customFields = null;
+        if ((this._program && this._program != '') && (this._crudService) && (this.crudData) && (this._customEnable)) {
+            this.customService.getFields(this._program, this.routeParams).then(result => {
+                if (result?.fields?.length > 0) {
+                    this.customFields = { fields: result.fields, values: (result.values || {})  };
+                    this.hasCustomFields = true;
+                }
             });
         }
     }
@@ -162,7 +172,7 @@ export class GpsCrudEditComponent extends GpsPageEditComponent implements AfterC
             return Promise.resolve(true);
         }
         else {
-            return this.customService.validate(this._program, this.crudData, this.customFields?.values)
+            return this.customService.validate(this._program, this.routeParams, this.crudData, this.customFields?.values)
                 .then(() => true)
                 .catch(() => false);
         }
@@ -177,10 +187,23 @@ export class GpsCrudEditComponent extends GpsPageEditComponent implements AfterC
         });
     }
 
-    private save(): Promise<any> {
+    private saveData() {
         return this.isNew ?
-            this._crudService.insert(this.crudData).then(value => { this.notificationService.success(this.messageLiterals.insertSuccess); return value; })
-          : this._crudService.update(this.crudData).then(value => { this.notificationService.success(this.messageLiterals.updateSuccess); return value; });
+            this._crudService.insert(this.crudData)
+          : this._crudService.update(this.crudData);
+    }
+
+    private saveCustom(resultData) {
+        if (!this.hasCustomFields) {
+            return Promise.resolve();
+        }
+        else {
+            return this.customService.save(this._program, this.routeParams, resultData, this.customFields?.values);
+        }
+    }
+
+    private save(): Promise<any> {
+        return this.saveData().then(result => this.saveCustom(result).then(() => this.notificationService.success(this.isNew ? this.messageLiterals.insertSuccess : this.messageLiterals.updateSuccess)));
     }
 
     private actionSave() {
@@ -214,7 +237,7 @@ export class GpsCrudEditComponent extends GpsPageEditComponent implements AfterC
             Object.assign(this.crudData, value);
         }
         this.crudDataChange.emit(this.crudData);
-        this.loadCustomValues();
+        this.loadCustomFields();
     }
 
 } 
