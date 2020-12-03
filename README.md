@@ -16,6 +16,9 @@ Angular 9 compatibility
 ### 4.X
 Angular 10 compatibility
 
+### 5.X
+Angular 11 compatibility
+
 ## Breaking changes
 
 ### 3.0.0

@@ -1,11 +1,11 @@
 {
   "name": "totvs-gps-zoom",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "peerDependencies": {
-    "@angular/common": "^10.0.3",
-    "@angular/core": "^10.0.3",
-    "@po-ui/ng-components": "^3.0.0",
-    "totvs-gps-services": "^4.0.0",
+    "@angular/common": "^11.0.1",
+    "@angular/core": "^11.0.1",
+    "@po-ui/ng-components": "^4.0.0",
+    "totvs-gps-services": "^5.0.0",
     "totvs-gps-api": ">=0.0.83",
     "totvs-gps-api-v2": ">=0.0.4"
   }

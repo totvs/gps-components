@@ -58,16 +58,6 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
     }
     //#endregion
 
-    //#region filter model
-    private _filterModel: string;
-    get filterModel() {
-        return this._filterModel;
-    }
-    set filterModel(value) {
-        this._filterModel = value;
-    }
-    //#endregion
-
     //#region filter parameter
     private _internalFilter: PoPageFilter;
     get internalFilter() {
@@ -83,10 +73,9 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
 
     private setGpsFilter() {
         this._internalFilter = {
-            ngModel: 'filterModel',
             placeholder: 'Pesquisar',
-            action: () => {
-                this.onSearch.emit(this.filterModel);
+            action: (filter) => {
+                this.onSearch.emit(filter);
                 this.refreshDisclaimers();
             }
         }
