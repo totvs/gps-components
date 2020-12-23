@@ -29,7 +29,7 @@
     "rxjs": "~6.6.0",
     "totvs-gps-api": "file:./library/totvs-gps-api-0.0.83.tgz",
     "totvs-gps-api-v2": "file:./library/totvs-gps-api-v2-0.0.4.tgz",
-    "totvs-gps-controls": "5.0.0",
+    "totvs-gps-controls": "5.0.1",
     "totvs-gps-services": "5.0.1",
     "totvs-gps-utils": "5.0.1",
     "tslib": "^2.0.0",

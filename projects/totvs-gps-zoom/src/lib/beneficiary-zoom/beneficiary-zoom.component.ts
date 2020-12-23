@@ -1,5 +1,5 @@
 import { Component, Input, Output, ViewChild, EventEmitter } from "@angular/core";
-import { isNullOrUndefined } from "util";
+import { isNull } from "totvs-gps-utils";
 import { PoModalComponent, PoNotificationService, PoModalAction, PoTableColumn } from "@po-ui/ng-components";
 import { TotvsGpsCacheService } from "totvs-gps-services";
 import { TotvsMaskString } from "totvs-gps-utils";
@@ -64,7 +64,7 @@ export class BeneficiaryZoomComponent {
   ];
 
   get hasCustomFilter() {
-    return (!isNullOrUndefined(this.customFilter));
+    return (!isNull(this.customFilter));
   }
 
   get hasCustomContent() {
@@ -113,7 +113,7 @@ export class BeneficiaryZoomComponent {
   private mapBeneficiary(item: Beneficiary): BeneficiaryZoomModel {
     let result = new BeneficiaryZoomModel();
     Object.assign(result, item);
-    if (!isNullOrUndefined(result.taxpayerRegistry))
+    if (!isNull(result.taxpayerRegistry))
       result.$taxpayerRegistry = TotvsMaskString.getInstance('000.000.000-00').apply(result.taxpayerRegistry);
     result.$kinshipDegree = this.cacheService.get(new KinshipDegree().parseJsonToObject({code: result.kinshipDegree}));        
     return result;
@@ -131,7 +131,7 @@ export class BeneficiaryZoomComponent {
   private selectBeneficiary() {
     let selected = this.getSelected();
 
-    if (isNullOrUndefined(selected)&&(!this.customContent)) {
+    if (isNull(selected)&&(!this.customContent)) {
       this.notificationService.error('Nenhum beneficiário selecionado!');
     }
     else {

@@ -1,4 +1,4 @@
-import { isNullOrUndefined } from "util";
+import { isNull } from "totvs-gps-utils";
 import { IDisclaimerConfig } from "totvs-gps-controls";
 
 export class GpsPageFilter<T>{
@@ -35,7 +35,7 @@ export class GpsPageFilter<T>{
     restoreAdvancedFilterDefaults() {
         Object.keys(this.filter).forEach(k => 
             { 
-                if(isNullOrUndefined(this.filter[k])) 
+                if(isNull(this.filter[k])) 
                     delete this.filter[k]
             }
         );
