@@ -1,7 +1,7 @@
 import { IZoomColumn, FilterValue, GenericZoomEntity, GenericZoomOption } from "./totvs-gps-zoom.model";
 import { Observable, from } from "rxjs";
 import { TTalkCollection } from "./totvs-gps-services.model";
-import { isNullOrUndefined } from "util";
+import { isNull } from "totvs-gps-utils";
 import { TotvsGpsServices } from "./totvs-gps-services.component";
 import { generateKeyPath, getLookupColumns, getObjectFieldLabel, getObjectFieldValue, getFieldsList, getODataFilter } from "./totvs-gps-services.utils";
 
@@ -34,16 +34,16 @@ export class GenericZoomService<T> {
 
   public buildObjectByFilter(searchObject?: any, pageNumber?: number, pageSize?: number, objectPosition?: number, additionalQuery?: string, fields?: string[], expand?: string[]): Promise<TTalkCollectionZoom<T>> {
     let params: any = {};
-    if (!isNullOrUndefined(this._zoomTable)) {
+    if (!isNull(this._zoomTable)) {
       params.ZOOM_TABLE = this._zoomTable;
     }
-    if ((!isNullOrUndefined(objectPosition)) && (objectPosition > 0)) {
+    if ((!isNull(objectPosition)) && (objectPosition > 0)) {
       params.OBJECT_POSITION = objectPosition;
     }
-    if ((!isNullOrUndefined(additionalQuery)) && (additionalQuery.trim().length > 0)) {
+    if ((!isNull(additionalQuery)) && (additionalQuery.trim().length > 0)) {
       params.ADDITIONAL_QUERY = additionalQuery;
     }
-    if (!isNullOrUndefined(searchObject)) {
+    if (!isNull(searchObject)) {
       if (Array.isArray(searchObject)) {
         searchObject.forEach((filterValue: FilterValue) => {
           params[filterValue.property] = filterValue.filterValue;
@@ -70,7 +70,7 @@ export class GenericZoomService<T> {
     let service = TotvsGpsServices.getInstance<T>(GenericZoomEntity).setFields(fields);
 
     // se utiliza filtro OData
-    if (!isNullOrUndefined(object['$filter'])) {
+    if (!isNull(object['$filter'])) {
       url += 'id/';
       Object.assign(params, object);
     }
@@ -80,7 +80,7 @@ export class GenericZoomService<T> {
       service.setPathParams(object);
     }
 
-    if (!isNullOrUndefined(this._zoomTable)) {
+    if (!isNull(this._zoomTable)) {
       params.ZOOM_TABLE = this._zoomTable;
     }
 
@@ -110,12 +110,12 @@ export class GenericZoom implements IZoomService {
     this.createColumns();
     this.service = new GenericZoomService();
 
-    if (!isNullOrUndefined(this.genericZoomEntity.apiUrl))
+    if (!isNull(this.genericZoomEntity.apiUrl))
       this.service.setUrl(this.genericZoomEntity.apiUrl);
     else
       this.service.setUrl(this.genericUrl);
 
-    if (!isNullOrUndefined(this.genericZoomEntity.zoomTable))
+    if (!isNull(this.genericZoomEntity.zoomTable))
       this.service.setZoomTable(this.genericZoomEntity.zoomTable);
 
     this.FIELD_LABEL = this.fieldLabel();
@@ -124,13 +124,13 @@ export class GenericZoom implements IZoomService {
 
   private createColumns() {
     this.COLUMNS = [];
-    if (isNullOrUndefined(this.genericZoomEntity.columnDefinition))
+    if (isNull(this.genericZoomEntity.columnDefinition))
       getLookupColumns(this.genericZoomEntity).forEach(column => this.COLUMNS.push(column));
     else this.genericZoomEntity.columnDefinition.forEach(column => this.COLUMNS.push(column));
   }
 
   private fieldLabel(): any {
-    if (isNullOrUndefined(this.genericZoomEntity.fieldLabel)) {
+    if (isNull(this.genericZoomEntity.fieldLabel)) {
       return getObjectFieldLabel(this.genericZoomEntity).toString();
     }
     else {
@@ -138,7 +138,7 @@ export class GenericZoom implements IZoomService {
     }
   }
   private fieldValue(): any {
-    if (isNullOrUndefined(this.genericZoomEntity.fieldValue)) {
+    if (isNull(this.genericZoomEntity.fieldValue)) {
       return getObjectFieldValue(this.genericZoomEntity).toString();
     }
     else {
@@ -151,7 +151,7 @@ export class GenericZoom implements IZoomService {
     let genericZoomOption: GenericZoomOption = new GenericZoomOption();
     let additionalQuery: string = "";
 
-    if (!isNullOrUndefined(filter) && (filter.length > 0)) {
+    if (!isNull(filter) && (filter.length > 0)) {
     let sf = new FilterValue("search", filter);
       genericZoomOption.filters.push(sf);
       genericZoomOption.filter = filter;
@@ -161,14 +161,14 @@ export class GenericZoom implements IZoomService {
     if (page === 1)
       this.objectPosition = 0;
 
-    if (!isNullOrUndefined(genericZoomOption.filterParams)) {
+    if (!isNull(genericZoomOption.filterParams)) {
       this.prepareToFilter(genericZoomOption, this.genericZoomEntity);
-      if (!isNullOrUndefined(genericZoomOption.filterParams["additionalQuery"]))
+      if (!isNull(genericZoomOption.filterParams["additionalQuery"]))
         additionalQuery = genericZoomOption.filterParams["additionalQuery"];
     }
 
-    if (!isNullOrUndefined(genericZoomOption.fields)) {
-      if (!isNullOrUndefined(genericZoomOption.filters)) {
+    if (!isNull(genericZoomOption.fields)) {
+      if (!isNull(genericZoomOption.filters)) {
         this.selectedObject = this.service.buildObjectByFilter(
           genericZoomOption.filters,
           page,
@@ -193,8 +193,8 @@ export class GenericZoom implements IZoomService {
     }
 
     this.selectedObject.then((result) => {
-      if (!isNullOrUndefined(result)
-        && !isNullOrUndefined(result.position))
+      if (!isNull(result)
+        && !isNull(result.position))
         this.objectPosition = result.position;
     });
 
@@ -208,17 +208,17 @@ export class GenericZoom implements IZoomService {
     let genericZoomOption: GenericZoomOption = new GenericZoomOption();
 
     genericZoomOption.filterParams = filterParams;
-    if(isNullOrUndefined(genericZoomOption.filterParams)){
+    if(isNull(genericZoomOption.filterParams)){
       this.copyObjectValues(this.genericZoomEntity,temporaryObject);
       this.genericZoomEntity.setZoomByIdProperty(value);
     }
 
-    if (!isNullOrUndefined(genericZoomOption.filterParams)) {
+    if (!isNull(genericZoomOption.filterParams)) {
       this.copyObjectValues(filterParams, temporaryObject);
-      if (!isNullOrUndefined(genericZoomOption.filterParams["setZoomByIdProperty"]))
+      if (!isNull(genericZoomOption.filterParams["setZoomByIdProperty"]))
         genericZoomOption.filterParams.setZoomByIdProperty(value);
 
-      //if (!isNullOrUndefined(genericZoomOption.filterParams["additionalQuery"]))
+      //if (!isNull(genericZoomOption.filterParams["additionalQuery"]))
       //  additionalQuery = genericZoomOption.filterParams["additionalQuery"];
 
       this.prepareToFilter(genericZoomOption, this.genericZoomEntity);
@@ -229,12 +229,12 @@ export class GenericZoom implements IZoomService {
       let filterObject = Object.create(genericZoomOption.filterParams);
       filterObject.setZoomByIdProperty(value);
 
-      if (!isNullOrUndefined(genericZoomOption.oDataFilter) && !isNullOrUndefined(genericZoomOption.oDataFilter['$filter'])) {
+      if (!isNull(genericZoomOption.oDataFilter) && !isNull(genericZoomOption.oDataFilter['$filter'])) {
         result = this.service.getObjectById(
           genericZoomOption.oDataFilter,
           genericZoomOption.fields,
           genericZoomOption.filters);
-        if(!isNullOrUndefined(filterParams)) {
+        if(!isNull(filterParams)) {
           this.copyObjectValues(temporaryObject, filterParams);
         }
         return result;
@@ -250,11 +250,11 @@ export class GenericZoom implements IZoomService {
 
     result = this.service.getObjectById(this.genericZoomEntity);
 
-    if(!isNullOrUndefined(genericZoomOption.filterParams)){
+    if(!isNull(genericZoomOption.filterParams)){
     this.copyObjectValues(temporaryObject, filterParams);
     }
 
-    if(isNullOrUndefined(genericZoomOption.filterParams)){
+    if(isNull(genericZoomOption.filterParams)){
         this.copyObjectValues(temporaryObject,this.genericZoomEntity,);
     }
 
@@ -280,15 +280,15 @@ export class GenericZoom implements IZoomService {
 
     genericZoomOption.fields = getFieldsList(genericZoomOption.filterParams);
 
-    if ((!isNullOrUndefined(genericZoomOption.fields)) && (genericZoomOption.fields.length > 0)) {
+    if ((!isNull(genericZoomOption.fields)) && (genericZoomOption.fields.length > 0)) {
       genericZoomOption.oDataFilter = getODataFilter(genericZoomOption.filterParams, genericZoomOption.filter, genericZoomEntity);
 
-      if (!isNullOrUndefined(genericZoomOption.oDataFilter)
-        && !isNullOrUndefined(genericZoomOption.oDataFilter['$filter']))
+      if (!isNull(genericZoomOption.oDataFilter)
+        && !isNull(genericZoomOption.oDataFilter['$filter']))
         genericZoomOption.filters = null;
     }
 
-    if (!isNullOrUndefined(this.objectPosition)
+    if (!isNull(this.objectPosition)
       && this.objectPosition > 0)
       genericZoomOption.objectPosition = this.objectPosition;
 
@@ -296,7 +296,7 @@ export class GenericZoom implements IZoomService {
   }
 
   public copyObjectValues(source, target) {
-    if (isNullOrUndefined(source))
+    if (isNull(source))
       return;
 
     Object.keys(source).forEach(key => {

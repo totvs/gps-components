@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { TotvsMaskString } from "totvs-gps-utils";
-import { isNullOrUndefined } from "util";
+import { isNull, isBoolean } from "totvs-gps-utils";
 import { IZoomColumn, GenericZoomEntity } from "./totvs-gps-zoom.model";
 
 export const PROGRESS_FIELD = "ProgressField";
@@ -10,8 +10,8 @@ export const LOOKUP_FIELD_VALUE = "LookUpFieldValue";
 export const LOOKUP_FIELD_LABEL = "LookUpFieldLabel";
 
 export function encodeURLParam(data: any): string {
-    if (!isNullOrUndefined(data)) {
-        if (data instanceof Boolean || typeof(data) === "boolean") {
+    if (!isNull(data)) {
+        if (data instanceof Boolean || isBoolean(data)) {
             return data.toString();
         }
         if (data instanceof Date) {
@@ -27,7 +27,7 @@ export function encodeURLParam(data: any): string {
 }
 
 export function generateKeyPath(obj:any): string {
-    if ((!isNullOrUndefined(obj))&&(Array.isArray(obj.primaryKeys))) {
+    if ((!isNull(obj))&&(Array.isArray(obj.primaryKeys))) {
         let values: string[] = [];
         obj.primaryKeys.forEach(key => { values.push('{{' + key + '}}') });
         return [...values,''].join('/');
@@ -40,7 +40,7 @@ export function getObjectFieldLabel<T>(instance:T):string{
 
     Object.keys(instance).forEach((key) => {
         let value = getLookUpFieldLabel(instance,key);
-        if(!isNullOrUndefined(value)
+        if(!isNull(value)
         && value == true){
             let a2 = getProgressFieldValue(instance,key).toString();
             returnValue = a2;
@@ -55,7 +55,7 @@ export function getObjectFieldValue<T>(instance:T): string {
 
     Object.keys(instance).forEach((key) => {
         let value = getLookUpFieldValue(instance,key);
-        if((!isNullOrUndefined(value))&&(value == true))
+        if((!isNull(value))&&(value == true))
             returnValue = getProgressFieldValue(instance,key).toString();
     });
 
@@ -68,7 +68,7 @@ export function getLookupColumns<T>(instance:T): IZoomColumn[] {
     Object.keys(instance).forEach((key) => {
         let columnName = getProgressFieldValue(instance,key);
         let labelValue = getLookUpColumnValue(instance,key);
-        if ((!isNullOrUndefined(columnName))&&(!isNullOrUndefined(labelValue)))
+        if ((!isNull(columnName))&&(!isNull(labelValue)))
             columnList.push(<IZoomColumn> { property: columnName, label: labelValue});
     });
 
@@ -80,7 +80,7 @@ export function getFieldsList<T>(instance:T): string[] {
     
     Object.keys(instance).forEach((key) => {
         let field = getProgressFieldValue(instance,key);
-        if(!isNullOrUndefined(field))
+        if(!isNull(field))
             fieldsList.push(field);
     });
 
@@ -101,13 +101,13 @@ export function getODataFilter<T>(instance:T,filter:string,genericZoomEntity:Gen
         let propertyKey = getProgressFieldValue(instance,key);
         let isColumn    = getLookUpColumnValue(instance,key);
 
-        if((isNullOrUndefined(isColumn) || !isColumn) 
-        && !isNullOrUndefined(genericZoomEntity.columnDefinition))
+        if((isNull(isColumn) || !isColumn) 
+        && !isNull(genericZoomEntity.columnDefinition))
             isColumn = hasColumnField(propertyKey,genericZoomEntity);
         
-        if((!isNullOrUndefined(isColumn) && isColumn)
-        && !isNullOrUndefined(propertyKey)
-        && !isNullOrUndefined(instance[key])
+        if((!isNull(isColumn) && isColumn)
+        && !isNull(propertyKey)
+        && !isNull(instance[key])
         && isValidValue(filter)
         && !isValidValue(instance[key])
         && canAssignValue(filter,instance[key])){
@@ -121,8 +121,8 @@ export function getODataFilter<T>(instance:T,filter:string,genericZoomEntity:Gen
         }
 
         //apenas cria filtros para valores validos
-        if(!isNullOrUndefined(instance[key])         
-        && !isNullOrUndefined(propertyKey)
+        if(!isNull(instance[key])         
+        && !isNull(propertyKey)
         && isValidValue(instance[key])){
             oDataFilter = oDataFilter.concat(searchAggregator.toString()); // + propertyKey + ' eq ' + instance[key];
 
@@ -192,7 +192,7 @@ function hasColumnField(propertyKey: string,genericZoomEntity:GenericZoomEntity)
 }
 
 export function isValidValue(object): boolean{
-    if(isNullOrUndefined(object))
+    if(isNull(object))
         return false;
 
     if (((object instanceof String)||(typeof object === "string")) && (object !== ""))
@@ -211,7 +211,7 @@ function canAssignValue(value,property): boolean{
 
     let onlyNumbers:boolean = false;
 
-    if(isNullOrUndefined(value))
+    if(isNull(value))
         return false;
    
     if(!isNaN(Number(value))){

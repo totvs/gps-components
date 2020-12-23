@@ -2,7 +2,7 @@ import { Injectable, isDevMode } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { isNullOrUndefined } from 'util';
+import { isNull } from 'totvs-gps-utils';
 
 @Injectable()
 export class TotvsGpsInterceptorService implements HttpInterceptor {
@@ -20,6 +20,10 @@ export class TotvsGpsInterceptorService implements HttpInterceptor {
    */
   static JOSSO_SESSION_RELOAD: boolean = false;
   /**
+   * Desabilita tratamento automatico da URL para produto TOTVS
+   */
+  static DISABLE_URL_PATTERN: boolean = false;
+  /**
    * URL para servidor de mock de dados
    * @example 'http://localhost:8080'
    */
@@ -36,7 +40,7 @@ export class TotvsGpsInterceptorService implements HttpInterceptor {
 
     let newRequest: HttpRequest<any>;
     // Trata requisições de endereço completo
-    if (request.url.startsWith('http') || request.url.startsWith(this.URL_DATASUL)) {
+    if (request.url.startsWith('http') || request.url.startsWith(this.URL_DATASUL) || TotvsGpsInterceptorService.DISABLE_URL_PATTERN) {
       newRequest = request.clone({ url: request.url });
     }
     else {
@@ -92,7 +96,7 @@ export class TotvsGpsInterceptorService implements HttpInterceptor {
   }
 
   private shouldRedirecToMockServer(error: HttpErrorResponse) {
-    if (isDevMode()&&!isNullOrUndefined(TotvsGpsInterceptorService.MOCK_SERVER)&&(TotvsGpsInterceptorService.MOCK_SERVER!='')) {
+    if (isDevMode()&&!isNull(TotvsGpsInterceptorService.MOCK_SERVER)&&(TotvsGpsInterceptorService.MOCK_SERVER!='')) {
       if ((error.status >= 400)&&(JSON.stringify(error).indexOf('not found')>0)) {
         // 500 - {"message":"Internal server error","detailedMessage":"ERROR condition: ** \"hvp/api/v1/XYZ\" was not found. (293) (7211)","code":"INTERNAL_SERVER_ERROR"}
         // 400 - {"code":"BAD_REQUEST", "message":"Bad request", "detailedMessage":"Method not found"}
