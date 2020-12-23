@@ -1,11 +1,11 @@
-import { isNullOrUndefined } from 'util';
+import { isNull } from "./functions";
 
 export class GpsMaintenanceUrl {
 
     private static prepareUrl(url:string){
         let _url:string = '';
 
-        if(!isNullOrUndefined(url))
+        if(!isNull(url))
             _url = url;
         
         if(!_url.endsWith("/"))
