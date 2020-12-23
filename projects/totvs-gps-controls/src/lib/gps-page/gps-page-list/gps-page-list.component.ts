@@ -1,6 +1,6 @@
 import { Component, Input, ChangeDetectorRef, ViewChild, ContentChild, Output, EventEmitter } from "@angular/core";
 import { PoPageFilter, PoDisclaimer, PoDisclaimerGroup, PoModalComponent, PoModalAction } from "@po-ui/ng-components";
-import { isNullOrUndefined } from "util";
+import { isNull } from "totvs-gps-utils";
 import { GpsPageBaseComponent } from "../gps-page-base.component";
 import { TotvsGpsDateUtils } from "totvs-gps-utils";
 import { GpsAdvancedSearchDirective } from "../directives/gps-advanced-search.directive";
@@ -93,13 +93,13 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
     get internalDisclaimerGroup() {
         if (!this._disclaimersVisible)
             return null;
-        if (isNullOrUndefined(this.parameterDisclaimerGroup))
+        if (isNull(this.parameterDisclaimerGroup))
             return this._defaultDisclaimerGroup;
         return this.parameterDisclaimerGroup;
     }
 
     refreshDisclaimers() {
-        if (isNullOrUndefined(this._parameterGpsFilter) || isNullOrUndefined(this._parameterGpsDisclaimerConfig))
+        if (isNull(this._parameterGpsFilter) || isNull(this._parameterGpsDisclaimerConfig))
             this._defaultDisclaimerGroup.disclaimers = [];
         else
             this._defaultDisclaimerGroup.disclaimers = this.parseDisclaimers(this._parameterGpsFilter, this._parameterGpsDisclaimerConfig);
@@ -117,7 +117,7 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
     private parseDisclaimers(obj, config: IDisclaimerConfig[]): PoDisclaimer[] {
         let disclaimers: PoDisclaimer[] = [];
         config.forEach(param => {
-            if (!isNullOrUndefined(obj[param.property])||(param.type === 'function')) {
+            if (!isNull(obj[param.property])||(param.type === 'function')) {
                 let value = '';
                 if (param.type === 'date')
                     value = TotvsGpsDateUtils.getInstance().getLocaleDate(obj[param.property])
@@ -129,19 +129,19 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
                     value = 'true';
                 }
                 else if (param.type === 'function') {
-                    if (!isNullOrUndefined(param.value))
+                    if (!isNull(param.value))
                         value = param.value(obj);
                     else
                         value = '';
                 }
                 else
                     value = String(obj[param.property]).valueOf();
-                if ((value === '')&&(isNullOrUndefined(value)))
+                if ((value === '')&&(isNull(value)))
                     return;
-                if ((param.type != 'function')&&(!isNullOrUndefined(param.value)))
+                if ((param.type != 'function')&&(!isNull(param.value)))
                     value = param.value(value);
                 let item: PoDisclaimer = disclaimers.find(item => item.property == (param.group || param.property || param.label));
-                if (isNullOrUndefined(item)) {
+                if (isNull(item)) {
                     item = { property: (param.group || param.property || param.label), hideClose: true, value: value };
                     disclaimers.push(item);
                 }
@@ -162,7 +162,7 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
     private _parameterGpsFilter;
 
     get hasAdvancedSearch(): boolean {
-        return !isNullOrUndefined(this.advancedSearchTemplateRef);
+        return !isNull(this.advancedSearchTemplateRef);
     }
 
     modalSearchAction: PoModalAction = { label: 'Aplicar filtros', action: null };

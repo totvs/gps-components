@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { GpsRpwService } from './gps-rpw.service';
 import { TotvsGpsRpw } from "../totvs-gps-controls.model"
-import { PoComboOption } from '@po-ui/ng-components';
+import { PoComboFilterMode, PoComboOption } from '@po-ui/ng-components';
+import { TotvsStringUtils } from 'totvs-gps-utils';
 
 @Component({
   selector: 'gps-rpw',
@@ -10,7 +11,11 @@ import { PoComboOption } from '@po-ui/ng-components';
 })
 export class GpsRpwComponent implements OnInit {
   @Input() model:TotvsGpsRpw;
-  @Input() fileNameHidden:boolean;
+
+  private _fileNameHidden:boolean = false;
+  @Input() 
+    get fileNameHidden() { return this._fileNameHidden; }
+    set fileNameHidden(value:boolean) { this.setFileNameHidden(value) };
   @Input() allowMultipleSessions:boolean;
   
   private _repeatExecHidden: boolean = false;
@@ -26,6 +31,7 @@ export class GpsRpwComponent implements OnInit {
   @Output() modelChange:EventEmitter<TotvsGpsRpw> = new EventEmitter();
 
   
+  private totvsStringUtils: TotvsStringUtils = TotvsStringUtils.getInstance();
   repeatExecutionPatternOptions = [{ label: 'Diária', value: 1 },{ label: 'Mensal', value: 2 }];
   repeatEachDailyOptions:Array<PoComboOption> = [];
   repeatEachWeeklyOptions:Array<PoComboOption> = [];  
@@ -48,6 +54,8 @@ export class GpsRpwComponent implements OnInit {
   active: string;
   disabled: Array<string>;
   hidden: Array<string>;  
+
+  filterMode: PoComboFilterMode.contains;
   
   rpwServerOptions:Array<PoComboOption> = [];
   constructor(private totvsGpsRpwService:GpsRpwService) { }
@@ -165,5 +173,12 @@ export class GpsRpwComponent implements OnInit {
   
   isHidden(index): boolean {
 	return this.hidden.includes(index);
+  }
+
+  private setFileNameHidden(value:any) {
+    let bValue = this.totvsStringUtils.toBoolean(value);
+    if (bValue != this._fileNameHidden) {
+        this._fileNameHidden = bValue;
+    }
   }
 }

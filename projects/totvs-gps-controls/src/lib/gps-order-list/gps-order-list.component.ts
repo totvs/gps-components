@@ -1,6 +1,6 @@
 import { Component, OnChanges, Input, Output, EventEmitter, ChangeDetectorRef } from "@angular/core";
 import { PoTableColumn } from "@po-ui/ng-components";
-import { isNullOrUndefined, isBoolean } from "util";
+import { isNull, isBoolean } from "totvs-gps-utils";
 import { IOrderListItem } from "../totvs-gps-controls.model";
 
 interface IOrderListItemActions extends IOrderListItem {
@@ -66,7 +66,7 @@ export class GpsOrderListComponent implements OnChanges {
     */
 
     private refreshList() {
-        if (isNullOrUndefined(this.items)) {
+        if (isNull(this.items)) {
             this.itemList = [];
         }
         else {
@@ -75,7 +75,7 @@ export class GpsOrderListComponent implements OnChanges {
             // adiciona/atualiza itens
             this.items.forEach(item => {
                 let newItem: IOrderListItemActions = this.itemList.find(v => v.value == item.value);
-                if (isNullOrUndefined(newItem)) {
+                if (isNull(newItem)) {
                     newItem = { 
                         value: item.value, 
                         label: item.label,

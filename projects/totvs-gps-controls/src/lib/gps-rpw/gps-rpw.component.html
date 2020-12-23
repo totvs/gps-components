@@ -28,7 +28,7 @@
             <div class="po-row">
                 <po-combo class="po-xl-12 po-lg-12 po-md-12 po-sm-12" name="executionServer"
                     [(ngModel)]="model.executionServer" p-required (ngModelChange)="rpwNgModelChange()"
-                    p-label="Servidor de execução" [p-options]="rpwServerOptions" ngDefaultControl>
+                    p-label="Servidor de execução" [p-options]="rpwServerOptions" [p-filter-mode]="filterMode" ngDefaultControl>
                 </po-combo>
             </div>
             <div class="po-row">
