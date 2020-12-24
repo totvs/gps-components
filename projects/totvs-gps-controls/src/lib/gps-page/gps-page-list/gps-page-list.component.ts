@@ -6,6 +6,7 @@ import { TotvsGpsDateUtils } from "totvs-gps-utils";
 import { GpsAdvancedSearchDirective } from "../directives/gps-advanced-search.directive";
 import { ILoadingData } from "../gps-page.internal-model";
 import { IDisclaimerConfig } from "../models/gps-page.model";
+import { TotvsStringUtils } from "totvs-gps-utils";
 
 @Component({
     selector: 'gps-page-list',
@@ -31,6 +32,12 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
     @Input('disclaimer-config')
         get parameterGpsDisclaimerConfig() { return this._parameterGpsDisclaimerConfig }
         set parameterGpsDisclaimerConfig(value) { this._parameterGpsDisclaimerConfig = value; this.refreshDisclaimers() }
+    @Input('disable-advanced-search') 
+        get parameterDisableAdvancedSearch() { return this._parameterDisableAdvancedSearch }
+        set parameterDisableAdvancedSearch(value:any) { this.setParameterDisableAdvancedSearch(value) }
+    @Input('loading-advanced-search') 
+        get parameterLoadingAdvancedSearch() { return this._parameterLoadingAdvancedSearch }
+        set parameterLoadingAdvancedSearch(value:any) { this.setParameterLoadingAdvancedSearch(value) }
 
     @Output('on-search') onSearch: EventEmitter<any> = new EventEmitter();
     @Output('before-advanced-search') beforeAdvancedSearch: EventEmitter<any> = new EventEmitter();
@@ -43,6 +50,8 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
     ) {
         super();
     }
+
+    private totvsStringUtils = TotvsStringUtils.getInstance();
 
     //#endregion
 
@@ -160,12 +169,29 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
 
     //#region advanced search
     private _parameterGpsFilter;
+    private _parameterDisableAdvancedSearch: boolean;
+    private _parameterLoadingAdvancedSearch: boolean;
+
+    private setParameterDisableAdvancedSearch(value:any) {
+        const v = this.totvsStringUtils.toBoolean(value);
+        if (v !== this._parameterDisableAdvancedSearch) {
+            this._parameterDisableAdvancedSearch = v;
+            this.modalSearchAction.disabled = this._parameterDisableAdvancedSearch;
+        }
+    }
+    private setParameterLoadingAdvancedSearch(value:any) {
+        const v = this.totvsStringUtils.toBoolean(value);
+        if (v !== this._parameterLoadingAdvancedSearch) {
+            this._parameterLoadingAdvancedSearch = v;
+            this.modalSearchAction.loading = this._parameterLoadingAdvancedSearch;
+        }
+    }
 
     get hasAdvancedSearch(): boolean {
         return !isNull(this.advancedSearchTemplateRef);
     }
 
-    modalSearchAction: PoModalAction = { label: 'Aplicar filtros', action: null };
+    modalSearchAction: PoModalAction = { label: 'Aplicar filtros', action: null, disabled: false, loading: false };
     modalSearchCloseAction: PoModalAction = { label: 'Cancelar', action: null };
     openAdvancedSearch() {
         let _oldValue = Object.assign({}, this._parameterGpsFilter);
