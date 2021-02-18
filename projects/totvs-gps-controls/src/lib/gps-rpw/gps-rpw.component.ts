@@ -13,6 +13,8 @@ export class GpsRpwComponent implements OnInit {
   @Input() model:TotvsGpsRpw;
 
   private _fileNameHidden:boolean = false;
+  public _repeatExecAppointmentMinute:string = '';
+
   @Input() 
     get fileNameHidden() { return this._fileNameHidden; }
     set fileNameHidden(value:boolean) { this.setFileNameHidden(value) };
@@ -32,24 +34,14 @@ export class GpsRpwComponent implements OnInit {
 
   
   private totvsStringUtils: TotvsStringUtils = TotvsStringUtils.getInstance();
-  repeatExecutionPatternOptions = [{ label: 'Diária', value: 1 },{ label: 'Mensal', value: 2 }];
-  repeatEachDailyOptions:Array<PoComboOption> = [];
-  repeatEachWeeklyOptions:Array<PoComboOption> = [];  
-  repeatEachMonthlyOptions:Array<PoComboOption> = [];
+
+  repeatUnitOptions:Array<PoComboOption> = [
+      {label:'Minuto(s)', value:'1'},
+      {label:'Hora(s)', value:'2'},
+      {label:'Dia(s)', value:'3'},
+      {label:'Mês(es)', value:'4'}];
 
   currentDate:Date;
-
-  days = [];
-  weeks = [];
-  weekDays = [
-    {label:'Domingo', value:'0'},
-    {label:'Segunda', value:'1'},
-    {label:'Terça', value:'2'},
-    {label:'Quarta', value:'3'},
-    {label:'Quinta', value:'4'},
-    {label:'Sexta', value:'5'},
-    {label:'Sábado', value:'6'}];
-  months = [];
   
   active: string;
   disabled: Array<string>;
@@ -66,11 +58,16 @@ export class GpsRpwComponent implements OnInit {
     this.model.fileNameHidden = this.fileNameHidden;
     this.model.allowMultipleSessions = this.allowMultipleSessions;
     this.getRpwServers();
-    this.restoreTabs();
-    this.initializeRepeatEachOptions();
   }
 
   rpwNgModelChange(){    
+    if(this.model.repeatExecAppointmentUnit == 2 && this._repeatExecAppointmentMinute){
+        this.model.repeatExecAppointmentHour = "00:" + this._repeatExecAppointmentMinute;
+    }else{
+        this.model.repeatExecAppointmentHour = undefined;
+        this._repeatExecAppointmentMinute = undefined;
+    }
+
     this.modelChange.emit(this.model);
   }
 
@@ -80,49 +77,6 @@ export class GpsRpwComponent implements OnInit {
         return {label:s.serverName, value:s.serverCode}
       });
     });
-  }
-
-  initializeRepeatEachOptions(){
-    this.repeatEachDailyOptions = []
-    this.repeatEachWeeklyOptions = []
-    this.repeatEachMonthlyOptions = []
-
-    this.repeatEachDailyOptions.push(...this.getDays());
-    this.repeatEachWeeklyOptions.push(...this.getWeeks());
-    this.repeatEachMonthlyOptions.push(...this.getMonths());
-  }
-  
-  restoreTabs() {
-    this.model.activeTab = 1;
-    this.disabled = [];
-    this.hidden = [];
-  }
-
-  setActiveTab(n) {
-    this.model.activeTab = n;
-    this.model.repeatExecPattern = n;
-    this.rpwNgModelChange();
-  }
-
-  getDays(){
-    for(let i = 0; i < 31; i++)      
-      this.days[i] = i;
-    
-    return this.days.map((d, i) => (i === 0) ? {label: (i + 1) + ' dia', value: (i + 1) } : {label: (i + 1) + ' dias', value:(i + 1) });    
-  }
-
-  getWeeks(){
-    for(let i = 1; i < 29; i++)
-      this.weeks[i-1] = i;
-
-    return this.weeks.map((d, i) => (i === 0) ? {label: (i + 1) + ' semana', value: (i + 1) } : {label: (i + 1) + ' semanas', value: (i + 1) });
-  }
-
-  getMonths(){
-    for(let i = 1; i <= 12; i++) 
-      this.months[i-1] = i;
-    
-    return this.months.map((d, i) => (i === 0) ? {label: (i + 1) + ' mês', value: (i + 1) } : {label: (i + 1) + ' meses', value: (i + 1) });
   }
 
   static validateFields(info:TotvsGpsRpw):string{
@@ -142,24 +96,34 @@ export class GpsRpwComponent implements OnInit {
       if(!info.executionAppointmentHour) return "Horário deve ser informado"
     }
     if(info.repeatExecution){
-      if(info.activeTab == 1){
-        if(info.repeatExecAppointmentDaily == undefined) return "Campo 'repete a cada' deve ser informado";
-        if(!info.repeatExecAppointmentHourDaily) return "Horário deve ser informado"
-      }else if(info.activeTab == 2){
-        if(info.repeatExecAppointmentMonthly == undefined) return "Campo 'repete a cada' deve ser informado";
-        if(!info.repeatExecAppointmentHourMonthly) return "Horário deve ser informado"
-        if((info.repeatExecOnLastDayOfMonth == 2) && ((info.repeatExecMonthlyDay == 0)||(info.repeatExecMonthlyDay == undefined))) 
+      if(info.repeatExecAppointmentUnit == undefined) return "Campo 'Frequência' deve ser informado";
+      if(info.repeatExecAppointmentQuantity == undefined) return "Campo 'Repete a cada' deve ser informado";
+      
+      if(info.repeatExecAppointmentUnit == 4 || info.repeatExecAppointmentUnit == 3){
+          if(!info.repeatExecAppointmentHour) return "Horário deve ser informado"
+      }
+
+      if(info.repeatExecAppointmentUnit == 2){
+        if(!info.repeatExecAppointmentHour) return "Minuto deve ser informado"
+      }
+
+      if(!info.repeatExecFinalHour){
+          return "Hora final deve ser informado"
+      }
+
+      if(info.repeatExecAppointmentUnit == 4){
+          if((info.repeatExecOnLastDayOfMonth == 2) && ((info.repeatExecMonthlyDay == 0)||(info.repeatExecMonthlyDay == undefined))) 
           return "Dia do mês não informado ou inválido";
-        if((info.repeatExecOnLastDayOfMonth == 2) && (info.repeatExecMonthlyDay > 31)) 
+          if((info.repeatExecOnLastDayOfMonth == 2) && (info.repeatExecMonthlyDay > 31)) 
           return "Dia do mês inválido"
       }
-      if(!info.repeatExecFinalDate) return "Data fora do período"
-      
-      dateValidator = info.repeatExecFinalDate;
-      if(dateValidator == "Data fora do período") return "Data fora do período"
-      
-      if(info.repeatExecFinalDate < new Date()) return "Data deve ser maior que hoje"
-    }    
+    }
+    if(!info.repeatExecFinalDate) return "Data fora do período"
+    
+    dateValidator = info.repeatExecFinalDate;
+    if(dateValidator == "Data fora do período") return "Data fora do período"
+    
+    if(info.repeatExecFinalDate < new Date()) return "Data deve ser maior que hoje"
 
     if(info.multisession && (info.numberOfSessions < 1 || info.numberOfSessions > 99 ))
       return "Numero de sessões inválido."
