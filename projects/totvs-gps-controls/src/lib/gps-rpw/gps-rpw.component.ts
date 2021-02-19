@@ -119,13 +119,14 @@ export class GpsRpwComponent implements OnInit {
           if((info.repeatExecOnLastDayOfMonth == 2) && (info.repeatExecMonthlyDay > 31)) 
           return "Dia do mês inválido"
       }
+
+      if(!info.repeatExecFinalDate) return "Data fora do período"
+      
+      dateValidator = info.repeatExecFinalDate;
+      if(dateValidator == "Data fora do período") return "Data fora do período"
+      
+      if(info.repeatExecFinalDate < new Date()) return "Data deve ser maior que hoje"
     }
-    if(!info.repeatExecFinalDate) return "Data fora do período"
-    
-    dateValidator = info.repeatExecFinalDate;
-    if(dateValidator == "Data fora do período") return "Data fora do período"
-    
-    if(info.repeatExecFinalDate < new Date()) return "Data deve ser maior que hoje"
 
     if(info.multisession && (info.numberOfSessions < 1 || info.numberOfSessions > 99 ))
       return "Numero de sessões inválido."

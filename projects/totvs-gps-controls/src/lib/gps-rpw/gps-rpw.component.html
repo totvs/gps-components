@@ -43,13 +43,13 @@
                         <div class="po-xl-12 po-lg-12 po-md-12 po-sm-12">
                             <div class="po-font-subtitle">
                                 <!-- Quantidade -->
-                                <po-number class="po-xl-6 po-lg-6 po-md-6 po-sm-6"
+                                <po-input class="po-xl-6 po-lg-6 po-md-6 po-sm-6"
                                     name="repeatExecAppointmentQuantity"
                                     [(ngModel)]="model.repeatExecAppointmentQuantity"
                                     (ngModelChange)="rpwNgModelChange()" p-required p-label="Repete a cada"
-                                    ngDefaultControl>
+                                    ngDefaultControl p-pattern="[0-9]+" p-mask="9999">
                                     
-                                </po-number>
+                                </po-input>
 
                                 <!-- Unidade -->
                                 <po-select class="po-xl-6 po-lg-6 po-md-6 po-sm-6"
