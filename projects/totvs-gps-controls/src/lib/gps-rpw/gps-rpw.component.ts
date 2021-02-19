@@ -109,8 +109,8 @@ export class GpsRpwComponent implements OnInit {
         if(!info.repeatExecAppointmentHour) return "Minuto deve ser informado"
       }
 
-      if(!info.repeatExecFinalHour){
-          return "Hora final deve ser informado"
+      if((info.repeatExecAppointmentUnit == 1 || info.repeatExecAppointmentUnit == 2) && !info.repeatExecFinalHour){
+          return "Hora final deve ser informada"
       }
 
       if(info.repeatExecAppointmentUnit == 4){
