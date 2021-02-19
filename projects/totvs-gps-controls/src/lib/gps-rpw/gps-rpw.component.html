@@ -55,7 +55,7 @@
                                 <po-select class="po-xl-6 po-lg-6 po-md-6 po-sm-6"
                                     name="repeatExecAppointmentUnit"
                                     [(ngModel)]="model.repeatExecAppointmentUnit"
-                                    (ngModelChange)="rpwNgModelChange()" p-required p-label="Frequência"
+                                    (ngModelChange)="rpwNgModelChange();cleanHours()" p-required p-label="Frequência"
                                     [p-options]="repeatUnitOptions" ngDefaultControl>
                                 </po-select>
 

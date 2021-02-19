@@ -63,12 +63,14 @@ export class GpsRpwComponent implements OnInit {
   rpwNgModelChange(){    
     if(this.model.repeatExecAppointmentUnit == 2 && this._repeatExecAppointmentMinute){
         this.model.repeatExecAppointmentHour = "00:" + this._repeatExecAppointmentMinute;
-    }else{
-        this.model.repeatExecAppointmentHour = undefined;
-        this._repeatExecAppointmentMinute = undefined;
     }
 
     this.modelChange.emit(this.model);
+  }
+
+  cleanHours(){ 
+    this.model.repeatExecAppointmentHour = undefined;
+    this._repeatExecAppointmentMinute = undefined;
   }
 
   getRpwServers(): any {
