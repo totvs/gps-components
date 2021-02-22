@@ -126,6 +126,8 @@ export class GpsRpwComponent implements OnInit {
       if(dateValidator == "Data fora do período") return "Data fora do período"
       
       if(info.repeatExecFinalDate < new Date()) return "Data deve ser maior que hoje"
+
+      if(info.executionTime == '2' && info.repeatExecFinalDate < dateValidator) return "Data fim da repetição deve ser maior que a data de início de agendamento"
     }
 
     if(info.multisession && (info.numberOfSessions < 1 || info.numberOfSessions > 99 ))
