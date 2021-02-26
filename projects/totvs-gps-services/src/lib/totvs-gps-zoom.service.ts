@@ -9,6 +9,7 @@ export interface IZoomService {
   COLUMNS: Array<IZoomColumn>;
   FIELD_LABEL: string;
   FIELD_VALUE: string;
+  getFilteredItems(params:any): Observable<TTalkCollection<any>>;
   getFilteredData(filter: any, page: number, pageSize?: number, filterParams?: any): Observable<TTalkCollection<any>>;
   getObjectByValue(value: string, filterParams?: any): Observable<any>;
 }
@@ -144,6 +145,10 @@ export class GenericZoom implements IZoomService {
     else {
       return this.genericZoomEntity.fieldValue;
     }
+  }
+
+  public getFilteredItems(params:any): Observable<any> {
+    return this.getFilteredData(params.filter, params.page, params.pageSize);
   }
 
   public getFilteredData(filter: string, page: number, pageSize: number, filterParams?: any): Observable<any> {
