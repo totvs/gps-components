@@ -148,7 +148,7 @@ export class GenericZoom implements IZoomService {
   }
 
   public getFilteredItems(params:any): Observable<any> {
-    return this.getFilteredData(params.filter, params.page, params.pageSize);
+    return this.getFilteredData(params.filter, params.page, params.pageSize, params.filterParams);
   }
 
   public getFilteredData(filter: string, page: number, pageSize: number, filterParams?: any): Observable<any> {
