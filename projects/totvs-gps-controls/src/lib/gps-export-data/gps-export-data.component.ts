@@ -104,15 +104,9 @@ export class GpsExportDataComponent {
         for (let i=0; i < data.length; i++) {
             byteNumbers[i] = data.charCodeAt(i);
         }
-        let byteArray = new Uint8Array(byteNumbers);
+        const byteArray = new Uint8Array(byteNumbers.filter(n => n < 0x2000));
         return new Blob([byteArray], {type : 'text/csv'});
     }
-
-    /*
-    private base64ToArray(data64): Blob {
-        return this.dataToArray(atob(data64));
-    }
-    */
 
     private downloadFile(fileName:string, content:Blob) {
         let downloadUrl = window.URL.createObjectURL(content);
