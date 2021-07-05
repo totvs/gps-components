@@ -1,0 +1,11 @@
+{
+  "name": "totvs-gps-crud",
+  "version": "5.0.1",
+  "peerDependencies": {
+    "@angular/common": "^11.0.1",
+    "@angular/core": "^11.0.1",
+    "@po-ui/ng-components": "^4.0.0",
+    "totvs-gps-utils": "^5.0.1",
+    "totvs-gps-controls": "^5.0.1"
+  }
+}

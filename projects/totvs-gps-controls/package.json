@@ -1,11 +1,11 @@
 {
   "name": "totvs-gps-controls",
-  "version": "2.2.0",
+  "version": "5.1.7",
   "peerDependencies": {
-    "@angular/common": "~8.0.0",
-    "@angular/core": "~8.0.0",
-    "@portinari/portinari-ui": "^1.22.0",
-    "@totvs/portinari-theme": "^1.22.0",
-    "totvs-gps-services": "^2.0.0"
+    "@angular/common": "^11.0.1",
+    "@angular/core": "^11.0.1",
+    "@po-ui/ng-components": "^4.0.0",
+    "totvs-gps-services": "^5.0.1",
+    "totvs-gps-utils": "^5.0.1"
   }
 }

@@ -10,7 +10,7 @@
       "prefix": "lib",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
+          "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
             "tsConfig": "projects/totvs-gps-services/tsconfig.lib.json",
             "project": "projects/totvs-gps-services/ng-package.json"
@@ -45,7 +45,7 @@
       "prefix": "lib",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
+          "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
             "tsConfig": "projects/totvs-gps-controls/tsconfig.lib.json",
             "project": "projects/totvs-gps-controls/ng-package.json"
@@ -80,7 +80,7 @@
       "prefix": "lib",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
+          "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
             "tsConfig": "projects/totvs-gps-utils/tsconfig.lib.json",
             "project": "projects/totvs-gps-utils/ng-package.json"
@@ -115,7 +115,7 @@
       "prefix": "lib",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
+          "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
             "tsConfig": "projects/totvs-gps-zoom/tsconfig.lib.json",
             "project": "projects/totvs-gps-zoom/ng-package.json"
@@ -142,6 +142,41 @@
           }
         }
       }
+    },
+    "totvs-gps-crud": {
+        "root": "projects/totvs-gps-crud",
+        "sourceRoot": "projects/totvs-gps-crud/src",
+        "projectType": "library",
+        "prefix": "lib",
+        "architect": {
+            "build": {
+            "builder": "@angular-devkit/build-angular:ng-packagr",
+            "options": {
+                "tsConfig": "projects/totvs-gps-crud/tsconfig.lib.json",
+                "project": "projects/totvs-gps-crud/ng-package.json"
+            }
+            },
+            "test": {
+            "builder": "@angular-devkit/build-angular:karma",
+            "options": {
+                "main": "projects/totvs-gps-crud/src/test.ts",
+                "tsConfig": "projects/totvs-gps-crud/tsconfig.spec.json",
+                "karmaConfig": "projects/totvs-gps-crud/karma.conf.js"
+            }
+            },
+            "lint": {
+            "builder": "@angular-devkit/build-angular:tslint",
+            "options": {
+                "tsConfig": [
+                "projects/totvs-gps-crud/tsconfig.lib.json",
+                "projects/totvs-gps-crud/tsconfig.spec.json"
+                ],
+                "exclude": [
+                "**/node_modules/**"
+                ]
+            }
+            }
+        }
     }
   },
   "defaultProject": "totvs-gps-services"

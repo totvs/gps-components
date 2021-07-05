@@ -1,8 +1,8 @@
 import { Component, Input, ViewChild, PipeTransform, ChangeDetectorRef } from "@angular/core";
-import { isNullOrUndefined, isBoolean } from "util";
-import { PoModalComponent, PoModalAction } from "@portinari/portinari-ui";
+import { PoModalComponent, PoModalAction } from "@po-ui/ng-components";
 import { IOrderListItem } from "../totvs-gps-controls.model";
 import { GpsOrderListComponent } from "../gps-order-list/gps-order-list.component";
+import { isNull, isBoolean } from "totvs-gps-utils";
 
 export interface IExportColumn {
     property:string;
@@ -47,7 +47,7 @@ export class GpsExportDataComponent {
     };
 
     export(columnSelection?:boolean) {
-        if (!isNullOrUndefined(this.columns)) {
+        if (!isNull(this.columns)) {
             this.originalColumns = this.columns.map(item => { return { label: (item.label || item.property), value: item.property }});
             this.changeDetectorRef.detectChanges();
         }
@@ -84,9 +84,9 @@ export class GpsExportDataComponent {
             value = column.pipe.transform(item[column.property], ...(column.pipeArgs || []));
         else
             value = `${item[column.property]}`;
-        if (isNullOrUndefined(value))
+        if (isNull(value))
             value = '';
-        if (!isNullOrUndefined(column.transform)) {
+        if (!isNull(column.transform)) {
             try {
                 value = column.transform(value);
             }
@@ -104,15 +104,9 @@ export class GpsExportDataComponent {
         for (let i=0; i < data.length; i++) {
             byteNumbers[i] = data.charCodeAt(i);
         }
-        let byteArray = new Uint8Array(byteNumbers);
+        const byteArray = new Uint8Array(byteNumbers.filter(n => n < 0x2000));
         return new Blob([byteArray], {type : 'text/csv'});
     }
-
-    /*
-    private base64ToArray(data64): Blob {
-        return this.dataToArray(atob(data64));
-    }
-    */
 
     private downloadFile(fileName:string, content:Blob) {
         let downloadUrl = window.URL.createObjectURL(content);

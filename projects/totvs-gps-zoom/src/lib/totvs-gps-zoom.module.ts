@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { PoModule } from '@portinari/portinari-ui';
+import { PoModule } from '@po-ui/ng-components';
 import { TotvsGpsServicesModule } from 'totvs-gps-services';
 import { BeneficiaryZoomComponent } from './beneficiary-zoom/beneficiary-zoom.component';
 

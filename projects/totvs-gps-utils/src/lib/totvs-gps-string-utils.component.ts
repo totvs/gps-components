@@ -329,6 +329,17 @@ export class TotvsStringUtils {
     return success;
   }
 
+  public toBoolean(val: any): boolean {
+    if (typeof val === 'string') {
+      val = val.toLowerCase().trim();
+      return val === 'true' || val === 'on' || val === '';
+    }
+    if (typeof val === 'number') {
+      return val === 1;
+    }
+    return !!val;
+  }
+
   /* --- private methods --- */
 
   private toByteArray(data): Blob {

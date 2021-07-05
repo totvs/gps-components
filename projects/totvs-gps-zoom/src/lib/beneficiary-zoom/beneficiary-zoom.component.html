@@ -6,7 +6,7 @@
   [p-primary-action]="modalPrimaryAction"
   [p-secondary-action]="modalSecondaryAction">
   <div class="po-row">
-    <form #beneficiaryZoomContentForm="ngForm" name="beneficiaryZoomContent" class="po-row" (keypress)="onKeyUp($event)">
+    <form #beneficiaryZoomContentForm name="beneficiaryZoomContent" class="po-row" (keypress)="onKeyUp($event)">
       <ng-content></ng-content>
       <ng-container *ngIf="!customContent && filter">
         <ng-container *ngIf="!hasCustomFilter">
@@ -39,7 +39,7 @@
           </div>
         </ng-container>
         <po-table
-          p-checkbox
+          p-selectable
           [p-columns]="tableColumns"
           p-height="350px"
           p-hide-detail="false"

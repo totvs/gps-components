@@ -1,6 +1,6 @@
 import { IServiceRequest, HTTPMethod } from "./totvs-gps-services.model";
 import { Observable, of } from "rxjs";
-import { isNullOrUndefined } from "util";
+import { isNull } from "totvs-gps-utils";
 
 export class TotvsGpsMockRequest implements IServiceRequest {
 
@@ -38,7 +38,7 @@ export class TotvsGpsMockRequest implements IServiceRequest {
 
     private findResponse(httpMethod:HTTPMethod,url:string): any {
         let result = this._requests.filter(r => r.method == httpMethod).find(r => r.url.test(url));
-        if (!isNullOrUndefined(result))
+        if (!isNull(result))
             return result.response;
         return;
     }

@@ -3,7 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { take } from "rxjs/operators";
 import { TotvsGpsObjectModel, ITotvsGpsJsonParse, TTalkCollection, OrderField, OrderSort, IServiceRequest, HTTPMethod } from "./totvs-gps-services.model";
 import { encodeURLParam } from "./totvs-gps-services.utils";
-import { isNullOrUndefined } from "util";
+import { isNull } from "totvs-gps-utils";
 
 /**
  * @description
@@ -329,7 +329,7 @@ export class TotvsGpsServices<T> {
         let newUrl = url;
         let params = [];
         if (this._queryParams)
-            Object.keys(this._queryParams).filter(key => !isNullOrUndefined(this._queryParams[key])).forEach(key => params.push(key + '=' + encodeURLParam(this._queryParams[key])));
+            Object.keys(this._queryParams).filter(key => !isNull(this._queryParams[key])).forEach(key => params.push(key + '=' + encodeURLParam(this._queryParams[key])));
         if (this._page)
             params.push('page=' + this._page.toString());
         if (this._pageSize)
@@ -391,7 +391,7 @@ export class TotvsGpsServices<T> {
     //#region métodos internos para requisições de mock
     private getServiceRequest(url:string): IServiceRequest {
         let req = GPS_SERVICES.getMockRequest(url);
-        if (!isNullOrUndefined(req))
+        if (!isNull(req))
             return req;
         return this._http;
     }

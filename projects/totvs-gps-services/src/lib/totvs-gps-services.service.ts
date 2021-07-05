@@ -1,7 +1,7 @@
 import { Injectable, isDevMode } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { TotvsGpsMockRequest } from './totvs-gps-mock-request.component';
-import { isNullOrUndefined } from 'util';
+import { isNull } from 'totvs-gps-utils';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +35,7 @@ export class TotvsGpsDataService {
   public getMockRequest(url:string): TotvsGpsMockRequest {
     if (isDevMode() || this._mockInProductionMode) {
       let result = this._mockRequests.find(r => url.startsWith(r.url));
-      if (!isNullOrUndefined(result))
+      if (!isNull(result))
       return result.request;
     }
     return;

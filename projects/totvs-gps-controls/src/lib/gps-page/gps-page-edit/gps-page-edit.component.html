@@ -2,16 +2,21 @@
     [p-breadcrumb]="parameterBreadcrumb"
     [p-literals]="parameterLiterals"
     [p-title]="parameterTitle"
-    [p-disable-submit]="parameterDisableSubmit"
-    (p-cancel)="parameterOnCancel"
-    (p-save)="parameterOnSave"
-    (p-save-new)="parameterOnSaveNew">
+    [p-disable-submit]="parameterDisableSubmit">
     <po-loading-overlay
         p-screen-lock="true"
         [p-text]="loadingStatus.message"
         [hidden]="!loadingStatus.active">
     </po-loading-overlay>
-    <form #mainForm="ngForm">
+    <gps-model-fill [model]="parameterModelFill"></gps-model-fill>
+    <form #mainForm>
         <ng-content></ng-content>
+        <ng-container *ngIf="hasCustomFields">
+            <po-dynamic-form
+                p-group-form    
+                [p-fields]="customFields.fields"
+                [p-value]="customFields.values">
+            </po-dynamic-form>
+        </ng-container>
     </form>
 </po-page-edit>

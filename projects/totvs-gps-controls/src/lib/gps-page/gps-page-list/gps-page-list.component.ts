@@ -1,11 +1,12 @@
-import { Component, Input, ViewContainerRef, ChangeDetectorRef, ViewChild, ContentChild, Output, EventEmitter } from "@angular/core";
-import { PoPageFilter, PoDisclaimer, PoDisclaimerGroup, PoModalComponent, PoModalAction } from "@portinari/portinari-ui";
-import { isNullOrUndefined } from "util";
+import { Component, Input, ChangeDetectorRef, ViewChild, ContentChild, Output, EventEmitter } from "@angular/core";
+import { PoPageFilter, PoDisclaimer, PoDisclaimerGroup, PoModalComponent, PoModalAction } from "@po-ui/ng-components";
+import { isNull } from "totvs-gps-utils";
 import { GpsPageBaseComponent } from "../gps-page-base.component";
 import { TotvsGpsDateUtils } from "totvs-gps-utils";
 import { GpsAdvancedSearchDirective } from "../directives/gps-advanced-search.directive";
 import { ILoadingData } from "../gps-page.internal-model";
 import { IDisclaimerConfig } from "../models/gps-page.model";
+import { TotvsStringUtils } from "totvs-gps-utils";
 
 @Component({
     selector: 'gps-page-list',
@@ -21,9 +22,6 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
     @Input('p-disclaimer-group') parameterDisclaimerGroup;
     @Input('p-literals') parameterLiterals;
     @Input('p-actions') parameterActions;
-    @Input('p-filter')
-        get parameterFilter(): PoPageFilter { return this._parameterFilter }
-        set parameterFilter(value) { this._parameterFilter = value; this.updateFilterAction() };
     //#endregion
 
     //#region specific properties
@@ -34,6 +32,12 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
     @Input('disclaimer-config')
         get parameterGpsDisclaimerConfig() { return this._parameterGpsDisclaimerConfig }
         set parameterGpsDisclaimerConfig(value) { this._parameterGpsDisclaimerConfig = value; this.refreshDisclaimers() }
+    @Input('disable-advanced-search') 
+        get parameterDisableAdvancedSearch() { return this._parameterDisableAdvancedSearch }
+        set parameterDisableAdvancedSearch(value:any) { this.setParameterDisableAdvancedSearch(value) }
+    @Input('loading-advanced-search') 
+        get parameterLoadingAdvancedSearch() { return this._parameterLoadingAdvancedSearch }
+        set parameterLoadingAdvancedSearch(value:any) { this.setParameterLoadingAdvancedSearch(value) }
 
     @Output('on-search') onSearch: EventEmitter<any> = new EventEmitter();
     @Output('before-advanced-search') beforeAdvancedSearch: EventEmitter<any> = new EventEmitter();
@@ -42,20 +46,13 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
 
     //#region startup
     constructor(
-        private _viewContainerRef: ViewContainerRef,
         private _changeDetectorRef: ChangeDetectorRef
     ) {
         super();
-        this._parentContext = this._viewContainerRef['_view']['component'];
     }
 
-    private _parentContext: ViewContainerRef;
-    protected get parentContext(): ViewContainerRef {
-        return this._parentContext;
-    }
-    protected set parentContext(value) {
-        this._parentContext = value;
-    }
+    private totvsStringUtils = TotvsStringUtils.getInstance();
+
     //#endregion
 
     //#region loading
@@ -70,69 +67,24 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
     }
     //#endregion
 
-    //#region filter model
-    private _filterModel: string;
-    get filterModel() {
-        return this._filterModel;
-    }
-    set filterModel(value) {
-        this._filterModel = value;
-        if (!isNullOrUndefined(this._parameterFilter) && !isNullOrUndefined(this._parameterFilter.ngModel) && (this._parameterFilter.ngModel != ''))
-            this.parentContext[this._parameterFilter.ngModel] = value;
-    }
-    //#endregion
-
     //#region filter parameter
-    private _parameterFilter: PoPageFilter;
     private _internalFilter: PoPageFilter;
     get internalFilter() {
         return this._internalFilter;
     }
 
     private updateFilterAction() {
-        if (!isNullOrUndefined(this._parameterFilter))
-            this.setPortinariFilter();
-        else if (this.onSearch.observers.length > 0)
+        if (this.onSearch.observers.length > 0)
             this.setGpsFilter();
         else 
             this._internalFilter = null;
     }
 
-    private setPortinariFilter() {
-        this._internalFilter = {
-            advancedAction: this._parameterFilter.advancedAction,
-            ngModel: 'filterModel',
-            placeholder: this._parameterFilter.placeholder
-        }
-        if (this._parameterFilter.action instanceof Function) {
-            let _f: Function = this._parameterFilter.action;
-            this._internalFilter.action = () => {
-                _f();
-            };
-        }
-        else {
-            this._internalFilter.action = this._parameterFilter.action;
-            this[this._internalFilter.action] = this.parentContext[this._internalFilter.action];
-        }
-        if (this._parameterFilter.advancedAction instanceof Function) {
-            let _f: Function = this._parameterFilter.advancedAction;
-            this._internalFilter.advancedAction = () => {
-                _f();
-            };
-        }
-        else {
-            this._internalFilter.advancedAction = this._parameterFilter.advancedAction;
-            this[this._internalFilter.advancedAction] = this.parentContext[this._internalFilter.advancedAction];
-        }
-        this._changeDetectorRef.detectChanges();
-    }
-
     private setGpsFilter() {
         this._internalFilter = {
-            ngModel: 'filterModel',
             placeholder: 'Pesquisar',
-            action: () => {
-                this.onSearch.emit(this.filterModel);
+            action: (filter) => {
+                this.onSearch.emit(filter);
                 this.refreshDisclaimers();
             }
         }
@@ -150,13 +102,13 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
     get internalDisclaimerGroup() {
         if (!this._disclaimersVisible)
             return null;
-        if (isNullOrUndefined(this.parameterDisclaimerGroup))
+        if (isNull(this.parameterDisclaimerGroup))
             return this._defaultDisclaimerGroup;
         return this.parameterDisclaimerGroup;
     }
 
     refreshDisclaimers() {
-        if (isNullOrUndefined(this._parameterGpsFilter) || isNullOrUndefined(this._parameterGpsDisclaimerConfig))
+        if (isNull(this._parameterGpsFilter) || isNull(this._parameterGpsDisclaimerConfig))
             this._defaultDisclaimerGroup.disclaimers = [];
         else
             this._defaultDisclaimerGroup.disclaimers = this.parseDisclaimers(this._parameterGpsFilter, this._parameterGpsDisclaimerConfig);
@@ -174,7 +126,7 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
     private parseDisclaimers(obj, config: IDisclaimerConfig[]): PoDisclaimer[] {
         let disclaimers: PoDisclaimer[] = [];
         config.forEach(param => {
-            if (!isNullOrUndefined(obj[param.property])||(param.type === 'function')) {
+            if (!isNull(obj[param.property])||(param.type === 'function')) {
                 let value = '';
                 if (param.type === 'date')
                     value = TotvsGpsDateUtils.getInstance().getLocaleDate(obj[param.property])
@@ -186,19 +138,19 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
                     value = 'true';
                 }
                 else if (param.type === 'function') {
-                    if (!isNullOrUndefined(param.value))
+                    if (!isNull(param.value))
                         value = param.value(obj);
                     else
                         value = '';
                 }
                 else
                     value = String(obj[param.property]).valueOf();
-                if ((value === '')&&(isNullOrUndefined(value)))
+                if ((value === '')&&(isNull(value)))
                     return;
-                if ((param.type != 'function')&&(!isNullOrUndefined(param.value)))
+                if ((param.type != 'function')&&(!isNull(param.value)))
                     value = param.value(value);
                 let item: PoDisclaimer = disclaimers.find(item => item.property == (param.group || param.property || param.label));
-                if (isNullOrUndefined(item)) {
+                if (isNull(item)) {
                     item = { property: (param.group || param.property || param.label), hideClose: true, value: value };
                     disclaimers.push(item);
                 }
@@ -217,12 +169,29 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
 
     //#region advanced search
     private _parameterGpsFilter;
+    private _parameterDisableAdvancedSearch: boolean;
+    private _parameterLoadingAdvancedSearch: boolean;
 
-    get hasAdvancedSearch(): boolean {
-        return !isNullOrUndefined(this.advancedSearchTemplateRef);
+    private setParameterDisableAdvancedSearch(value:any) {
+        const v = this.totvsStringUtils.toBoolean(value);
+        if (v !== this._parameterDisableAdvancedSearch) {
+            this._parameterDisableAdvancedSearch = v;
+            this.modalSearchAction.disabled = this._parameterDisableAdvancedSearch;
+        }
+    }
+    private setParameterLoadingAdvancedSearch(value:any) {
+        const v = this.totvsStringUtils.toBoolean(value);
+        if (v !== this._parameterLoadingAdvancedSearch) {
+            this._parameterLoadingAdvancedSearch = v;
+            this.modalSearchAction.loading = this._parameterLoadingAdvancedSearch;
+        }
     }
 
-    modalSearchAction: PoModalAction = { label: 'Aplicar filtros', action: null };
+    get hasAdvancedSearch(): boolean {
+        return !isNull(this.advancedSearchTemplateRef);
+    }
+
+    modalSearchAction: PoModalAction = { label: 'Aplicar filtros', action: null, disabled: false, loading: false };
     modalSearchCloseAction: PoModalAction = { label: 'Cancelar', action: null };
     openAdvancedSearch() {
         let _oldValue = Object.assign({}, this._parameterGpsFilter);

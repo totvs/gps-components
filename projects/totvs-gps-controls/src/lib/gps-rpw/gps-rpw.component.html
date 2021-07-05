@@ -1,4 +1,4 @@
-<form #fOption="ngForm">
+<form #fOption>
     <po-list-view [p-items]="[{title:'Execução'}]" p-property-title="title">
         <ng-template p-list-view-content-template let-item>
             <div class="po-row">
@@ -28,7 +28,7 @@
             <div class="po-row">
                 <po-combo class="po-xl-12 po-lg-12 po-md-12 po-sm-12" name="executionServer"
                     [(ngModel)]="model.executionServer" p-required (ngModelChange)="rpwNgModelChange()"
-                    p-label="Servidor de execução" [p-options]="rpwServerOptions" ngDefaultControl>
+                    p-label="Servidor de execução" [p-options]="rpwServerOptions" [p-filter-mode]="filterMode" ngDefaultControl>
                 </po-combo>
             </div>
             <div class="po-row">
@@ -41,66 +41,77 @@
                 <po-widget *ngIf="model.repeatExecution" class="po-xl-12 po-lg-12 po-md-12 po-sm-12" p-no-shadow>
                     <div class="po-row">
                         <div class="po-xl-12 po-lg-12 po-md-12 po-sm-12">
-                            <po-tabs>
-                                <po-tab p-label="Diária" [p-active]="model.activeTab === 1" [p-disabled]="isDisabled(1)"
-                                    [p-hide]="isHidden(1)" (p-click)="setActiveTab(1)">
-                                    <div class="po-font-subtitle">
-                                        <po-combo class="po-xl-6 po-lg-6 po-md-6 po-sm-6"
-                                            name="repeatExecAppointmentDaily"
-                                            [(ngModel)]="model.repeatExecAppointmentDaily"
-                                            (ngModelChange)="rpwNgModelChange()" p-required p-label="Repete a cada"
-                                            [p-options]="repeatEachDailyOptions" ngDefaultControl>
-                                        </po-combo>
-                                        <po-input name="repeatExecAppointmentHourDaily"
-                                            [(ngModel)]="model.repeatExecAppointmentHourDaily"
-                                            (ngModelChange)="rpwNgModelChange()" p-label="Horário" p-mask="99:99"
-                                            p-required p-mask-format-model="true"
-                                            p-pattern="^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$"
-                                            class="po-xl-6 po-lg-6 po-md-6 po-sm-6" ngDefaultControl>
-                                        </po-input>
-                                    </div>
-                                </po-tab>
+                            <div class="po-font-subtitle">
+                                <!-- Quantidade -->
+                                <po-input class="po-xl-6 po-lg-6 po-md-6 po-sm-6"
+                                    name="repeatExecAppointmentQuantity"
+                                    [(ngModel)]="model.repeatExecAppointmentQuantity"
+                                    (ngModelChange)="rpwNgModelChange()" p-required p-label="Repete a cada"
+                                    ngDefaultControl p-pattern="[0-9]+" p-mask="9999">
+                                    
+                                </po-input>
 
-                                <po-tab p-label="Mensal" [p-active]="model.activeTab === 2" [p-disabled]="isDisabled(2)"
-                                    [p-hide]="isHidden(2)" (p-click)="setActiveTab(2)">
-                                    <div class="po-font-subtitle">
-                                        <po-combo class="po-xl-6 po-lg-6 po-md-6 po-sm-6"
-                                            name="repeatExecAppointmentMonthly"
-                                            [(ngModel)]="model.repeatExecAppointmentMonthly"
-                                            (ngModelChange)="rpwNgModelChange()" p-required p-label="Repete a cada"
-                                            [p-options]="repeatEachMonthlyOptions" ngDefaultControl>
-                                        </po-combo>
-                                        <po-input name="repeatExecAppointmentHourMonthly"
-                                            [(ngModel)]="model.repeatExecAppointmentHourMonthly"
-                                            (ngModelChange)="rpwNgModelChange()" p-label="Horário" p-required
-                                            p-mask="99:99" p-mask-format-model="true"
-                                            p-pattern="^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$"
-                                            class="po-xl-6 po-lg-6 po-md-6 po-sm-6" ngDefaultControl>
-                                        </po-input>
-                                        <po-combo class="po-xl-6 po-lg-6 po-md-6 po-sm-6"
-                                            name="repeatExecOnLastDayOfMonth"
-                                            [(ngModel)]="model.repeatExecOnLastDayOfMonth"
-                                            (ngModelChange)="rpwNgModelChange()" p-label="Sempre no dia" p-required
-                                            [p-options]="[{label:'Último dia do mês', value:1},{label:'Escolher Dia', value:2}]"
-                                            ngDefaultControl>
-                                        </po-combo>
-                                        <po-input *ngIf="model.repeatExecOnLastDayOfMonth == 2"
-                                            name="repeatExecMonthlyDay" [(ngModel)]="model.repeatExecMonthlyDay"
-                                            (ngModelChange)="rpwNgModelChange()" p-label="Dia do mês" p-mask="99"
-                                            p-mask-format-model="true" p-required p-pattern="([1-9]|[12]\d|3[01])"
-                                            class="po-xl-6 po-lg-6 po-md-6 po-sm-6" ngDefaultControl>
-                                        </po-input>
-                                    </div>
-                                </po-tab>
-                            </po-tabs>
+                                <!-- Unidade -->
+                                <po-select class="po-xl-6 po-lg-6 po-md-6 po-sm-6"
+                                    name="repeatExecAppointmentUnit"
+                                    [(ngModel)]="model.repeatExecAppointmentUnit"
+                                    (ngModelChange)="rpwNgModelChange();cleanHours()" p-required p-label="Frequência"
+                                    [p-options]="repeatUnitOptions" ngDefaultControl>
+                                </po-select>
+
+                                <po-input *ngIf="model.repeatExecAppointmentUnit == 4 || model.repeatExecAppointmentUnit == 3"
+                                    name="repeatExecAppointmentHour"
+                                    [(ngModel)]="model.repeatExecAppointmentHour"
+                                    (ngModelChange)="rpwNgModelChange()" p-label="Horário" p-required
+                                    p-mask="99:99" p-mask-format-model="true"
+                                    p-pattern="^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$"
+                                    class="po-xl-6 po-lg-6 po-md-6 po-sm-6" ngDefaultControl>
+                                </po-input>
+
+                                <po-input *ngIf="model.repeatExecAppointmentUnit == 2"
+                                    name="repeatExecAppointmentMinute"
+                                    [(ngModel)]="_repeatExecAppointmentMinute"
+                                    (ngModelChange)="rpwNgModelChange()" p-label="No minuto" p-required
+                                    p-mask="99" p-mask-format-model="true"
+                                    p-pattern="[0-5][0-9]$"
+                                    class="po-xl-6 po-lg-6 po-md-6 po-sm-6" ngDefaultControl>
+                                </po-input>
+
+                                <po-select *ngIf="model.repeatExecAppointmentUnit == 4"
+                                    class="po-xl-6 po-lg-6 po-md-6 po-sm-6"
+                                    name="repeatExecOnLastDayOfMonth"
+                                    [(ngModel)]="model.repeatExecOnLastDayOfMonth"
+                                    (ngModelChange)="rpwNgModelChange()" p-label="Sempre no dia" p-required
+                                    [p-options]="[{label:'Último dia do mês', value:1},{label:'Escolher Dia', value:2}]"
+                                    ngDefaultControl>
+                                </po-select>
+
+                                <po-input *ngIf="model.repeatExecOnLastDayOfMonth == 2 && model.repeatExecAppointmentUnit == 4"
+                                    name="repeatExecMonthlyDay" [(ngModel)]="model.repeatExecMonthlyDay"
+                                    (ngModelChange)="rpwNgModelChange()" p-label="Dia do mês" p-mask="99"
+                                    p-max="31" p-min="1"
+                                    p-mask-format-model="true" p-required p-pattern="([1-9]|[12]\d|3[01])"
+                                    class="po-xl-6 po-lg-6 po-md-6 po-sm-6" ngDefaultControl>
+                                </po-input>
+                            </div>
                         </div>
                     </div>
-                    <div class="po-row">
-                        <div class="po-xl-12 po-lg-12 po-md-12 po-sm-12">
-                            <po-datepicker [p-min-date]="currentDate" class="po-xl-3 po-lg-3 po-md-3 po-sm-3" p-required
+                    <div class="po-xl-12 po-lg-12 po-md-12 po-sm-12">
+                        <div class="po-xl-6 po-lg-6 po-md-6 po-sm-6">
+                            <po-datepicker [p-min-date]="currentDate" p-required
                                 name="repeatExecFinalDate" [(ngModel)]="model.repeatExecFinalDate"
                                 (ngModelChange)="rpwNgModelChange()" p-label="Até o dia" ngDefaultControl>
                             </po-datepicker>
+                        </div>
+                        <div class="po-xl-6 po-lg-6 po-md-6 po-sm-6">
+                            <po-input *ngIf="model.repeatExecAppointmentUnit == 1 || model.repeatExecAppointmentUnit == 2"
+                                    name="repeatExecFinalHour"
+                                    [(ngModel)]="model.repeatExecFinalHour"
+                                    (ngModelChange)="rpwNgModelChange()" p-label="Até a hora" p-required
+                                    p-mask="99:99" p-mask-format-model="true"
+                                    p-pattern="^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$"
+                                    ngDefaultControl>
+                            </po-input>
                         </div>
                     </div>
                 </po-widget>

@@ -51,22 +51,29 @@ export class TotvsGpsRpw {
     allowMultipleSessions:boolean = false;
     numberOfSessions:number = 1;
 
-    repeatExecAppointmentDaily:number;
-    repeatExecAppointmentHourDaily:string = '';
+    repeatExecAppointmentQuantity:number;
+    repeatExecAppointmentUnit:number;
+
+    repeatExecAppointmentHour:string = '';
     
-    repeatExecAppointmentMonthly:number;
-    repeatExecAppointmentHourMonthly:string = '';
     repeatExecOnLastDayOfMonth: 1 | 2 = 1;
     repeatExecMonthlyDay:number;
 
     repeatExecFinalDate:Date;
-
-    repeatExecPattern: 1 | 2 = 1; /* 1 - Diario, 2 - Mensal */    
-
-    activeTab:number;
+    repeatExecFinalHour:string = '';
 
     parseJsonToObject(param){
         Object.assign(this,param);                                        
     }
 
 }
+
+/**
+ * Mock model, usado no gps-mock-fill
+ */
+export interface IModelFillData {
+    description: string,
+    model: any,
+    url: string
+}
+ 

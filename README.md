@@ -2,6 +2,28 @@
 
 > TOTVS Healthcare Components
 
+## Versions
+
+### 0.X / 1.X
+Angular 6/7 compatibility
+
+### 2.X
+Angular 8 compatibility
+
+### 3.X
+Angular 9 compatibility
+
+### 4.X
+Angular 10 compatibility
+
+### 5.X
+Angular 11 compatibility
+
+## Breaking changes
+
+### 3.0.0
+- gps-page-list: removed p-filter property
+
 ## TotvsGpsServices
 
 ### Features
@@ -9,34 +31,6 @@
 - Http Interceptor for Datasul-REST
 - GenericZoom
 - Cache Service
-
-### Changelog
-#### v0.2.0
-- Add TotvsGpsCacheService
-- Interfaces for TotvsGpsCacheService
-#### v0.1.0
-- Add GenericZoom feature
-- Fix in Date type in Path/Query params
-#### v0.0.12
-- Fix PathParam with Date
-#### v0.0.11
-- Omit undefined values in query params
-#### v0.0.10
-- Omit null values in query params
-#### v0.0.9
-- PathParam with Boolean
-#### v0.0.8
-- PathParam with Date
-#### v0.0.7
-- Add setOrder() to build path
-#### v0.0.6
-- Fix Interceptor's URL Pattern for T-Talk
-#### v0.0.5
-- Add `setPathParams` method to build path URL with objects
-#### v0.0.4
-- Add TotvsGpsInterceptorService
-#### v0.0.3
-- Fix error on empty response
 
 ### Build
 - Change the version number in projects/totvs-gps-services/package.json.
@@ -49,12 +43,6 @@
 ### Features
 - Form validator
 - GPS components
-
-### Changelog
-#### v0.1.1
-- Add ChangeDetectionRef in gps-order-list to avoid warnings
-#### v0.1.0
-- Add gps-order-list component
 
 ### Build
 - Change the version number in projects/totvs-gps-controls/package.json.
@@ -69,16 +57,22 @@
 - TotvsGpsJsonUtils to manipulate JSON objects
 - TotvsStringUtils
 - TotvsMaskString
-
-### Changelog
-#### v0.1.1
-- Add getSeparators() in TotvsStringUtils
-#### v0.1.0
-- TotvsMaskString
-#### v0.0.2
-- isISODate() fix
+- GpsMaintenanceUrl to manipulate and generate url's used on CRUD
 
 ### Build
 - Change the version number in projects/totvs-gps-utils/package.json.
 - Run `npm run build_utils` to build the project. The build artifacts will be stored in the `dist/totvs-gps-utils` directory.
 - Run `npm publish ./dist/totvs-gps-utils/totvs-gps-utils-X.Y.Z.tgz` to publish the pachage.
+
+## TotvsGpsCRUD
+
+### Features
+- GPSPageFilter - controller for page filter (size,page,disclairmer) and other properties sended on GET request e.g. fiels, expands, query
+- GPSPageNavigation - Controller used to navigate through page routes
+- GpsCRUDListModel - Model used on CRUD list page
+- GpsCRUDMaintenancePage - Controller that is responsible to store active route and to instanciate object on CRUD Edit\Detail Pages.
+
+### Build
+- Change the version number in projects/totvs-gps-crud/package.json.
+- Run `npm run build_crud` to build the project. The build artifacts will be stored in the `dist/totvs-gps-crud` directory.
+- Run `npm publish ./dist/totvs-gps-crud/totvs-gps-crud-X.Y.Z.tgz` to publish the pachage.
