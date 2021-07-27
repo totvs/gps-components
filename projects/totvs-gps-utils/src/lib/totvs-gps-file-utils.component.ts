@@ -19,4 +19,18 @@ export class TotvsFileUtils {
     link.click();
   }
 
+  /**
+   * Converte um conteúdo de base64 para Blob
+   * @param data conteúdo em base64
+   */
+  public static base64ToArray(data): Blob {
+    let byteCharacters = atob(data);
+    let byteNumbers = new Array(byteCharacters.length);      
+    for (let i=0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    let byteArray = new Uint8Array(byteNumbers);       
+    return new Blob([byteArray], {type : "application/octet-stream"});            
+  }
+
 }
