@@ -18,6 +18,17 @@ export class TotvsGpsCacheService {
         this._services[model.ENTITY] = service;
     }
 
+    public getPromise<T>(model: ICacheModel, callback?:Function): Promise<T> {
+        return new Promise((resolve, reject) => {
+            this.get(model, ((value) => {
+                if(Object.keys(value).length === 0){
+                    reject(undefined);
+                }
+                resolve(value);
+            }));
+        });        
+    }    
+
     public get(model: ICacheModel, callback?:Function): any {
         if (isNull(model)) {
             if (!isNull(callback))
