@@ -21,12 +21,11 @@ export let GPS_SERVICES: TotvsGpsDataService;
 })
 export class TotvsGpsServicesModule { 
 
+  GpsServices:TotvsGpsDataService;
+
   constructor(private gpsServices: TotvsGpsDataService) {
     GPS_SERVICES = this.gpsServices;
-  }
-
-  get GpsServices(): TotvsGpsDataService {
-    return GPS_SERVICES;
-  }
+    this.GpsServices = GPS_SERVICES;
+  }  
 
 }

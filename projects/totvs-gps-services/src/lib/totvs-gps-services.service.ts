@@ -12,13 +12,12 @@ export class TotvsGpsDataService {
   private _mockRequests: { url:string, request:TotvsGpsMockRequest }[] = [];
   private _mockInProductionMode: boolean = false;
 
+  HttpClient:HttpClient;
+
   constructor(private httpClient: HttpClient) {
     this._httpClient = this.httpClient;
-  }
-
-  public get HttpClient() { 
-    return this._httpClient;
-  }
+    this.HttpClient = this._httpClient;
+  }  
 
   public enableMockInProductionMode() {
     this._mockInProductionMode = true;
