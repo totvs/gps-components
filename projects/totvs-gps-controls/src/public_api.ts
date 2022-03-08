@@ -8,6 +8,7 @@ export * from './lib/gps-crud/gps-crud-list.component';
 export * from './lib/gps-crud/gps-crud.model';
 
 export * from './lib/gps-export-data/gps-export-data.component';
+export * from './lib/gps-lookup-toggle/gps-lookup-toggle.component';
 
 export * from './lib/gps-model-fill/gps-model-fill.component';
 

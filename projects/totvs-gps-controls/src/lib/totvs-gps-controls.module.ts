@@ -16,6 +16,7 @@ import { BooleanPipe } from './pipes/boolean.pipe';
 import { GpsCrudEditComponent } from './gps-crud/gps-crud-edit.component';
 import { GpsCrudDetailComponent } from './gps-crud/gps-crud-detail.component';
 import { GpsCrudListComponent } from './gps-crud/gps-crud-list.component';
+import { GpsLookupToggleComponent } from './gps-lookup-toggle/gps-lookup-toggle.component';
 
 const components = [
   GpsOrderListComponent,
@@ -27,7 +28,8 @@ const components = [
   GpsPageEditComponent,
   GpsCrudDetailComponent,
   GpsCrudEditComponent,
-  GpsCrudListComponent
+  GpsCrudListComponent,
+  GpsLookupToggleComponent
 ];
 const directives = [
   GpsAdvancedSearchDirective
@@ -47,7 +49,7 @@ const pipes = [
   declarations: [
     ...components,
     ...directives,
-    ...pipes
+    ...pipes,
   ],
   exports: [
     ...components,
