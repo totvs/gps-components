@@ -7,14 +7,16 @@
         p-required="true"
         [(ngModel)]="input"
         (ngModelChange)="onChange($event)"
-        [p-disabled]="isDisable || isAll"
+        [p-disabled]="isDisable || input == 0"
         [p-columns]="zoomService.COLUMNS"
         [p-filter-service]="zoomService"
         [p-filter-params]="filterParams"
         [p-field-label]="zoomService.FIELD_LABEL"
         [p-field-value]="zoomService.FIELD_VALUE"
         [p-field-format]="zoomService.fieldFormat"
-        (p-change)="handlerLookupChange($event)">
+        (p-change)="handlerLookupChange($event)"
+        (focusout)="handlerLookupFocusout($event)"
+        (p-selected)="handlerLookupSelected($event)">
     </po-lookup>
 
     <po-switch

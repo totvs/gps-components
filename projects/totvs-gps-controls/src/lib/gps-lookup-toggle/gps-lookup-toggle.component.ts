@@ -16,7 +16,6 @@ import { PoSwitchLabelPosition } from '@po-ui/ng-components';
 })
 export class GpsLookupToggleComponent implements ControlValueAccessor {
   @Input() input: any;
-  isAll: boolean;
   @Input() filterParams: string[] = [];
   @Input() isDisable: boolean = false;
   @Input() zoomService: any;
@@ -28,6 +27,8 @@ export class GpsLookupToggleComponent implements ControlValueAccessor {
 
   @Output() onChangeToggle = new EventEmitter<any>();
   @Output() onChangeValue = new EventEmitter<any>();
+  @Output() onLookupFocusout = new EventEmitter<any>();
+  @Output() onLookupSelected = new EventEmitter<any>();
 
 
 
@@ -35,34 +36,43 @@ export class GpsLookupToggleComponent implements ControlValueAccessor {
   onTouch: any = () => {};
 
   constructor() {
-    if (Number(this.input) === 0) this.isAll = true;
-    else this.isAll = false;
   }
 
   handlerToggleChange(active: boolean) {
-    this.isAll = active;
     this.input = active ? '0' : undefined;
     this.onChange(this.input);
     if(this.onChangeToggle){
       this.onChangeToggle.emit(this.input)
     }
   }
-
+  
   registerOnChange(fn: any): void {
     this.onChange = fn;
   }
   registerOnTouched(fn: any): void {
     this.onTouch = fn;
   }
-
+  
   writeValue(input: any) {
     this.input = input;
   }
-
+  
   handlerLookupChange(event){
     if(this.onChangeValue){
       this.onChangeValue.emit(event)
     }
   }
 
+  handlerLookupFocusout(event) {
+    if(this.onLookupFocusout){
+      this.onLookupFocusout.emit(event)
+    }
+  }
+
+  handlerLookupSelected(event) {
+    if(this.onLookupSelected){
+      this.onLookupSelected.emit(event)
+    }
+  }
+  
 }
