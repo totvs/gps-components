@@ -28,6 +28,9 @@ export class TotvsGpsDateUtils {
     let result: Date;
     if (value != null) {
       if (typeof (value) == 'string') {
+        //Armazena o ano antes da conversão para Data para tratar anos < 100
+        let year = this.getYearFromStringDate(value);
+
         result = new Date(value);
         // valida necessidade de conversão do TimeZone
         let timezoneOffset = (new Date()).getTimezoneOffset();
@@ -49,11 +52,32 @@ export class TotvsGpsDateUtils {
         if (timezoneOffset != 0) {
           result = new Date(result.getTime() + (timezoneOffset * 60000));
         }
+        if(year > 0) {
+          result.setFullYear(year);
+        }
         return result;
       }
       return new Date(value);
     }
     return;
+  }
+
+  /* Extrai o ano de uma data no formato string
+    * Quando a data é do tipo string ela pode vir em dois formatos:
+    * 1) Wed Dec 28 2005 00:00:00 GMT-0300 (GMT-03:00)
+    * 2) 2022-03-24
+    */
+  private getYearFromStringDate(value: string): number {
+    let yearParts = value.split(" ");
+    if(yearParts.length == 7) {
+      return parseInt(yearParts[3]);
+    } else {
+      yearParts = value.split("-");
+      if(yearParts.length == 3) {
+        return parseInt(yearParts[0]);
+      }
+    }
+    return 0;
   }
 
   /**
