@@ -26,6 +26,7 @@ export class TotvsGpsDateUtils {
    */
   public convertDate(value): Date {
     let result: Date;
+
     if (value != null) {
       if (typeof (value) == 'string') {
         //Armazena o ano antes da conversão para Data para tratar anos < 100
@@ -69,7 +70,7 @@ export class TotvsGpsDateUtils {
     */
   private getYearFromStringDate(value: string): number {
     let yearParts = value.split(" ");
-    if(yearParts.length == 7) {
+    if(yearParts.length >= 4) {
       return parseInt(yearParts[3]);
     } else {
       yearParts = value.split("-");
