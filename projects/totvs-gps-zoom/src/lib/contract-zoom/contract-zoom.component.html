@@ -1,0 +1,15 @@
+<po-lookup *ngIf="advancedFilters.length > 0"
+  name="filterContractcode"
+  class="po-sm-12 po-md-12 po-lg-12 po-xl-12"
+  p-label="Contrato"
+  [p-columns]="contractZoom.COLUMNS"
+  [p-filter-service]="contractZoom"
+  [p-field-label]="contractZoom.FIELD_LABEL"
+  [p-field-value]="contractZoom.FIELD_VALUE"
+  [p-field-format]="contractZoom.fieldFormat"
+  [(ngModel)]="myValue"
+  [p-disabled]="disabled"
+  [p-advanced-filters]="advancedFilters"
+  [p-filter-params]="[modality]"
+  [p-literals]="literals">
+</po-lookup>

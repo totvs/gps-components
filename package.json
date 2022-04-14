@@ -27,7 +27,7 @@
     "@po-ui/ng-components": "4.0.0-rc.1",
     "@totvs/po-theme": "4.0.0-rc.1",
     "rxjs": "~6.6.0",
-    "totvs-gps-api": "file:./library/totvs-gps-api-0.0.83.tgz",
+    "totvs-gps-api": "file:library/totvs-gps-api-0.1.63.tgz",
     "totvs-gps-api-v2": "file:./library/totvs-gps-api-v2-0.0.4.tgz",
     "totvs-gps-controls": "5.0.1",
     "totvs-gps-services": "5.0.1",
