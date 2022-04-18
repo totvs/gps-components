@@ -1,25 +1,16 @@
-import { Component, forwardRef, Input, OnInit, SimpleChanges, EventEmitter, Output } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { PoDynamicFormField, PoLookupLiterals } from '@po-ui/ng-components';
 import { ContractZoomService } from './contract-zoom.service';
 
 @Component({
   selector: 'gps-contract-zoom',
   templateUrl: './contract-zoom.component.html',
-  styleUrls: ['./contract-zoom.component.css'],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => ContractZoomComponent),
-      multi: true
-    }
-  ]
+  styleUrls: ['./contract-zoom.component.css']
 })
-export class ContractZoomComponent implements OnInit, ControlValueAccessor {
+export class ContractZoomComponent {
 
     private _value:any;
-
-    @Input() input: any;
+    
     @Input('gps-modality') modality: number;
     @Input('gps-disabled') disabled: boolean;
 
@@ -51,30 +42,17 @@ export class ContractZoomComponent implements OnInit, ControlValueAccessor {
     onChange: any = () => {};
     onTouch: any = () => {};
 
-    constructor(public contractZoom: ContractZoomService) { }
-
-    ngOnInit() { }
-
-    ngOnChanges(changes: SimpleChanges) {
-      if(changes.modality && changes.modality.currentValue != changes.modality.previousValue){
-          this.clearFields();
-      }
-    }
-
-    clearFields(){       
-      this.input = null;
-    }
+    constructor(public contractZoom: ContractZoomService) { }    
   
     registerOnChange(fn: any): void {
       this.onChange = fn;
     }
-    
+
     registerOnTouched(fn: any): void {
       this.onTouch = fn;
     }
     
     writeValue(input: any) {
-      this.input = input;      
     }
 
     onChangeContract(event) {
