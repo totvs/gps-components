@@ -1,4 +1,4 @@
-import { Component, forwardRef, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, forwardRef, Input, OnInit, SimpleChanges, EventEmitter, Output } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { PoDynamicFormField, PoLookupLiterals } from '@po-ui/ng-components';
 import { ContractZoomService } from './contract-zoom.service';
@@ -16,25 +16,23 @@ import { ContractZoomService } from './contract-zoom.service';
   ]
 })
 export class ContractZoomComponent implements OnInit, ControlValueAccessor {
+
+    private _value:any;
+
     @Input() input: any;
     @Input('gps-modality') modality: number;
     @Input('gps-disabled') disabled: boolean;
 
-    private _value:any;
+    @Output() gpsModelChange = new EventEmitter<any>();
+    @Input()
+      get gpsModel() { return this._value; }
+      set gpsModel(value) { this._value = value; this.gpsModelChange.emit(this._value) }
+
+    @Output('gps-change') onGpsChange = new EventEmitter<any>();
+    
     public literals: PoLookupLiterals = {
       modalPlaceholder: 'Proposta ou contrato'
     };
-
-    public get myValue(): string { return this._value }
-    public set myValue(v: string) {
-        
-        if (v !== this._value) {     
-            this._value = v;
-            this.onChange(v);
-        }
-    }
-    
-    
 
     advancedFilters: Array<PoDynamicFormField> = [
       { property: 'proposalInitial', optional: true, gridColumns: 12, label: 'Proposta inicial' },
@@ -53,13 +51,9 @@ export class ContractZoomComponent implements OnInit, ControlValueAccessor {
     onChange: any = () => {};
     onTouch: any = () => {};
 
-    constructor(public contractZoom: ContractZoomService) { 
-        
-    }
+    constructor(public contractZoom: ContractZoomService) { }
 
-    ngOnInit() {        
-        
-    }
+    ngOnInit() { }
 
     ngOnChanges(changes: SimpleChanges) {
       if(changes.modality && changes.modality.currentValue != changes.modality.previousValue){
@@ -68,12 +62,13 @@ export class ContractZoomComponent implements OnInit, ControlValueAccessor {
     }
 
     clearFields(){       
-        this.input = null;
+      this.input = null;
     }
   
     registerOnChange(fn: any): void {
       this.onChange = fn;
     }
+    
     registerOnTouched(fn: any): void {
       this.onTouch = fn;
     }
@@ -82,4 +77,9 @@ export class ContractZoomComponent implements OnInit, ControlValueAccessor {
       this.input = input;      
     }
 
+    onChangeContract(event) {
+      if(this.onGpsChange) {
+        this.onGpsChange.emit(event);
+      }
+    }
 }
