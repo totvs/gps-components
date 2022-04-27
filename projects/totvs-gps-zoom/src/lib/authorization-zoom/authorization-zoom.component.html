@@ -1,0 +1,15 @@
+<po-lookup *ngIf="advancedFilters.length > 0"
+  name="filterAuthorizationCode"
+  class="po-sm-12 po-md-12 po-lg-12 po-xl-12"
+  p-label="Guia de autorização"
+  [p-columns]="authorizationZoom.COLUMNS"
+  [p-filter-service]="authorizationZoom"
+  [p-field-label]="authorizationZoom.FIELD_LABEL"
+  [p-field-value]="authorizationZoom.FIELD_VALUE"
+  [p-field-format]="authorizationZoom.fieldFormat"
+  [(ngModel)]="gpsModel"
+  [p-disabled]="disabled"
+  [p-advanced-filters]="advancedFilters"
+  [p-literals]="literals"
+  (p-change)="onChangeAuthorization($event)">
+</po-lookup>

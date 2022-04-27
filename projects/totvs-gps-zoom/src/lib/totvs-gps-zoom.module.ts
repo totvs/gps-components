@@ -7,17 +7,23 @@ import { TotvsGpsServicesModule } from 'totvs-gps-services';
 import { BeneficiaryZoomComponent } from './beneficiary-zoom/beneficiary-zoom.component';
 import { ContractZoomComponent } from './contract-zoom/contract-zoom.component';
 import { ContractZoomService } from './contract-zoom/contract-zoom.service';
+import { AuthorizationZoomComponent } from './authorization-zoom/authorization-zoom.component';
+import { AuthorizationZoomService } from './authorization-zoom/authorization-zoom.service';
+import { GuideService } from 'totvs-gps-api';
 
 const components = [
   BeneficiaryZoomComponent,
-  ContractZoomComponent
+  ContractZoomComponent,
+  AuthorizationZoomComponent
 ];
 const directives = [
 ];
 const pipes = [
 ];
 const providers = [
-  ContractZoomService
+  ContractZoomService,
+  AuthorizationZoomService,
+  GuideService
 ];
 
 @NgModule({
