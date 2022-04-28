@@ -19,6 +19,7 @@ export class AuthorizationZoomComponent {
       set gpsModel(value) { this._value = value; this.gpsModelChange.emit(this._value) }
 
     @Output('gps-change') onGpsChange = new EventEmitter<any>();
+    @Output('gps-selected') onGpsSelected = new EventEmitter<any>();
     
     public literals: PoLookupLiterals = {
       modalPlaceholder: 'Ano/guia de autorização'
@@ -54,6 +55,12 @@ export class AuthorizationZoomComponent {
     onChangeAuthorization(event) {
       if(this.onGpsChange) {
         this.onGpsChange.emit(event);
+      }
+    }
+
+    onSelectAuthorization(event) {
+      if(this.onGpsSelected) {
+        this.onGpsSelected.emit(event);
       }
     }
 }
