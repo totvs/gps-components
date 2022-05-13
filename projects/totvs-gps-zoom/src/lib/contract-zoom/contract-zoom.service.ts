@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, from } from 'rxjs';
+import { Observable, from, of } from 'rxjs';
 import { PoLookupColumn, PoLookupFilter, PoLookupFilteredItemsParams, PoLookupResponseApi } from '@po-ui/ng-components';
 import { Contract, ContractService } from 'totvs-gps-api';
 import { map } from 'rxjs/operators';
@@ -80,6 +80,8 @@ export class ContractZoomService implements PoLookupFilter {
     }
 
     getObjectByValue(value: string, params): Observable<any> {
+        if(params[1] && params[1] === true)
+            return of(new Contract().parseJsonToObject({contract: 0, guarantorName: 'Todos'}))
         return from(this._service.get(params[0], value));
     }
     //#endregion

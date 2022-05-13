@@ -25,6 +25,8 @@ export class ContractZoomComponent {
       modalPlaceholder: 'Proposta ou contrato'
     };
 
+    @Input('gps-all-contracts') gpsAllContracts:boolean = false;
+
     advancedFilters: Array<PoDynamicFormField> = [
       { property: 'proposalInitial', optional: true, gridColumns: 12, label: 'Proposta inicial' },
       { property: 'contractInitial', optional: true, gridColumns: 12, label: 'Contrato inicial' },

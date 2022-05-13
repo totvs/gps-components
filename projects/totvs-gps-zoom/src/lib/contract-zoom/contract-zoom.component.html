@@ -10,7 +10,7 @@
   [(ngModel)]="gpsModel"
   [p-disabled]="disabled"
   [p-advanced-filters]="advancedFilters"
-  [p-filter-params]="[modality]"
+  [p-filter-params]="[modality, gpsAllContracts]"
   [p-literals]="literals"
   (p-change)="onChangeContract($event)">
 </po-lookup>
