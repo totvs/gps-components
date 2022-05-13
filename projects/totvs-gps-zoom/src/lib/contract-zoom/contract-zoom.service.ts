@@ -79,8 +79,8 @@ export class ContractZoomService implements PoLookupFilter {
         }));
     }
 
-    getObjectByValue(value: string, params): Observable<any> {
-        if(params[1] && params[1] === true)
+    getObjectByValue(value: string, params): Observable<any> {        
+        if((params[1] && params[1] === true) && value == "0" )
             return of(new Contract().parseJsonToObject({contract: 0, guarantorName: 'Todos'}))
         return from(this._service.get(params[0], value));
     }
