@@ -9,12 +9,16 @@ import { ContractZoomComponent } from './contract-zoom/contract-zoom.component';
 import { ContractZoomService } from './contract-zoom/contract-zoom.service';
 import { AuthorizationZoomComponent } from './authorization-zoom/authorization-zoom.component';
 import { AuthorizationZoomService } from './authorization-zoom/authorization-zoom.service';
-import { GuideService } from 'totvs-gps-api';
+import { GuideService, HealthProviderService, UnityService } from 'totvs-gps-api';
+import { ProviderZoomComponent } from './provider-zoom/provider-zoom.component';
+import { HealthInsurerZoomService } from './provider-zoom/health-insurer-zoom.service';
+import { HealthProviderZoomService } from './provider-zoom/provider-zoom.service';
 
 const components = [
   BeneficiaryZoomComponent,
   ContractZoomComponent,
-  AuthorizationZoomComponent
+  AuthorizationZoomComponent,
+  ProviderZoomComponent
 ];
 const directives = [
 ];
@@ -23,7 +27,11 @@ const pipes = [
 const providers = [
   ContractZoomService,
   AuthorizationZoomService,
-  GuideService
+  GuideService,
+  HealthInsurerZoomService,
+  HealthProviderZoomService,
+  UnityService,
+  HealthProviderService    
 ];
 
 @NgModule({
@@ -32,7 +40,7 @@ const providers = [
     CommonModule,
     FormsModule,
     PoModule,
-    TotvsGpsServicesModule
+    TotvsGpsServicesModule    
   ],
   declarations: [
     ...components,

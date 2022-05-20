@@ -1,0 +1,70 @@
+<div class="po-row" *ngIf="orientation == 'Vertical'">
+  <po-lookup
+        name="healthInsurer"
+        [class]="healthInsurerClass"
+        p-label="Unidade do prestador"
+        [p-required]="required"
+        [p-disabled]="disabled"
+        [(ngModel)]="gpsHealthInsurerModel"
+        [p-columns]="healthInsurerZoom.COLUMNS"
+        [p-filter-service]="healthInsurerZoom"
+        [p-field-label]="healthInsurerZoom.FIELD_LABEL"
+        [p-field-value]="healthInsurerZoom.FIELD_VALUE"
+        [p-field-format]="healthInsurerZoom.fieldFormat"
+        (p-change)="onChangeHealthInsurer($event)"
+        (p-selected)="onSelectedHealthInsurer($event)">
+    </po-lookup>
+</div>
+
+<div class="po-row" *ngIf="orientation == 'Vertical'">
+  <po-lookup      
+      name="provider"
+      [class]="providerClass"
+      p-label="Prestador"
+      [p-required]="required"
+      [p-disabled]="(!gpsHealthInsurerModel && gpsHealthInsurerModel != 0) || disabled"
+      [(ngModel)]="gpsProviderModel"
+      [p-columns]="providerZoom.COLUMNS"
+      [p-filter-service]="providerZoom"
+      [p-field-label]="providerZoom.FIELD_LABEL"
+      [p-field-value]="providerZoom.FIELD_VALUE"
+      [p-field-format]="providerZoom.fieldFormat"
+      [p-filter-params]="gpsHealthInsurerModel"
+      (p-change)="onChangeProvider($event)"
+      (p-selected)="onSelectedProvider($event)">
+  </po-lookup>
+</div>
+
+<div class="po-row" *ngIf="orientation == 'Horizontal'">
+  <po-lookup
+        name="healthInsurer"
+        [class]="healthInsurerClass"
+        p-label="Unidade do prestador"
+        [p-required]="required"
+        [p-disabled]="disabled"
+        [(ngModel)]="gpsHealthInsurerModel"
+        [p-columns]="healthInsurerZoom.COLUMNS"
+        [p-filter-service]="healthInsurerZoom"
+        [p-field-label]="healthInsurerZoom.FIELD_LABEL"
+        [p-field-value]="healthInsurerZoom.FIELD_VALUE"
+        [p-field-format]="healthInsurerZoom.fieldFormat"
+        (p-change)="onChangeHealthInsurer($event)"
+        (p-selected)="onSelectedHealthInsurer($event)">
+    </po-lookup>
+    <po-lookup        
+        name="provider"
+        [class]="providerClass"
+        p-label="Prestador"
+        [p-required]="required"
+        [p-disabled]="(!gpsHealthInsurerModel && gpsHealthInsurerModel != 0) || disabled"
+        [(ngModel)]="gpsProviderModel"
+        [p-columns]="providerZoom.COLUMNS"
+        [p-filter-service]="providerZoom"
+        [p-field-label]="providerZoom.FIELD_LABEL"
+        [p-field-value]="providerZoom.FIELD_VALUE"
+        [p-field-format]="providerZoom.fieldFormat"
+        [p-filter-params]="gpsHealthInsurerModel"
+        (p-change)="onChangeProvider($event)"
+        (p-selected)="onSelectedProvider($event)">
+    </po-lookup>
+</div>
