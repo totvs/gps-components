@@ -8,3 +8,7 @@ export interface ICacheValue {
 export interface ICacheList {
     values: ICacheValue[];
 }
+export interface ICacheParams {
+    params?: string[];
+    expand?: string[];
+}

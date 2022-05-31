@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ICacheService, ICacheModel } from './totvs-gps-cache.model';
-import { ICacheList, ICacheValue } from './totvs-gps-cache.internal-model';
+import { ICacheList, ICacheParams, ICacheValue } from './totvs-gps-cache.internal-model';
 import { isNull } from 'totvs-gps-utils';
 
 @Injectable()
@@ -18,18 +18,20 @@ export class TotvsGpsCacheService {
         this._services[model.ENTITY] = service;
     }
 
-    public getPromise<T>(model: ICacheModel, callback?:Function): Promise<T> {
+    public getPromise<T>(model: ICacheModel, expand?:string[]): Promise<T> {
         return new Promise((resolve, reject) => {
             this.get(model, ((value) => {
                 if(Object.keys(value).length === 0){
                     reject(undefined);
                 }
                 resolve(value);
-            }));
+            }), expand);
         });        
     }    
 
-    public get(model: ICacheModel, callback?:Function): any {
+    
+
+    public get(model: ICacheModel, callback?:Function, expand?:string[]): any {
         if (isNull(model)) {
             if (!isNull(callback))
                 callback(null);
@@ -43,8 +45,15 @@ export class TotvsGpsCacheService {
             cacheList = this._list[modelName];
         }
         let pk = model.primaryKeys;
-        let params = pk.map(item => String(model[item] || ''));
-        let index = [modelName,...params].join(';');
+        let params:ICacheParams = {};
+        params.params = pk.map(item => String(model[item] || ''));
+        
+        //Caso informado algum expandable, adicionar o mesmo nos params após os campos da pk
+        if(expand){
+            params.expand = expand;
+        }
+
+        let index = [modelName,...params.params].join(';');
         // se valor ja existe, usa o da lista
         let value: ICacheValue = (cacheList.values.find(item => item.index == index));
         if (!isNull(value)) {
@@ -69,7 +78,7 @@ export class TotvsGpsCacheService {
         if (!isNull(callback))
             value.onReady.push((v:ICacheValue) => { callback(v.data) });
         cacheList.values.push(value);
-        service.get(...params)
+        service.get(...params.params, params.expand)
             .then(result => {
                 Object.assign(value.data, result);
                 this.callOnReady(value);
