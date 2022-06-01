@@ -9,16 +9,20 @@ import { ContractZoomComponent } from './contract-zoom/contract-zoom.component';
 import { ContractZoomService } from './contract-zoom/contract-zoom.service';
 import { AuthorizationZoomComponent } from './authorization-zoom/authorization-zoom.component';
 import { AuthorizationZoomService } from './authorization-zoom/authorization-zoom.service';
-import { GuideService, HealthProviderService, UnityService } from 'totvs-gps-api';
+import { GuideService, HealthProviderService, UnityService, CostCenterService, LedgerAccountService } from 'totvs-gps-api';
 import { ProviderZoomComponent } from './provider-zoom/provider-zoom.component';
 import { HealthInsurerZoomService } from './provider-zoom/health-insurer-zoom.service';
 import { HealthProviderZoomService } from './provider-zoom/provider-zoom.service';
+import { LedgerAccountZoomComponent } from './ledger-account-zoom/ledger-account-zoom.component';
+import { LedgerAccountZoom } from './ledger-account-zoom/zoom/ledger-account.zoom';
+import { CostCenterZoom } from './ledger-account-zoom/zoom/cost-center.zoom';
 
 const components = [
   BeneficiaryZoomComponent,
   ContractZoomComponent,
   AuthorizationZoomComponent,
-  ProviderZoomComponent
+  ProviderZoomComponent,
+  LedgerAccountZoomComponent
 ];
 const directives = [
 ];
@@ -31,7 +35,11 @@ const providers = [
   HealthInsurerZoomService,
   HealthProviderZoomService,
   UnityService,
-  HealthProviderService    
+  HealthProviderService,
+  LedgerAccountZoom,
+  CostCenterZoom,
+  CostCenterService,
+  LedgerAccountService
 ];
 
 @NgModule({

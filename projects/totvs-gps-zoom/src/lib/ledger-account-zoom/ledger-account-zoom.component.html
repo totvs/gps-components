@@ -1,0 +1,66 @@
+<div class="po-row" *ngIf="orientation == 'Vertical'">
+  <po-lookup 
+    name="ledgerAccount"
+    [class]="ledgerAccountClass"
+    p-label="Conta contábil"
+    [p-required]="required"
+    [(ngModel)]="gpsLedgerAccountModel"
+    [p-disabled]="disabledLedgerAccount"
+    [p-columns]="ledgerAccountZoom.COLUMNS"
+    [p-filter-service]="ledgerAccountZoom"
+    [p-field-label]="ledgerAccountZoom.FIELD_LABEL"
+    [p-field-value]="ledgerAccountZoom.FIELD_VALUE"
+    [p-field-format]="ledgerAccountZoom.fieldFormat"
+    (p-change)="onChangeLedgerAccount($event)"
+    (p-selected)="onSelectLedgerAccount($event)">
+  </po-lookup>
+</div>
+<div class="po-row" *ngIf="orientation == 'Vertical'">
+  <po-lookup 
+    name="costCenter"
+    [class]="costCenterClass"
+    p-label="Centro de custo"
+    [(ngModel)]="gpsCostCenterModel"
+    [p-disabled]="disabledCostCenter"
+    [p-filter-params]="[limitDate,gpsLedgerAccountModel]"
+    [p-columns]="costCenterZoom.COLUMNS"
+    [p-filter-service]="costCenterZoom"
+    [p-field-label]="costCenterZoom.FIELD_LABEL"
+    [p-field-value]="costCenterZoom.FIELD_VALUE"
+    [p-field-format]="costCenterZoom.fieldFormat"
+    (p-change)="onChangeCostCenter($event)"
+    (p-selected)="onSelectCostCenter($event)">
+  </po-lookup>
+</div>
+<div class="po-row" *ngIf="orientation == 'Horizontal'">
+  <po-lookup 
+    name="ledgerAccount"
+    [class]="ledgerAccountClass"
+    p-label="Conta contábil"
+    [p-required]="required"
+    [(ngModel)]="gpsLedgerAccountModel"
+    [p-disabled]="disabledLedgerAccount"
+    [p-columns]="ledgerAccountZoom.COLUMNS"
+    [p-filter-service]="ledgerAccountZoom"
+    [p-field-label]="ledgerAccountZoom.FIELD_LABEL"
+    [p-field-value]="ledgerAccountZoom.FIELD_VALUE"
+    [p-field-format]="ledgerAccountZoom.fieldFormat"
+    (p-change)="onChangeLedgerAccount($event)"
+    (p-selected)="onSelectLedgerAccount($event)">
+  </po-lookup>
+  <po-lookup 
+    name="costCenter"
+    [class]="costCenterClass"
+    p-label="Centro de custo"
+    [(ngModel)]="gpsCostCenterModel"
+    [p-disabled]="disabledCostCenter"
+    [p-filter-params]="[limitDate,gpsLedgerAccountModel]"
+    [p-columns]="costCenterZoom.COLUMNS"
+    [p-filter-service]="costCenterZoom"
+    [p-field-label]="costCenterZoom.FIELD_LABEL"
+    [p-field-value]="costCenterZoom.FIELD_VALUE"
+    [p-field-format]="costCenterZoom.fieldFormat"
+    (p-change)="onChangeCostCenter($event)"
+    (p-selected)="onSelectCostCenter($event)">
+  </po-lookup>
+</div>

@@ -1,7 +1,7 @@
-import { Component, Input, EventEmitter, Output, ViewChild } from '@angular/core';
-import { GpsOrientation } from './enum/gps-orientation.enum';
+import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { HealthInsurerZoomService } from './health-insurer-zoom.service';
 import { HealthProviderZoomService } from './provider-zoom.service';
+import { GpsOrientation } from '../../utils/enum/gps-orientation.enum';
 
 @Component({
   selector: 'gps-provider-zoom',
