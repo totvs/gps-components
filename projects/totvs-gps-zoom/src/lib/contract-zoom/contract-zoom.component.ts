@@ -1,18 +1,23 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
-import { PoDynamicFormField, PoLookupLiterals } from '@po-ui/ng-components';
+import { PoDynamicFormField, PoLookupLiterals, PoSwitchLabelPosition } from '@po-ui/ng-components';
 import { ContractZoomService } from './contract-zoom.service';
 
 @Component({
   selector: 'gps-contract-zoom',
   templateUrl: './contract-zoom.component.html',
-  styleUrls: ['./contract-zoom.component.css']
+  styleUrls: []
 })
 export class ContractZoomComponent {
 
-    private _value:any;
+    private _value: any;
     
+    @Input() toggleLabel: string = 'Todos';
+    @Input() labelPosition: PoSwitchLabelPosition = PoSwitchLabelPosition.Right;
     @Input('gps-modality') modality: number;
     @Input('gps-disabled') disabled: boolean;
+    @Input('gps-enable-switch') enableSwitch: boolean = false;
+    @Input() lookupClassSwitchInvisible: string = "po-sm-12 po-md-12 po-lg-12 po-xl-12";
+    @Input() lookupClassSwitchVisible: string = "po-sm-8 po-md-8 po-lg-8 po-xl-8";
 
     @Output() gpsModelChange = new EventEmitter<any>();
     @Input()
@@ -20,7 +25,8 @@ export class ContractZoomComponent {
       set gpsModel(value) { this._value = value; this.gpsModelChange.emit(this._value) }
 
     @Output('gps-change') onGpsChange = new EventEmitter<any>();
-    
+    @Output('gps-change-toggle') onChangeToggle = new EventEmitter<any>();
+
     public literals: PoLookupLiterals = {
       modalPlaceholder: 'Proposta ou contrato'
     };
@@ -45,7 +51,7 @@ export class ContractZoomComponent {
     onTouch: any = () => {};
 
     constructor(public contractZoom: ContractZoomService) { }    
-  
+    
     registerOnChange(fn: any): void {
       this.onChange = fn;
     }
@@ -61,5 +67,17 @@ export class ContractZoomComponent {
       if(this.onGpsChange) {
         this.onGpsChange.emit(event);
       }
+    }
+
+    handlerToggleChange(active: boolean) {
+      this._value = active ? '0' : undefined;
+      this.onChange(this._value);
+      if(this.onChangeToggle){
+        this.onChangeToggle.emit(this._value)
+      }
+    }
+
+    get value() {
+      return this._value;
     }
 }
