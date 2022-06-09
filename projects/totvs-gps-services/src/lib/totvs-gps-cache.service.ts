@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { ICacheService, ICacheModel } from './totvs-gps-cache.model';
+import { ICacheService, ICacheModel, ICacheFields } from './totvs-gps-cache.model';
 import { ICacheList, ICacheParams, ICacheValue } from './totvs-gps-cache.internal-model';
 import { isNull } from 'totvs-gps-utils';
+import { TTalkCollection } from './totvs-gps-services.model';
 
 @Injectable()
 export class TotvsGpsCacheService {
@@ -92,5 +93,82 @@ export class TotvsGpsCacheService {
         value.onReady = [];
     }
 
+    private doExtend<T extends ICacheModel>(args:T, expand:string[]|undefined = undefined):Promise<T> {                                    
+        return new Promise<T>((resolve, reject) => {
+            this.getPromise(args, expand).then((value) => {
+                let _collection = value as TTalkCollection<T>;
+                let _object = value as T;
+                if(_collection.items && Array.isArray(_collection.items)){                                        
+                    resolve(_collection.items[0]);
+                }                
+                resolve(_object);
+            }).catch(_ => reject(_));
+        })
+    }
+
+    public extend<T extends ICacheModel>(model:T, hasZeroAll:boolean = false, expand:string[]|undefined = undefined):Promise<T>{
+        let _objNotFound:CacheInternalControl = new CacheInternalControl(model);
+        let _objZeroAll:CacheInternalControl = new CacheInternalControl(model);
+
+        if(!model.cacheFields){
+            console.error('cacheFields not found');
+        }
+        
+        if(hasZeroAll){          
+            _objZeroAll.setCode<T>(model);                                    
+            if((typeof _objZeroAll.codeValue == 'number' && _objZeroAll.codeValue == 0) || (typeof _objZeroAll.codeValue == 'string' && _objZeroAll.codeValue == '')){
+                _objZeroAll.setDescription("Todos");                            
+                return Promise.resolve(model.parseJsonToObject(_objZeroAll));
+            }
+        }      
+
+        _objNotFound.setCode<T>(model);        
+        _objNotFound.setDescription('Não encontrado(a)');                            
+
+        return new Promise((resolve) => {
+            this.doExtend(model, expand).then((value) => {                
+                if(value){
+                    model = model.parseJsonToObject(value);
+                }else{                              
+                    model = model.parseJsonToObject(_objNotFound);
+                }
+        
+                model.parseJsonToObject(model);
+                resolve(model);
+            }).catch(() => {
+                resolve(model.parseJsonToObject(_objNotFound));
+            });
+        })
+    }
   
+}
+
+class CacheInternalControl{
+
+    constructor(private modelControl:ICacheModel){}  
+
+    get model():ICacheModel{ return this.modelControl; };
+    get codeValue():string|number { return this.modelControl[this.model.cacheFields.code];};
+
+    public setDescription(otherDescription: string) {        
+        if(this.modelControl.cacheFields.description){
+            if (this.modelControl.cacheFields.description.includes('.')) {
+                this.modelControl[this.modelControl.cacheFields.description.split('.')[0]] = {};
+                this.modelControl[this.modelControl.cacheFields.description.split('.')[0]][this.modelControl.cacheFields.description.split('.')[1]] = otherDescription;
+            } else {
+                this.modelControl[this.modelControl.cacheFields.description] = otherDescription;
+            }
+        }
+        return this;
+    }
+
+    public setCode<T extends ICacheModel>(model: T) {      
+        if(this.modelControl.cacheFields.code){
+            Object.entries(model).find(([key, value]) => {
+                if (this.modelControl.cacheFields.code === key) {                  
+                    this.modelControl[this.modelControl.cacheFields.code] = value;                                
+                }            
+            });
+        }      
+    }
 }
