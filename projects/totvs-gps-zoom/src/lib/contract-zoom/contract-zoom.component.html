@@ -1,16 +1,31 @@
-<po-lookup *ngIf="advancedFilters.length > 0"
-  name="filterContractcode"
-  class="po-sm-12 po-md-12 po-lg-12 po-xl-12"
-  p-label="Contrato"
-  [p-columns]="contractZoom.COLUMNS"
-  [p-filter-service]="contractZoom"
-  [p-field-label]="contractZoom.FIELD_LABEL"
-  [p-field-value]="contractZoom.FIELD_VALUE"
-  [p-field-format]="contractZoom.fieldFormat"
-  [(ngModel)]="gpsModel"
-  [p-disabled]="disabled"
-  [p-advanced-filters]="advancedFilters"
-  [p-filter-params]="[modality, gpsAllContracts]"
-  [p-literals]="literals"
-  (p-change)="onChangeContract($event)">
-</po-lookup>
+<div class="po-row" style="flex-wrap: nowrap; padding: 0rem">
+  <po-lookup 
+    style="padding: 0rem"
+    *ngIf="advancedFilters.length > 0"
+    name="filterContractcode"
+    [class]="enableSwitch ? lookupClassSwitchVisible : lookupClassSwitchInvisible"
+    p-label="Contrato"
+    [p-columns]="contractZoom.COLUMNS"
+    [p-filter-service]="contractZoom"
+    [p-field-label]="contractZoom.FIELD_LABEL"
+    [p-field-value]="contractZoom.FIELD_VALUE"
+    [p-field-format]="contractZoom.fieldFormat"
+    [(ngModel)]="gpsModel"
+    [p-disabled]="disabled"
+    [p-advanced-filters]="advancedFilters"
+    [p-filter-params]="[modality, gpsAllContracts]"
+    [p-literals]="literals"
+    (p-change)="onChangeContract($event)">
+  </po-lookup>
+
+  <po-switch
+    *ngIf="enableSwitch"
+    [ngModel]="this.value == 0"
+    (p-change)="handlerToggleChange($event)"
+    [p-disabled]="disabled"
+    [p-label-off]="toggleLabel"
+    [p-label-on]="toggleLabel"
+    [p-label-position]="labelPosition"
+    style="margin: 0 auto; align-self: center; padding-top: 1rem">
+  </po-switch>
+</div>

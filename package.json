@@ -32,7 +32,7 @@
     "totvs-gps-controls": "5.0.1",
     "totvs-gps-crud": "^5.0.2",
     "totvs-gps-services": "5.0.1",
-    "totvs-gps-utils": "5.0.1",
+    "totvs-gps-utils": "^5.0.6",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
   },
