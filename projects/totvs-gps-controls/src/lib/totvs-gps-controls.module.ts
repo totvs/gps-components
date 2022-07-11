@@ -13,10 +13,8 @@ import { GpsPageListComponent } from './gps-page/gps-page-list/gps-page-list.com
 import { GpsPageDetailComponent } from './gps-page/gps-page-detail/gps-page-detail.component';
 import { GpsPageEditComponent } from './gps-page/gps-page-edit/gps-page-edit.component';
 import { BooleanPipe } from './pipes/boolean.pipe';
-import { GpsCrudEditComponent } from './gps-crud/gps-crud-edit.component';
-import { GpsCrudDetailComponent } from './gps-crud/gps-crud-detail.component';
-import { GpsCrudListComponent } from './gps-crud/gps-crud-list.component';
 import { GpsLookupToggleComponent } from './gps-lookup-toggle/gps-lookup-toggle.component';
+import { TotvsGpsCustomService } from 'totvs-gps-custom';
 
 const components = [
   GpsOrderListComponent,
@@ -26,9 +24,6 @@ const components = [
   GpsPageListComponent,
   GpsPageDetailComponent,
   GpsPageEditComponent,
-  GpsCrudDetailComponent,
-  GpsCrudEditComponent,
-  GpsCrudListComponent,
   GpsLookupToggleComponent
 ];
 const directives = [
@@ -50,6 +45,9 @@ const pipes = [
     ...components,
     ...directives,
     ...pipes,
+  ],
+  providers: [
+    TotvsGpsCustomService
   ],
   exports: [
     ...components,

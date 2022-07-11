@@ -45,10 +45,8 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
     //#endregion
 
     //#region startup
-    constructor(
-        private _changeDetectorRef: ChangeDetectorRef
-    ) {
-        super();
+    constructor(private _changeDetectorRef: ChangeDetectorRef) {
+        super();        
     }
 
     private totvsStringUtils = TotvsStringUtils.getInstance();

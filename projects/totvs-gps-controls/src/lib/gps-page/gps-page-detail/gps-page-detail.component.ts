@@ -1,7 +1,10 @@
 import { Component, Input, Output, EventEmitter, OnInit, ViewChild } from "@angular/core";
 import { GpsPageBaseComponent } from "../gps-page-base.component";
-import { ILoadingData, ICustomFields } from "../gps-page.internal-model";
+import { ILoadingData } from "../gps-page.internal-model";
 import { PoPageDetailComponent } from "@po-ui/ng-components";
+import { UrlSegment } from "@angular/router";
+import { ICRUDService } from "../models/gps-page.model";
+import { TotvsGpsCustomService } from "totvs-gps-custom";
 
 @Component({
     selector: 'gps-page-detail',
@@ -17,6 +20,11 @@ export class GpsPageDetailComponent extends GpsPageBaseComponent implements OnIn
     @Output('p-edit') parameterOnEdit? = new EventEmitter();
     @Output('p-remove') parameterOnRemove? = new EventEmitter();
     //#endregion
+
+    constructor(private _custom: TotvsGpsCustomService) {
+        super();
+        this._customService = this._custom;
+    }
 
     //#region startup
     ngOnInit() {
@@ -42,10 +50,26 @@ export class GpsPageDetailComponent extends GpsPageBaseComponent implements OnIn
         this.poPageDetailComponent.edit = this.parameterOnEdit;
         this.poPageDetailComponent.remove = this.parameterOnRemove;
     }
-    //#endregion
-    //#region Custom fields
-    hasCustomFields = false;
-    customFields: ICustomFields;
-    //#endregion
-    
+    //#endregion    
+
+    /**
+     * @description Inicializa a classe com os dados necessários para processamento dos campos customizáveis
+     * no detalhe de registros.
+     * @param appName Nome no menu do programa onde os customs serão aplicados (Ex.: hvp.benefMultiplierFactor)
+     * @param detail Nome do programa que será disparado para buscar os campos customizáveis (Ex.: benef-multiplier-factor-detail)
+     * @param urlSegments Segmentos da URL do registro padrão
+     * @param crudService Instância da classe service do CRUD em questão.
+     */
+    public setupCustomFields(appName: string,
+        detail: string,
+        urlSegments: UrlSegment[],
+        crudService: ICRUDService<any>) {
+
+        this._appName = appName;
+        this._detail = detail;
+        this._urlSegments = urlSegments;
+        this._crudService = crudService;
+
+        this.getCustomFields(this._detail);
+    }
 }

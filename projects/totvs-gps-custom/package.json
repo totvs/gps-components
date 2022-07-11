@@ -1,0 +1,9 @@
+{
+  "name": "totvs-gps-custom",
+  "version": "5.0.0",
+  "peerDependencies": {
+    "@angular/common": "^7.0.0",
+    "@angular/core": "^7.0.0",
+    "@portinari/portinari-ui": "1.22.2"
+  }
+}

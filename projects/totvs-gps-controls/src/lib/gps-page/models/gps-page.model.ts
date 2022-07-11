@@ -34,3 +34,13 @@ export interface IDisclaimerConfig {
      */
     separator?: string;
 }
+
+/**
+ * Metodos comuns para services utilizados em CRUDs
+ */
+export interface ICRUDService<T> {
+    insert(model: T): Promise<T>;
+    update(model: T): Promise<T>;
+    get(...args): Promise<T>;
+    remove(...args): Promise<any>;
+}

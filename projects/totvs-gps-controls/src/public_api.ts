@@ -2,11 +2,6 @@
  * Public API Surface of totvs-gps-controls
  */
 
-export * from './lib/gps-crud/gps-crud-detail.component';
-export * from './lib/gps-crud/gps-crud-edit.component';
-export * from './lib/gps-crud/gps-crud-list.component';
-export * from './lib/gps-crud/gps-crud.model';
-
 export * from './lib/gps-export-data/gps-export-data.component';
 export * from './lib/gps-lookup-toggle/gps-lookup-toggle.component';
 

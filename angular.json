@@ -177,6 +177,41 @@
           }
         }
       }
+    },
+    "totvs-gps-custom": {
+      "root": "projects/totvs-gps-custom",
+      "sourceRoot": "projects/totvs-gps-custom/src",
+      "projectType": "library",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/totvs-gps-custom/tsconfig.lib.json",
+            "project": "projects/totvs-gps-custom/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/totvs-gps-custom/src/test.ts",
+            "tsConfig": "projects/totvs-gps-custom/tsconfig.spec.json",
+            "karmaConfig": "projects/totvs-gps-custom/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/totvs-gps-custom/tsconfig.lib.json",
+              "projects/totvs-gps-custom/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "totvs-gps-services",

@@ -12,11 +12,13 @@
     <form #mainForm>
         <ng-content></ng-content>
         <ng-container *ngIf="hasCustomFields">
-            <po-dynamic-form
-                p-group-form    
-                [p-fields]="customFields.fields"
-                [p-value]="customFields.values">
-            </po-dynamic-form>
+            <div [class]="this.customFieldsClass">
+                <po-dynamic-form
+                    p-group-form
+                    [p-fields]="customFields.fields"
+                    [p-value]="customFields.values">
+                </po-dynamic-form>
+            </div>
         </ng-container>
     </form>
 </po-page-edit>

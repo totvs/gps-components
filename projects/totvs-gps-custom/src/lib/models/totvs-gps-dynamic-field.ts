@@ -1,0 +1,34 @@
+export class TotvsGpsDynamicField {
+    columns?: any[];
+    required?: boolean;
+    options?: any[];
+    optionsMulti?: boolean;
+    optionsService?: string;
+    searchService?: string;
+    mask?: string;
+    pattern?: string;
+    minLength?: number;
+    maxLength?: number;
+    disabled?: boolean;
+    help?: string;
+    booleanTrue?: string;
+    booleanFalse?: string;
+    maxValue?: string | number;
+    minValue?: string | number;
+    rows?: number;
+    secret?: boolean;
+    validate?: string | Function;
+    key?: boolean;
+    property: string;
+    label?: string;
+    gridColumns?: number;
+    gridSmColumns?: number;
+    gridMdColumns?: number;
+    gridLgColumns?: number;
+    gridXlColumns?: number;
+    visible?: boolean;
+    divider?: string;
+    type?: string;
+    spot?: string;
+    value?: any;
+}
