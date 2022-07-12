@@ -62,13 +62,11 @@ export class GpsPageDetailComponent extends GpsPageBaseComponent implements OnIn
      */
     public setupCustomFields(appName: string,
         detail: string,
-        urlSegments: UrlSegment[],
-        crudService: ICRUDService<any>) {
+        urlSegments: UrlSegment[]) {
 
         this._appName = appName;
         this._detail = detail;
         this._urlSegments = urlSegments;
-        this._crudService = crudService;
 
         this.getCustomFields(this._detail);
     }
