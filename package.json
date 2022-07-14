@@ -13,7 +13,8 @@
     "build_utils": "ng build totvs-gps-utils && cd dist/totvs-gps-utils && npm pack",
     "build_zoom": "ng build totvs-gps-zoom && cd dist/totvs-gps-zoom && npm pack",
     "build_crud": "ng build totvs-gps-crud && cd dist/totvs-gps-crud && npm pack",
-    "build_custom": "ng build totvs-gps-custom && cd dist/totvs-gps-custom && npm pack"
+    "build_custom": "ng build totvs-gps-custom && cd dist/totvs-gps-custom && npm pack",
+    "build_all": "npm run build_services && npm run build_controls && npm run build_utils && npm run build_zoom && npm run build_crud && npm run build_custom"
   },
   "private": true,
   "dependencies": {
@@ -27,6 +28,7 @@
     "@angular/router": "~11.0.1",
     "@po-ui/ng-components": "4.0.0-rc.1",
     "@totvs/po-theme": "4.0.0-rc.1",
+    "coa": "2.0.2",
     "rxjs": "~6.6.0",
     "totvs-gps-api": "file:library/totvs-gps-api-0.1.90.tgz",
     "totvs-gps-api-v2": "file:./library/totvs-gps-api-v2-0.0.4.tgz",

@@ -17,13 +17,13 @@
       "es2018"
     ]
   },
-  "angularCompilerOptions": {
-    "annotateForClosureCompiler": true,
+  "angularCompilerOptions": {    
     "skipTemplateCodegen": true,
     "strictMetadataEmit": true,
     "fullTemplateTypeCheck": true,
     "strictInjectionParameters": true,
-    "enableResourceInlining": true
+    "enableResourceInlining": true,
+    "enableIvy": false
   },
   "exclude": [
     "src/test.ts",

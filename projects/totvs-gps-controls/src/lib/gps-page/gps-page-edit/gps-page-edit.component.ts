@@ -14,6 +14,11 @@ import { TotvsGpsCustomService } from "totvs-gps-custom";
 })
 export class GpsPageEditComponent extends GpsPageBaseComponent implements OnInit {
 
+    //#region Common properties
+    @Input('p-title') parameterTitle: string;
+    @Input('p-custom-fields-class') customFieldsClass: string = '';
+    //#endregion    
+
     //#region Portinari properties
     @ViewChild(PoPageEditComponent, {static:true}) poPageEditComponent: PoPageEditComponent;
     @Input('p-breadcrumb') parameterBreadcrumb;

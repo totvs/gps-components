@@ -5,11 +5,6 @@ import { ICRUDService } from "./models/gps-page.model";
 
 export class GpsPageBaseComponent {
 
-    //#region Common properties
-    @Input('p-title') parameterTitle: string;
-    @Input('p-custom-fields-class') customFieldsClass: string = '';
-    //#endregion    
-
     //#region Custom fields
     hasCustomFields = false;
     customFields: TotvsGpsDynamicForm;    

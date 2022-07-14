@@ -17,6 +17,11 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
     @ContentChild(GpsAdvancedSearchDirective, { static: true }) advancedSearchTemplateRef: GpsAdvancedSearchDirective;
     @ViewChild('advancedSearchModal', { static: false }) advancedSearchModal: PoModalComponent;
 
+    //#region Common properties
+    @Input('p-title') parameterTitle: string;
+    @Input('p-custom-fields-class') customFieldsClass: string = '';
+    //#endregion    
+
     //#region Portinari properties
     @Input('p-breadcrumb') parameterBreadcrumb;
     @Input('p-disclaimer-group') parameterDisclaimerGroup;
@@ -69,6 +74,10 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
     private _internalFilter: PoPageFilter;
     get internalFilter() {
         return this._internalFilter;
+    }
+
+    set setInternalFilter(internalFilter:PoPageFilter){
+        this._internalFilter = internalFilter;
     }
 
     private updateFilterAction() {
