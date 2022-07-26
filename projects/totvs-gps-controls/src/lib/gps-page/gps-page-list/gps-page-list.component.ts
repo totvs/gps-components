@@ -1,5 +1,5 @@
 import { Component, Input, ChangeDetectorRef, ViewChild, ContentChild, Output, EventEmitter } from "@angular/core";
-import { PoPageFilter, PoDisclaimer, PoDisclaimerGroup, PoModalComponent, PoModalAction } from "@po-ui/ng-components";
+import { PoPageFilter, PoDisclaimer, PoDisclaimerGroup, PoModalComponent, PoModalAction, PoDisclaimerGroupRemoveAction } from "@po-ui/ng-components";
 import { isNull } from "totvs-gps-utils";
 import { GpsPageBaseComponent } from "../gps-page-base.component";
 import { TotvsGpsDateUtils } from "totvs-gps-utils";
@@ -111,7 +111,7 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
     //#endregion
 
     //#region disclaimers
-    private _defaultDisclaimerGroup: PoDisclaimerGroup = { disclaimers: [], title: 'Apresentando resultados filtrados por:', hideRemoveAll: true };
+    private _defaultDisclaimerGroup: PoDisclaimerGroup = { disclaimers: [], title: 'Apresentando resultados filtrados por:', hideRemoveAll: false, removeAll: ((disclaimers:Array<PoDisclaimer>) => this.removeAllDisclaimers(disclaimers)), remove: ((disclaimer) => this.removeDisclaimer(disclaimer)) };
     private _parameterGpsDisclaimerConfig: IDisclaimerConfig[];
     private _disclaimersVisible: boolean = true;
 
@@ -137,6 +137,22 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
     showDisclaimers() {
         this._disclaimersVisible = true;
         this.refreshDisclaimers();
+    }
+
+    removeAllDisclaimers(disclaimers:Array<PoDisclaimer>){
+        this._parameterGpsFilter = {};
+        this.refreshDisclaimers();
+        this.onGpsFilterChange.emit(this._parameterGpsFilter);
+        this.onAdvancedSearch.emit(null);
+    }
+
+    removeDisclaimer(disclaimer:PoDisclaimerGroupRemoveAction) {
+        delete this._parameterGpsFilter[disclaimer.removedDisclaimer.property];
+        if(disclaimer.currentDisclaimers.length == 0){
+            this.removeAllDisclaimers(disclaimer.currentDisclaimers);
+            return;
+        }
+        this.onAdvancedSearch.emit(this._parameterGpsFilter);
     }
 
     private parseDisclaimers(obj, config: IDisclaimerConfig[]): PoDisclaimer[] {
@@ -167,7 +183,7 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
                     value = param.value(value);
                 let item: PoDisclaimer = disclaimers.find(item => item.property == (param.group || param.property || param.label));
                 if (isNull(item)) {
-                    item = { property: (param.group || param.property || param.label), hideClose: true, value: value };
+                    item = { property: (param.group || param.property || param.label), hideClose: (param.hideClose === false ? param.hideClose : true), value: value };
                     disclaimers.push(item);
                 }
                 else

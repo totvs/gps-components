@@ -10,10 +10,12 @@
     <form #mainForm>
         <ng-content></ng-content>
         <ng-container *ngIf="hasCustomFields">
-            <po-dynamic-view
-                [p-fields]="customFields.fields"
-                [p-value]="customFields.values">
-            </po-dynamic-view>
+            <div [class]="this.customFieldsClass">
+                <po-dynamic-view
+                    [p-fields]="customFields.fields"
+                    [p-value]="customFields.values">
+                </po-dynamic-view>
+            </div>
         </ng-container>
     </form>
 </po-page-detail>

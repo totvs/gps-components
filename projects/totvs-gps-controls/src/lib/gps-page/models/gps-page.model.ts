@@ -33,6 +33,11 @@ export interface IDisclaimerConfig {
      * Separador a ser utilizado quando agrupar valores no mesmo disclaimer
      */
     separator?: string;
+
+    /**
+     * Se verdadeiro, oculta o botão para fechar o disclaimer.
+     */
+    hideClose?: boolean;
 }
 
 /**
