@@ -71,7 +71,15 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
     //#endregion
 
     //#region filter parameter
-    private _internalFilter: PoPageFilter;
+    private _internalFilter: PoPageFilter = {
+        placeholder: 'Pesquisar',
+        width: null,
+        action: (filter) => {
+            this.onSearch.emit(filter);
+            this.refreshDisclaimers();
+        }
+    };
+
     get internalFilter() {
         return this._internalFilter;
     }
@@ -89,7 +97,8 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
 
     private setGpsFilter() {
         this._internalFilter = {
-            placeholder: 'Pesquisar',
+            placeholder: this._internalFilter.placeholder || 'Pesquisar',
+            width: this._internalFilter.width || null,
             action: (filter) => {
                 this.onSearch.emit(filter);
                 this.refreshDisclaimers();
