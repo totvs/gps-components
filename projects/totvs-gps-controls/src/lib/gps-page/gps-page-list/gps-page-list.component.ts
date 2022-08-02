@@ -147,7 +147,19 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
     }
 
     removeDisclaimer(disclaimer:PoDisclaimerGroupRemoveAction) {
-        delete this._parameterGpsFilter[disclaimer.removedDisclaimer.property];
+        //Caso houver grupos busca os campos referente ao grupo removido
+        const disclaimersConfigRemove = this._parameterGpsDisclaimerConfig.filter((disc) => disc.group == disclaimer.removedDisclaimer.property);
+        
+        //Remove conforme grupo de disclaimer removido
+        if(Array.isArray(disclaimersConfigRemove) && disclaimersConfigRemove.length > 0){
+            disclaimersConfigRemove.forEach((item) => {
+                delete this._parameterGpsFilter[item.property];
+            })
+        } else {
+            //Remove caso nao tenha grupo ou caso o grupo seja igual ao property
+            delete this._parameterGpsFilter[disclaimer.removedDisclaimer.property];
+        }
+
         if(disclaimer.currentDisclaimers.length == 0){
             this.removeAllDisclaimers(disclaimer.currentDisclaimers);
             return;
