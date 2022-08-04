@@ -18,7 +18,13 @@ export class ProviderZoomComponent {
 
   ngOnInit() {}    
 
-  @Input('gps-orientation') orientation:GpsOrientation = GpsOrientation.Vertical
+  @Input('gps-orientation') orientation:GpsOrientation = GpsOrientation.Vertical;
+
+  //Indica se o componente aceita o 0 como sendo "Todos"
+  @Input('gps-has-zero-all') hasZeroAll:boolean = true;
+
+  //Se indicado true, irá filtrar na preserv, com a dt-exclusão = ?, caso seja false, filtrará por dt-exclusão <> ?
+  @Input('gps-only-active-provider') onlyActiveProvider:boolean = null;
 
   @Input('gps-disabled') disabled: boolean = false;
   @Input('gps-required') required: boolean = false;

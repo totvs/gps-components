@@ -29,7 +29,7 @@
       [p-field-label]="providerZoom.FIELD_LABEL"
       [p-field-value]="providerZoom.FIELD_VALUE"
       [p-field-format]="providerZoom.fieldFormat"
-      [p-filter-params]="gpsHealthInsurerModel"
+      [p-filter-params]="[gpsHealthInsurerModel, hasZeroAll, onlyActiveProvider]"
       (p-change)="onChangeProvider($event)"
       (p-selected)="onSelectedProvider($event)">
   </po-lookup>
@@ -63,7 +63,7 @@
         [p-field-label]="providerZoom.FIELD_LABEL"
         [p-field-value]="providerZoom.FIELD_VALUE"
         [p-field-format]="providerZoom.fieldFormat"
-        [p-filter-params]="gpsHealthInsurerModel"
+        [p-filter-params]="[gpsHealthInsurerModel, hasZeroAll, onlyActiveProvider]"
         (p-change)="onChangeProvider($event)"
         (p-selected)="onSelectedProvider($event)">
     </po-lookup>

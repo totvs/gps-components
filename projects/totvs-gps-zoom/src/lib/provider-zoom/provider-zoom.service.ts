@@ -46,8 +46,13 @@ export class HealthProviderZoomService implements PoLookupFilter{
     }
 
     getFilteredItems(params: PoLookupFilteredItemsParams): Observable<PoLookupResponseApi> {
-        let search = {search:params.filter, healthInsurerCode:params.filterParams}
-        let result = this.healthProviderService.getHealthProviderByFilter(search, params.page, params.pageSize);
+        let filter = {search:params.filter, healthInsurerCode:params.filterParams[0], isActive: null}
+
+        if (params.filterParams[2] == true || params.filterParams[2] == false) {
+            filter.isActive = params.filterParams[2];
+        }
+
+        let result = this.healthProviderService.getHealthProviderByFilter(filter, params.page, params.pageSize);
         return from(result).pipe(map(value => {
             for(let i in value.items){
                 value.items[i].taxpayerRegistry = GpsStringUtils.formatTaxpayerNumber(value.items[i].taxpayerRegistry);
@@ -57,9 +62,28 @@ export class HealthProviderZoomService implements PoLookupFilter{
     }
 
     getObjectByValue(value: string, filterParams): Observable<any> {
-        if (value && value == '0') {
-            return of(new HealthProvider().parseJsonToObject({code: 0, name: 'Todos'}))
+        if (filterParams[1]){
+            if (value && value == '0') {
+                return of(new HealthProvider().parseJsonToObject({code: 0, name: 'Todos'}))
+            }
+        } else {
+            if (value && value == '0') {
+                return of(new HealthProvider().parseJsonToObject({}))
+            }
         }
-        return from(this.healthProviderService.get(filterParams, Number.parseInt(value)));
+        
+        let filter = {
+            search: "",
+            healthInsurerCode: filterParams[0],
+            code: Number.parseInt(value), 
+            isActive: null
+        }
+
+        if (filterParams[2] == true || filterParams[2] == false) {
+            filter.isActive = filterParams[2];
+        }
+
+        let result = this.healthProviderService.getHealthProviderByFilter(filter, 1, 1);
+        return from(result).pipe(map(result => result.items[0]));
     }
 }
