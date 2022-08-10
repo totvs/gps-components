@@ -45,10 +45,17 @@ export class HealthInsurerZoomService implements PoLookupFilter{
       return from(result);
   }
 
-  getObjectByValue(value: string): Observable<any> {
-    if(value && parseInt(value) == 0){
-        return of(new Unity().parseJsonToObject({code: 0, description: 'Todos'}))
+  getObjectByValue(value: string, filterParams): Observable<any> {
+    if (filterParams[0]){
+      if (value && parseInt(value) == 0) {
+        return of(new Unity().parseJsonToObject({code: 0, description: 'Todas'}));
+      }
+    } else {
+      if (value && parseInt(value) == 0) {
+        return of(null);
+      }
     }
+  
     return from(this._service.get(Number(value)));
   }
 

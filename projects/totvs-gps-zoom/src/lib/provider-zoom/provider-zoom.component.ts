@@ -20,8 +20,11 @@ export class ProviderZoomComponent {
 
   @Input('gps-orientation') orientation:GpsOrientation = GpsOrientation.Vertical;
 
-  //Indica se o componente aceita o 0 como sendo "Todos"
-  @Input('gps-has-zero-all') hasZeroAll:boolean = true;
+  //Indica se o componente aceita o 0 como sendo "Todos" para a unidade do prestador
+  @Input('gps-health-insurer-has-zero-all') healthInsurerHasZeroAll:boolean = true;
+
+  //Indica se o componente aceita o 0 como sendo "Todos" para o prestador
+  @Input('gps-provider-has-zero-all') providerHasZeroAll:boolean = true;
 
   //Se indicado true, irá filtrar na preserv, com a dt-exclusão = ?, caso seja false, filtrará por dt-exclusão <> ?
   @Input('gps-only-active-provider') onlyActiveProvider:boolean = null;
