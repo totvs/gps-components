@@ -13,9 +13,10 @@
     [(ngModel)]="gpsModel"
     [p-disabled]="disabled"
     [p-advanced-filters]="advancedFilters"
-    [p-filter-params]="[modality, gpsAllContracts]"
+    [p-filter-params]="[modality, gpsAllContracts, gpsOnlyProposalsSpecialAgeRange, gpsOnlyCurrent]"
     [p-literals]="literals"
-    (p-change)="onChangeContract($event)">
+    (p-change)="onChangeContract($event)"
+    (p-selected)="onSelectedContract($event)">
   </po-lookup>
 
   <po-switch

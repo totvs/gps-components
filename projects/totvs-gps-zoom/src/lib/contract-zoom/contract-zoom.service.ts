@@ -51,7 +51,9 @@ export class ContractZoomService implements PoLookupFilter {
     getFilteredItems(params: PoLookupFilteredItemsParams): Observable<PoLookupResponseApi> {
         let filter_default = {
             q:params.filter,
-            modality:null
+            modality:null,
+            specialAgeRange:null,
+            active:null
         }
         
         if(params.advancedFilters?.status){            
@@ -65,6 +67,14 @@ export class ContractZoomService implements PoLookupFilter {
         
         if(params.filterParams[0]){
             filter.modality = params.filterParams[0]
+        }
+        
+        if(params.filterParams[2]){
+            filter.specialAgeRange = params.filterParams[2]
+        }
+
+        if(params.filterParams[3]){
+            filter.active = params.filterParams[3]
         }
         
         let result = this._service.getByFilter(filter, params.page, params.pageSize);
@@ -82,7 +92,25 @@ export class ContractZoomService implements PoLookupFilter {
     getObjectByValue(value: string, params): Observable<any> {        
         if((params[1] && params[1] === true) && value == "0" )
             return of(new Contract().parseJsonToObject({contract: 0, guarantorName: 'Todos'}))
-        return from(this._service.get(params[0], value));
+
+        let search = {
+            contractInitial:value,
+            contractFinal:value,
+            modality: params[0],
+            specialAgeRange: null,
+            active:null
+        }
+
+        if(params[2]){
+            search.specialAgeRange = params[2]
+        }
+
+        if(params[3]){
+            search.active = params[3]
+        }
+
+        let result = this._service.getByFilter(search,1,1);
+        return from(result).pipe(map(result => result.items[0]));
     }
     //#endregion
 

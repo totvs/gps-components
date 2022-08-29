@@ -25,6 +25,7 @@ export class ContractZoomComponent {
       set gpsModel(value) { this._value = value; this.gpsModelChange.emit(this._value) }
 
     @Output('gps-change') onGpsChange = new EventEmitter<any>();
+    @Output('gps-selected') onGpsSelected = new EventEmitter<any>();
     @Output('gps-change-toggle') onChangeToggle = new EventEmitter<any>();
 
     public literals: PoLookupLiterals = {
@@ -32,6 +33,8 @@ export class ContractZoomComponent {
     };
 
     @Input('gps-all-contracts') gpsAllContracts:boolean = false;
+    @Input('gps-only-proposals-special-age-range') gpsOnlyProposalsSpecialAgeRange:boolean = false;
+    @Input('gps-only-current') gpsOnlyCurrent:boolean = false;
 
     advancedFilters: Array<PoDynamicFormField> = [
       { property: 'proposalInitial', optional: true, gridColumns: 12, label: 'Proposta inicial' },
@@ -66,6 +69,12 @@ export class ContractZoomComponent {
     onChangeContract(event) {
       if(this.onGpsChange) {
         this.onGpsChange.emit(event);
+      }
+    }
+
+    onSelectedContract(event) {
+      if(this.onGpsSelected) {
+        this.onGpsSelected.emit(event);
       }
     }
 
