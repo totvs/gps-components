@@ -1,7 +1,8 @@
-<div class="po-row" *ngIf="orientation == 'Vertical'">
+<div class="po-row" *ngIf="orientation == 'Vertical'"  style="flex-wrap: nowrap; padding: 0rem">
   <po-lookup
         name="healthInsurer"
-        [class]="healthInsurerClass"
+        style="padding: 0rem"
+        [class]="enableSwitchHealthInsurer ? healthInsurerClassToggle : healthInsurerClass"
         p-label="Unidade do prestador"
         [p-required]="required"
         [p-disabled]="disabled"
@@ -14,16 +15,27 @@
         [p-filter-params]="[healthInsurerHasZeroAll]"
         (p-change)="onChangeHealthInsurer($event)"
         (p-selected)="onSelectedHealthInsurer($event)">
-    </po-lookup>
+    </po-lookup>    
+    <po-switch
+      *ngIf="enableSwitchHealthInsurer"
+      [ngModel]="this._healthInsurer == '0'"
+      (p-change)="handlerHealthInsurerToggleChange($event)"
+      [p-disabled]="disabled"
+      [p-label-off]="toggleLabel"
+      [p-label-on]="toggleLabel"
+      [p-label-position]="labelPosition"
+      style="margin: 0 auto; align-self: center; padding-top: 1rem">
+    </po-switch>
 </div>
 
 <div class="po-row" *ngIf="orientation == 'Vertical'">
   <po-lookup      
       name="provider"
-      [class]="providerClass"
+      style="padding: 0rem"
+      [class]="enableSwitchProvider ? providerClassToggle : providerClass"
       p-label="Prestador"
       [p-required]="required"
-      [p-disabled]="(!gpsHealthInsurerModel && gpsHealthInsurerModel != 0) || disabled"
+      [p-disabled]="(!gpsHealthInsurerModel && gpsHealthInsurerModel != '0') || disabled || gpsHealthInsurerModel == '0'"
       [(ngModel)]="gpsProviderModel"
       [p-columns]="providerZoom.COLUMNS"
       [p-filter-service]="providerZoom"
@@ -33,7 +45,17 @@
       [p-filter-params]="[gpsHealthInsurerModel, providerHasZeroAll, onlyActiveProvider]"
       (p-change)="onChangeProvider($event)"
       (p-selected)="onSelectedProvider($event)">
-  </po-lookup>
+  </po-lookup>    
+  <po-switch
+    *ngIf="enableSwitchProvider"
+    [ngModel]="this._provider == '0'"
+    (p-change)="handlerProviderToggleChange($event)"
+    [p-disabled]="(!gpsHealthInsurerModel && gpsHealthInsurerModel != '0') || disabled || gpsHealthInsurerModel == '0'"
+    [p-label-off]="toggleLabel"
+    [p-label-on]="toggleLabel" 
+    [p-label-position]="labelPosition"
+    style="margin: 0 auto; align-self: center; padding-top: 1rem">
+  </po-switch>
 </div>
 
 <div class="po-row" *ngIf="orientation == 'Horizontal'">
@@ -58,7 +80,7 @@
         [class]="providerClass"
         p-label="Prestador"
         [p-required]="required"
-        [p-disabled]="(!gpsHealthInsurerModel && gpsHealthInsurerModel != 0) || disabled"
+        [p-disabled]="(!gpsHealthInsurerModel && gpsHealthInsurerModel != '0') || disabled"
         [(ngModel)]="gpsProviderModel"
         [p-columns]="providerZoom.COLUMNS"
         [p-filter-service]="providerZoom"
