@@ -27,6 +27,9 @@ export class LedgerAccountZoomComponent {
   @Input('gps-cost-center-disabled') disabledCostCenter: boolean = false;
 
   @Input('gps-required') required: boolean = false;
+
+  @Input('gps-ledger-account-label') ledgerAccountLabel: string = 'Conta contábil';
+  @Input('gps-cost-center-label') costCenterLabel: string = 'Centro de custo';
     
   @Input('gps-ledger-account-class') ledgerAccountClass: string;
   @Input('gps-cost-center-class') costCenterClass: string;

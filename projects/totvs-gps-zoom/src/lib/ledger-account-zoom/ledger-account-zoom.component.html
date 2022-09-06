@@ -2,7 +2,7 @@
   <po-lookup 
     name="ledgerAccount"
     [class]="ledgerAccountClass"
-    p-label="Conta contábil"
+    [p-label]="ledgerAccountLabel"
     [p-required]="required"
     [(ngModel)]="gpsLedgerAccountModel"
     [p-disabled]="disabledLedgerAccount"
@@ -19,7 +19,7 @@
   <po-lookup 
     name="costCenter"
     [class]="costCenterClass"
-    p-label="Centro de custo"
+    [p-label]="costCenterLabel"
     [(ngModel)]="gpsCostCenterModel"
     [p-disabled]="disabledCostCenter"
     [p-filter-params]="[limitDate,gpsLedgerAccountModel]"
@@ -36,7 +36,7 @@
   <po-lookup 
     name="ledgerAccount"
     [class]="ledgerAccountClass"
-    p-label="Conta contábil"
+    [p-label]="ledgerAccountLabel"
     [p-required]="required"
     [(ngModel)]="gpsLedgerAccountModel"
     [p-disabled]="disabledLedgerAccount"
@@ -51,7 +51,7 @@
   <po-lookup 
     name="costCenter"
     [class]="costCenterClass"
-    p-label="Centro de custo"
+    [p-label]="costCenterLabel"
     [(ngModel)]="gpsCostCenterModel"
     [p-disabled]="disabledCostCenter"
     [p-filter-params]="[limitDate,gpsLedgerAccountModel]"
