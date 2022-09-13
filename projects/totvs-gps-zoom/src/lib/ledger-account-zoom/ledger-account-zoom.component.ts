@@ -60,7 +60,7 @@ export class LedgerAccountZoomComponent {
     if(this.disabledLedgerAccount === true){
       return;
     }
-    this._costCenter = undefined;
+
     if(this._onChangeLedgerAccount) {
       this._onChangeLedgerAccount.emit(event);
     }
@@ -70,7 +70,7 @@ export class LedgerAccountZoomComponent {
     if(this.disabledLedgerAccount === true) {
       return;
     }
-    this._costCenter = undefined;
+
     if(this._onSelectedLedgerAccount) {
       this._onSelectedLedgerAccount.emit(event);
     }
