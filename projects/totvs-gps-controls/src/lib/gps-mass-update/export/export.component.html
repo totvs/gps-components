@@ -1,0 +1,60 @@
+
+    <div class="po-row export-type">
+        <po-radio-group
+            class="po-sm-12 po-md-6 po-ml-2"
+            name="exportType"
+            p-label="Exportar"
+            [p-options]="exportOptions"
+            [(ngModel)]="exportType"
+            >
+        </po-radio-group>
+    </div>
+    <div class="po-row po-mb-4 export-content">
+        <div 
+            *ngIf="exportType == 2"
+            class="po-sm-12 po-ml-1 po-mr-1">
+            <ng-content></ng-content>
+        </div>
+        <div 
+            *ngIf="exportType == 1"
+            class="po-sm-12 po-mt-4">
+            <div class="po-row po-mb-4 center">
+                <img src="./assets/images/illustration-easy-work.png"> 
+            </div>
+            <div class="po-row center">
+                <span> 
+                    Utilize o <strong>layout em branco para exportar um CSV com os campos de cadastro</strong> e adicione manualmente as informações, ou então <br> 
+                    mude para <strong>layout com dados para atualização e exporte um CSV com registros da base</strong> para operações de alteração e exclusão. 
+                </span>
+            </div>
+        </div>
+    </div>
+    
+<!-- RODAPÉ COM BOTÕES -->
+<div id="export-footer" class="po-row po-sm-12 footer" >
+    <po-widget
+        class="po-sm-12 po-mb-1 no-padding">
+        <div class="po-row right">
+            <po-button
+                p-type="secondary"
+                p-label="Pular exportação"
+                (click)="onPassExport()">
+            </po-button>
+            <po-button
+                class="po-ml-1"
+                p-type="primary"
+                p-kind="primary"
+                p-label="Exportar"
+                (click)="onExport()">
+            </po-button>
+        </div>
+    </po-widget>
+</div>
+
+
+<!-- LOADING -->
+<po-loading-overlay
+    *ngIf="isLoading"
+    p-screen-lock="true"
+    [p-text]="loadingMessage" >
+</po-loading-overlay>

@@ -15,6 +15,7 @@ import { GpsPageEditComponent } from './gps-page/gps-page-edit/gps-page-edit.com
 import { BooleanPipe } from './pipes/boolean.pipe';
 import { GpsLookupToggleComponent } from './gps-lookup-toggle/gps-lookup-toggle.component';
 import { TotvsGpsCustomService } from 'totvs-gps-custom';
+import { GpsMassUpdateModule } from './gps-mass-update/gps-mass-update.module';
 
 const components = [
   GpsOrderListComponent,
@@ -39,7 +40,8 @@ const pipes = [
     CommonModule,
     FormsModule,
     PoModule,
-    TotvsGpsServicesModule
+    TotvsGpsServicesModule,
+    GpsMassUpdateModule
   ],
   declarations: [
     ...components,
