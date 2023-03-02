@@ -1,0 +1,59 @@
+/* Classe para alinhar conteúdo à direita da tela */
+.right {
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: row; 
+}
+
+/* Classe para centralizar conteúdo */
+.center {
+    display: flex;
+    justify-content: center;
+}
+
+/* Classe para remover padding */
+.no-padding{
+    padding: 0px 0px;
+}
+
+/* Utilizado para definir altura do widget do rodapé, utilizada para rodapé ficar ajustado ao card */
+po-widget::ng-deep > div.po-widget {
+    height: 100%;
+}
+
+po-widget::ng-deep > div.po-widget > * {
+    display: flex;
+    align-content: center;
+    flex-wrap: wrap;
+    height: 100%;
+}
+
+/* Classe para definir altura do radio-button de tipo de exportação */
+.export-type {
+    position: relative; 
+    height: 10vh;
+}
+
+/* Classe para definir altura do conteudo da exportação e aplicação de rolagem se necessário */
+.export-content {
+    position: relative; 
+    max-height: 100%; 
+    min-height: 50vh;
+    margin-bottom: 60px;
+}
+
+/* Classe para definir altura e posicionamento do rodapé */
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    background-color: white;
+}
+
+img{
+    max-width: 20vh;
+}
+
+po-loading-overlay::ng-deep > div.po-overlay-fixed{
+    z-index: 99999;
+}

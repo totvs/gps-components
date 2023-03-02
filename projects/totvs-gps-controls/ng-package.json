@@ -1,6 +1,7 @@
 {
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
   "dest": "../../dist/totvs-gps-controls",
+  "assets": ["./src/lib/gps-mass-update/assets"],
   "lib": {
     "entryFile": "src/public_api.ts"
   }

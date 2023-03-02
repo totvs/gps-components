@@ -1,0 +1,29 @@
+<po-page-default
+    [p-breadcrumb]="breadcrumb"
+    p-title="Atualização em massa">
+    <div class="po-row">
+        <div class="po-row">
+            Com a ferramenta de atualização em massa, você pode realizar operações de inclusão, edição e exclusão em grande volume. Exporte um layout modelo, faça as mudanças necessárias no CSV e importe o arquivo para concretizar as atualizações no TOTVS Saúde Planos
+        </div>
+        <div class="po-row po-mt-2">
+            <po-widget p-no-shadow="true" class="po-sm-12 po-ml-0 po-mr-0 po-mt-1 po-mb-2">
+                <po-stepper #stepper>
+                    <po-step p-label="Exportar">
+                        <export [gps-url]="gpsUrl" [(filter)]="_parameterGpsFilter" (gps-pass-export)="onPassExport(stepper)">
+                            <ng-content></ng-content>
+                        </export>
+                    </po-step>
+                    <po-step p-label="Carregar" [p-can-active-next-step]="canNextStep.bind(this)">
+                        <load [gps-url]="gpsUrl" (gps-back-to-export)="onBackToExport(stepper)" (gps-on-check-file)="onCheckFile($event, stepper)" (gps-go-to-check)="goToCheck(stepper)">
+                        </load>
+                    </po-step>
+                    <po-step p-label="Pré-visualizar">
+                        <checking-execute [gps-url]="gpsUrl" [gps-columns]="gpsColumns" (gps-on-check-file)="onCheckFile($event, stepper)" (gps-back-to-load)="onBackToLoad(stepper)" [gps-import-items]="gpsItems" [gps-child-property-name]="gpsChildPropertyName" >
+                        </checking-execute>
+                    </po-step>
+                </po-stepper>
+                
+            </po-widget>
+        </div>
+    </div>    
+</po-page-default>

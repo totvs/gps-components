@@ -1,0 +1,46 @@
+<div id="loadContent" class="po-row po-mb-4 upload-content">
+    <po-upload 
+        [(ngModel)]="selectedFile"
+        class="po-sm-12 po-ml-2 po-mr-2 po-mt-2" 
+        name="upload" 
+        p-drag-drop="true"
+        [p-url]="uploadUrl"
+        p-hide-send-button="true"
+        p-auto-upload="true"
+        (p-upload)="beforeLoadFile($event)"
+        (p-success)="onLoadFile($event)"
+        (p-error)="onLoadFileError($event)"
+        p-drag-drop-height="360"
+        [p-restrictions]="uploadRestrictions">
+    </po-upload>
+</div>
+
+<!-- RODAPÉ COM BOTÕES -->
+<div id="load-footer" class="po-row po-sm-12 footer">
+    <po-widget
+        class="po-sm-12 po-mb-1 no-padding"
+        p-no-shadow="true">
+        <div class="po-row right">
+            <po-button
+                p-type="secondary"
+                p-label="Retornar para exportação"
+                (click)="onBackToExport()">
+            </po-button>
+            <po-button
+                class="po-ml-1"
+                p-type="primary"
+                p-kind="primary"
+                [p-disabled]="this.importItems?.length == 0"
+                (click)="goToChecking()"
+                p-label="Pré-visualizar">
+            </po-button>
+        </div>
+    </po-widget>
+</div>
+
+<!-- LOADING -->
+<po-loading-overlay
+    *ngIf="isLoading"
+    p-screen-lock="true"
+    [p-text]="loadingMessage" >
+</po-loading-overlay>

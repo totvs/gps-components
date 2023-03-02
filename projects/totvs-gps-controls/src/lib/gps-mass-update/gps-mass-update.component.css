@@ -1,0 +1,26 @@
+/* Classe para remover padding */
+.no-padding{
+    padding: 0px;
+}
+
+/* Classe para remover padding do stepper, utilizada para rodapé ficar ajustado ao card */
+po-stepper::ng-deep > div.po-stepper > div.po-stepper-content {
+    padding: 0px; 
+    padding-top: 16px;   
+}
+
+/* Classe para remover padding do widget, utilizada para rodapé ficar ajustado ao card */
+po-widget::ng-deep > div.po-widget > po-container> div.po-container{
+    padding: 0px;
+    padding-top: 16px;
+}
+
+po-widget::ng-deep > div.po-widget > po-container > div.po-container > div.po-widget-body > po-stepper > div.po-stepper > div.stepper-fixed {
+    position: fixed;
+    top: 92px;
+    background-color: white;
+    z-index: 99998;
+    padding-bottom: 12px;
+    padding-top: 12px;
+    width: 97%;
+} 
