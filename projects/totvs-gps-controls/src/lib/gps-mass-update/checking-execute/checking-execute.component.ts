@@ -198,6 +198,9 @@ export class CheckingExecuteComponent implements OnInit, OnChanges, AfterViewIni
           if(result_item.status == 'S'){
             result_item['$selected'] = true;
           }
+          if(this.gpsChildPropertyName){
+            result_item[this.gpsChildPropertyName] = item[this.gpsChildPropertyName];
+          }
           item = result_item;
         }
         return item;
