@@ -76,3 +76,16 @@ Angular 11 compatibility
 - Change the version number in projects/totvs-gps-crud/package.json.
 - Run `npm run build_crud` to build the project. The build artifacts will be stored in the `dist/totvs-gps-crud` directory.
 - Run `npm publish ./dist/totvs-gps-crud/totvs-gps-crud-X.Y.Z.tgz` to publish the pachage.
+
+### 5.4.4
+- gps-mass-update: created component
+
+## TotvsGpsControls
+
+### Features
+- Gps Mass Update Component
+
+### Build
+- Change the version number in projects/totvs-gps-controls/package.json.
+- Run `npm run build_controls` to build the project. The build artifacts will be stored in the `dist/totvs-gps-controls` directory.
+- Run `npm publish ./dist/totvs-gps-controls/totvs-gps-controls-X.Y.Z.tgz` to publish the pachage.
