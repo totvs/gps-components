@@ -22,3 +22,7 @@ export * from './lib/pipes/boolean.pipe';
 export * from './lib/totvs-gps-controls.component';
 export * from './lib/totvs-gps-controls.model';
 export * from './lib/totvs-gps-controls.module';
+
+export * from './lib/gps-mass-update/gps-mass-update.component'
+export * from './lib/gps-mass-update/gps-mass-update.module'
+export * from './lib/gps-mass-update/gps-mass-update.config' 
