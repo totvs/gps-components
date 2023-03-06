@@ -51,7 +51,7 @@ export class TotvsGpsControls {
                 manual.validation(control);
               }
             }
-            //
+            
             if (control.invalid) {  
               invalidFields.push(<TotvsGpsInvalidField>{
                 fieldName: field,

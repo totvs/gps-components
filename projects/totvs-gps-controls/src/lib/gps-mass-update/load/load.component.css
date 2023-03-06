@@ -1,0 +1,38 @@
+/* Classe para alinhar conteúdo à direita da tela */
+.right {
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: row; 
+}
+
+/* Classe para remover padding */
+.no-padding{
+    padding: 0px 0px;
+}
+
+/* Utilizado para definir altura do widget do rodapé, utilizada para rodapé ficar ajustado ao card */
+po-widget::ng-deep > div.po-widget {
+    height: 100%;
+}
+
+po-widget::ng-deep > div.po-widget > * {
+    display: flex;
+    align-content: center;
+    flex-wrap: wrap;
+    height: 100%;
+}
+
+/* Classe para definir altura e posicionamento do rodapé */
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    background-color: white;
+}
+
+.upload-content{
+    position: relative;
+    height: max-content;    
+    min-height: 60vh;
+    margin-bottom: 60px;
+}

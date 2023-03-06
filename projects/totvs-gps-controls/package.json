@@ -1,10 +1,10 @@
 {
   "name": "totvs-gps-controls",
-  "version": "5.4.3",
+  "version": "15.0.1",
   "peerDependencies": {
-    "@angular/common": "^11.0.1",
-    "@angular/core": "^11.0.1",
-    "@po-ui/ng-components": "^4.0.0",
+    "@angular/common": "^15.1.4",
+    "@angular/core": "^15.1.4",
+    "@po-ui/ng-components": "^15.1.1",
     "totvs-gps-services": "^5.0.1",
     "totvs-gps-utils": "^5.0.1",
     "totvs-gps-custom": "^5.0.0"

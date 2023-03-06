@@ -1,0 +1,61 @@
+<div id="checkingExecuteComponent" class="po-row po-mb-4" style="position: relative; height: 64vh">
+    <po-table
+        class="po-sm-12"
+        [p-selectable]="true"
+        [p-columns]="columns"
+        [p-items]="items"
+        p-hide-text-overflow="true"
+        [p-height]="contentHeigth"
+        (p-unselected)="onUnselect($event)"
+        (p-selected)="onSelect($event)"
+        (p-all-selected)="onSelectAll($event)"
+        (p-all-unselected)="onUnselectAll($event)">
+    </po-table>
+</div>
+
+<!-- RODAPÉ COM BOTÕES -->
+<div id="checking-execute-footer" class="po-row po-sm-12 footer">
+    <po-widget
+        class="po-sm-12 po-mb-1 no-padding">
+        <div class="po-row right">
+            <po-button
+                p-type="secondary"
+                p-label="Retornar para carregamento"
+                (click)="onBackToLoad()"> 
+            </po-button>
+            <po-button
+                *ngIf="hasChangeSelected"
+                class="po-ml-1"
+                p-type="primary"
+                (click)="onReCheck()"
+                p-kind="primary"
+                p-label="Revalidar">
+            </po-button>
+            <po-button
+                *ngIf="!hasChangeSelected"
+                class="po-ml-1"
+                p-type="primary"
+                p-kind="primary"
+                (click)="onConfirm()"
+                p-label="Efetivar">
+            </po-button>
+        </div>
+    </po-widget>
+</div>
+
+<!-- LOADING -->
+<po-loading-overlay
+    *ngIf="isLoading"
+    p-screen-lock="true"
+    [p-text]="loadingMessage" >
+</po-loading-overlay>
+
+<po-modal
+    (p-close)="clearErrorMessage()"
+    [p-primary-action]="closeAction"
+    p-size="md"
+    p-title="Erros" >
+    <po-table 
+        [p-items]="errorItems"
+        [p-columns]="errorColums"> </po-table>
+</po-modal>
