@@ -19,10 +19,19 @@ Angular 10 compatibility
 ### 5.X
 Angular 11 compatibility
 
+### 15.X
+Angular 15 compatibility
+
 ## Breaking changes
 
 ### 3.0.0
 - gps-page-list: removed p-filter property
+
+### 5.4.4
+- gps-mass-update: created component
+
+### 15.0.1
+- Angular version: updated to version 15
 
 ## TotvsGpsServices
 
