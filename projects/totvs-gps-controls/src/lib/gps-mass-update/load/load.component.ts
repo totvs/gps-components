@@ -1,5 +1,5 @@
 import { HttpResponse } from '@angular/common/http';
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { PoNotificationService, PoUploadFileRestrictions } from '@po-ui/ng-components';
 import { GpsMassUpdateService } from '../service/gps-mass-update.service';
 
@@ -15,7 +15,7 @@ export class LoadComponent implements OnInit, AfterViewInit {
   loadingMessage: string = "Enviando arquivo...";
   isLoading: boolean = false;
 
-  selectedFile:Array<any> = [];
+  @Input('gps-selected-file') selectedFile: Array<any> = [];
   importItems:Array<any> = [];
 
   @Output('gps-back-to-export') gpsBackToExport: EventEmitter<any> = new EventEmitter();
@@ -35,6 +35,10 @@ export class LoadComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.uploadUrl = this.gpsUrl + '/mass/execute/check';
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.selectedFile = null;
   }
 
   ngAfterViewInit(): void {
@@ -69,7 +73,6 @@ export class LoadComponent implements OnInit, AfterViewInit {
     this.importItems = event.body?.items;
     this.hideLoading();
     this.gpsOnCheckFile.emit(this.importItems);
-    this.selectedFile = null;
   }
 
   onLoadFileError(error){

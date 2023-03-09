@@ -7,14 +7,14 @@
         </div>
         <div class="po-row po-mt-2">
             <po-widget p-no-shadow="true" class="po-sm-12 po-ml-0 po-mr-0 po-mt-1 po-mb-2">
-                <po-stepper #stepper>
+                <po-stepper #stepper (p-change-step)="changeStep($event)">
                     <po-step p-label="Exportar">
                         <export [gps-url]="gpsUrl" [(filter)]="_parameterGpsFilter" (gps-pass-export)="onPassExport(stepper)">
                             <ng-content></ng-content>
                         </export>
                     </po-step>
                     <po-step p-label="Carregar" [p-can-active-next-step]="canNextStep.bind(this)">
-                        <load [gps-url]="gpsUrl" (gps-back-to-export)="onBackToExport(stepper)" (gps-on-check-file)="onCheckFile($event, stepper)" (gps-go-to-check)="goToCheck(stepper)">
+                        <load [gps-url]="gpsUrl" (gps-back-to-export)="onBackToExport(stepper)" (gps-on-check-file)="onCheckFile($event, stepper)" (gps-go-to-check)="goToCheck(stepper)" [gps-selected-file]="selectedFile">
                         </load>
                     </po-step>
                     <po-step p-label="Pré-visualizar">

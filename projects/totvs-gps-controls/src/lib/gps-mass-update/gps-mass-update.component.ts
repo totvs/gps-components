@@ -24,6 +24,7 @@ export class GpsMassUpdateComponent implements OnInit, AfterViewInit {
   _parameterGpsFilter;
 
   importItems:Array<any>;
+  selectedFile: Array<any> = [];
 
   breadcrumb: PoBreadcrumb = {
     items: []
@@ -101,6 +102,9 @@ export class GpsMassUpdateComponent implements OnInit, AfterViewInit {
     if(this.gpsFormatItems){
       this.gpsFormatItems.emit(this.importItems)
     }
+    else{
+      this.gpsItems = this.importItems;
+    }
   }
 
   goToCheck(stepperComponent:PoStepperComponent){
@@ -109,6 +113,10 @@ export class GpsMassUpdateComponent implements OnInit, AfterViewInit {
 
   canNextStep(){
     return this.gpsItems?.length > 0;
+  }
+
+  changeStep(step){
+    this.selectedFile = new Array();
   }
 
 }

@@ -158,10 +158,7 @@ export class CheckingExecuteComponent implements OnInit, OnChanges, AfterViewIni
 
   onConfirm(){
     this.showLoading();
-    let selected_items = this.items.filter(item =>{
-      return item['$selected'];
-    })
-    this.service.massExecute(selected_items, this.gpsUrl)
+    this.service.massExecute(this.items, this.gpsUrl)
     .then(result =>{
       this.notificationService.success(`Importação realizada com sucesso. Arquivo ${result.fileName} com relatório da execução enviado para a Central de documentos.`);
     })
@@ -171,7 +168,7 @@ export class CheckingExecuteComponent implements OnInit, OnChanges, AfterViewIni
   }
 
   onReCheck(){
-    this.showLoading();
+    this.showLoading('Revalidando...');
     let selected_items = [];
 
     this.items.forEach(item =>{
