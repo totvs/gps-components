@@ -160,7 +160,7 @@ export class CheckingExecuteComponent implements OnInit, OnChanges, AfterViewIni
     this.showLoading();
     this.service.massExecute(this.items, this.gpsUrl)
     .then(result =>{
-      this.notificationService.success(`Importação realizada com sucesso. Arquivo ${result.fileName} com relatório da execução enviado para a Central de documentos.`);
+      this.notificationService.success(`Movimentação em massa realizada com sucesso, verifique os relatórios de sucesso e complementar na central de documentos.`);
     })
     .finally(() =>{
       this.hideLoading();
