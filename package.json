@@ -28,6 +28,7 @@
     "@angular/router": "~11.0.1",
     "@po-ui/ng-components": "4.0.0-rc.1",
     "@totvs/po-theme": "4.0.0-rc.1",
+    "@types/resize-observer-browser": "^0.1.7",
     "coa": "2.0.2",
     "rxjs": "~6.6.0",
     "totvs-gps-api": "file:library/totvs-gps-api-0.1.90.tgz",
