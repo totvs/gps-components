@@ -1,5 +1,6 @@
 <div id="checkingExecuteComponent" class="po-row po-mb-4" style="position: relative; height: 64vh">
     <po-table
+        *ngIf="showTable"
         class="po-sm-12"
         [p-selectable]="true"
         [p-columns]="columns"

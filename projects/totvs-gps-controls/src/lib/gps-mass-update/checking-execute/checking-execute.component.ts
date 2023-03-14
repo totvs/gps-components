@@ -1,5 +1,7 @@
 import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { PoModalAction, PoModalComponent, PoNotificationService, PoTableColumn, PoTableDetail } from '@po-ui/ng-components';
+import { GpsPageNavigation } from 'totvs-gps-crud';
 import { GpsMassUpdateService } from '../service/gps-mass-update.service';
 
 @Component({
@@ -17,6 +19,8 @@ export class CheckingExecuteComponent implements OnInit, OnChanges, AfterViewIni
   @Output('gps-on-check-file') gpsOnCheckFile: EventEmitter<any> = new EventEmitter();
   
   @ViewChild(PoModalComponent, { static: true }) errorModal: PoModalComponent;
+  
+  private pageNavigation:GpsPageNavigation = new GpsPageNavigation();
   
 
   loadingMessage: string = "Salvando...";
@@ -38,6 +42,7 @@ export class CheckingExecuteComponent implements OnInit, OnChanges, AfterViewIni
   }
 
   hasChangeSelected: boolean = false;
+  showTable: boolean = true;
 
   updateItemsByRecheck: boolean = false;
 
@@ -46,8 +51,11 @@ export class CheckingExecuteComponent implements OnInit, OnChanges, AfterViewIni
   constructor(
     private service: GpsMassUpdateService,
     private notificationService: PoNotificationService,
-    private cdr: ChangeDetectorRef
-  ) { }
+    private cdr: ChangeDetectorRef,
+    private router: Router,
+  ) { 
+    this.pageNavigation.setRouter(router);
+  }
 
   ngOnInit(): void {    
   }
@@ -82,45 +90,57 @@ export class CheckingExecuteComponent implements OnInit, OnChanges, AfterViewIni
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if(changes?.gpsImportItems?.currentValue){
+    this.reloadData(changes);
+  }  
+
+  reloadData(changes: SimpleChanges){    
+    if(changes?.gpsImportItems?.currentValue){     
+      this.showTable = false;
       this.items = [];
+      let itemsAux = [];
       this.hasChangeSelected = false;
       this.gpsImportItems.sort((a,b) => a.lineNumber-b.lineNumber);
       //Se a atualização dos items da tabela ocorrer a partir de uma revalidação, não marca como selecionado os que possuem sucesso, apenas desmarca os que houverem erros
       if(this.updateItemsByRecheck){
         this.updateItemsByRecheck = false;
 
-        this.gpsImportItems.forEach(item => {        
+        for (const item of this.gpsImportItems) {
           if(this.gpsChildPropertyName){
             item[this.gpsChildPropertyName].sort((a,b) => a.lineNumber-b.lineNumber);
           }
-          if(item.status != 'S'){
+          if(item.GpsStatus != 'S'){
             item['$selected'] = false;
             if(this.gpsChildPropertyName){
-              item[this.gpsChildPropertyName].forEach(child =>{
+              for (const child of item[this.gpsChildPropertyName]) {
                 child['$selected'] = false;
-              })
+              }
             }        
             this.setErrorColumnAsVisible();
           }
-          this.items.push(item);
-        });         
+          itemsAux.push(item);
+        }
       }
       else{      
-        this.gpsImportItems.forEach(item => {        
-          item['$selected'] = item.status == 'S';
+        for (const item of this.gpsImportItems) {
+          item['$selected'] = item.GpsStatus == 'S';
           if(this.gpsChildPropertyName){
             item[this.gpsChildPropertyName].sort((a,b) => a.lineNumber-b.lineNumber);
-            item[this.gpsChildPropertyName].forEach(child =>{
-              child['$selected'] = item.status == 'S';
-            })
+            for (const child of item[this.gpsChildPropertyName]) {
+              child['$selected'] = item.GpsStatus == 'S';
+            }
           }        
-          if (item.status != 'S'){
+          if (item.GpsStatus != 'S'){
             this.setErrorColumnAsVisible();
           }
-          this.items.push(item);
-        });
+          itemsAux.push(item);
+        }
       }
+      this.items = JSON.parse(JSON.stringify(itemsAux));
+      //Timeout utilizado para garantir atualização da tabela com os items, incluido pois ocasionalmente a tabela concatenava os registros de 2 importações
+      setTimeout(() => {
+        this.showTable = true;
+      }, 100);
+      
     }
     if(changes?.gpsColumns?.currentValue){      
 
@@ -139,7 +159,7 @@ export class CheckingExecuteComponent implements OnInit, OnChanges, AfterViewIni
 
       this.addErrorColumn();
     }
-  }  
+  }
   
   showLoading(message?){
     if(message){
@@ -157,10 +177,11 @@ export class CheckingExecuteComponent implements OnInit, OnChanges, AfterViewIni
   }
 
   onConfirm(){
-    this.showLoading();
+    this.showLoading('Salvando...');
     this.service.massExecute(this.items, this.gpsUrl)
     .then(result =>{
       this.notificationService.success(`Movimentação em massa realizada com sucesso, verifique os relatórios de sucesso e complementar na central de documentos.`);
+      this.pageNavigation.back();
     })
     .finally(() =>{
       this.hideLoading();
@@ -192,7 +213,7 @@ export class CheckingExecuteComponent implements OnInit, OnChanges, AfterViewIni
         });
 
         if(result_item){
-          if(result_item.status == 'S'){
+          if(result_item.GpsStatus == 'S'){
             result_item['$selected'] = true;            
           }
           if(this.gpsChildPropertyName){
@@ -221,7 +242,7 @@ export class CheckingExecuteComponent implements OnInit, OnChanges, AfterViewIni
         property: 'action',
       },
       {
-        property: 'status',
+        property: 'GpsStatus',
         type: 'label',
         labels: [
           { value: 'S', color: 'color-11', label: 'Sucesso' },
