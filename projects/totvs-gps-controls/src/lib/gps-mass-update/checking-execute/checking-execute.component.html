@@ -11,6 +11,22 @@
         (p-selected)="onSelect($event)"
         (p-all-selected)="onSelectAll($event)"
         (p-all-unselected)="onUnselectAll($event)">
+
+        <ng-template p-table-row-template let-rowItem let-i="rowIndex" [p-table-row-template-show]="showTableDetail.bind(this)">        
+            <po-table 
+              [p-items]="rowItem[this.gpsChildPropertyName]"
+              p-hide-select-all="true"
+              [p-columns]="childColumns"
+              [p-selectable]="true"
+              p-hide-text-overflow="true"
+              (p-unselected)="onUnselect($event)"
+              (p-selected)="onSelect($event)"
+              (p-all-selected)="onSelectAll($event)"
+              (p-all-unselected)="onUnselectAll($event)"> 
+            </po-table>
+            
+          </ng-template>
+
     </po-table>
 </div>
 

@@ -34,6 +34,7 @@ export class CheckingExecuteComponent implements OnInit, OnChanges, AfterViewIni
   ];
 
   columns: Array<PoTableColumn> = [ ];
+  childColumns: Array<PoTableColumn> = [ ];
   contentHeigth: number;
   
   closeAction: PoModalAction = {
@@ -95,6 +96,7 @@ export class CheckingExecuteComponent implements OnInit, OnChanges, AfterViewIni
 
   reloadData(changes: SimpleChanges){    
     if(changes?.gpsImportItems?.currentValue){     
+      this.showLoading('Carregando...');
       this.showTable = false;
       this.items = [];
       let itemsAux = [];
@@ -135,11 +137,12 @@ export class CheckingExecuteComponent implements OnInit, OnChanges, AfterViewIni
           itemsAux.push(item);
         }
       }
-      this.items = JSON.parse(JSON.stringify(itemsAux));
+      this.items = itemsAux;
       //Timeout utilizado para garantir atualização da tabela com os items, incluido pois ocasionalmente a tabela concatenava os registros de 2 importações
       setTimeout(() => {
         this.showTable = true;
-      }, 100);
+        this.hideLoading();
+      }, 10);
       
     }
     if(changes?.gpsColumns?.currentValue){      
@@ -148,9 +151,13 @@ export class CheckingExecuteComponent implements OnInit, OnChanges, AfterViewIni
 
       this.gpsColumns.forEach(column => {
         if(column.type == 'detail'){
-          column.detail.columns.unshift({property: 'action', label: 'Operação'});
+          column.detail.columns.unshift({property: 'action', label: 'Operação' });
           column.detail.columns.unshift({property: 'lineNumber', label: 'Linha' });
           this.columns.unshift(column);
+          this.childColumns = [...column.detail.columns];
+          this.childColumns.map(childColumn =>{
+            childColumn.color = this.setChildColumnColor.bind(this);
+          })
         }
         else{
           this.columns.push(column);
@@ -158,6 +165,12 @@ export class CheckingExecuteComponent implements OnInit, OnChanges, AfterViewIni
       })
 
       this.addErrorColumn();
+    }
+  }
+  setChildColumnColor(item){
+    console.log(item);
+    if(item.action == 'EXCLUIR' && item.oldAction == 'ALTERAR'){
+      return 'color-07';
     }
   }
   
@@ -243,6 +256,7 @@ export class CheckingExecuteComponent implements OnInit, OnChanges, AfterViewIni
       },
       {
         property: 'GpsStatus',
+        label:'Status',
         type: 'label',
         labels: [
           { value: 'S', color: 'color-11', label: 'Sucesso' },
@@ -288,13 +302,36 @@ export class CheckingExecuteComponent implements OnInit, OnChanges, AfterViewIni
     this.errorModal.close()
   }
 
+  adjustActionOnSelect(item){
+    if(item.hasOwnProperty(this.gpsChildPropertyName)){
+      return;
+    }
+    if(item.action == "EXCLUIR" && item.oldAction){
+      item.action = item.oldAction;
+      item.oldAction = null;
+    }
+  }
+
+  adjustActionOnUnselect(item, unselectByMaster = false){
+    if(item.hasOwnProperty(this.gpsChildPropertyName) || unselectByMaster){
+      return;
+    }
+    if(item.action == "ALTERAR"){
+      item.oldAction = "ALTERAR";
+      item.action = "EXCLUIR";
+    }
+  }
+
   onSelect(item){    
+    this.adjustActionOnSelect(item);
+
     this.setHasChangeSelected(true);
     item[this.gpsChildPropertyName]?.forEach(child =>{
       child['$selected'] = true;
+      this.onSelect(child);
     })
 
-    //Verificar se é um registro filho para selecionar quando selecionar um filho
+    //Verificar se é um registro filho para selecionar o pai quando selecionar um de se seus filhos
     if(this.gpsChildPropertyName && !item.hasOwnProperty(this.gpsChildPropertyName)){
       if(item['$selected']){
         let child = this.items.find(it =>{
@@ -307,10 +344,16 @@ export class CheckingExecuteComponent implements OnInit, OnChanges, AfterViewIni
 
   }
   
-  onUnselect(item){
+  onUnselect(item,unselectByMaster = false){
+    this.adjustActionOnUnselect(item, unselectByMaster);
+    if(this.gpsChildPropertyName && !item.hasOwnProperty(this.gpsChildPropertyName) && !unselectByMaster && item.oldAction == 'ALTERAR'){
+      this.notificationService.error('Você desmarcou um registro vinculado a um registro principal. Caso esse registro já exista na base de dedos, ele será excluído.');
+    }
+    
     this.setHasChangeSelected(true);
     item[this.gpsChildPropertyName]?.forEach(child =>{
       child['$selected'] = false;
+      this.onUnselect(child, true);
     })
   }
 
@@ -332,6 +375,10 @@ export class CheckingExecuteComponent implements OnInit, OnChanges, AfterViewIni
       this.notificationService.warning('Você alterou a seleção de registros à serem enviados. É necessário que a seleção seja revalidada antes de efetivar.');
     }
     this.hasChangeSelected = value;
+  }
+
+  showTableDetail(rowItem:any, index:any){
+    return rowItem[this.gpsChildPropertyName]?.length > 0;
   }
 
 }
