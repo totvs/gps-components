@@ -168,8 +168,7 @@ export class CheckingExecuteComponent implements OnInit, OnChanges, AfterViewIni
     }
   }
   setChildColumnColor(item){
-    console.log(item);
-    if(item.action == 'EXCLUIR' && item.oldAction == 'ALTERAR'){
+    if(item.action == 'EXCLUIR' && !item['$selected']){
       return 'color-07';
     }
   }
@@ -346,8 +345,8 @@ export class CheckingExecuteComponent implements OnInit, OnChanges, AfterViewIni
   
   onUnselect(item,unselectByMaster = false){
     this.adjustActionOnUnselect(item, unselectByMaster);
-    if(this.gpsChildPropertyName && !item.hasOwnProperty(this.gpsChildPropertyName) && !unselectByMaster && item.oldAction == 'ALTERAR'){
-      this.notificationService.error('Você desmarcou um registro vinculado a um registro principal. Caso esse registro já exista na base de dedos, ele será excluído.');
+    if(this.gpsChildPropertyName && !item.hasOwnProperty(this.gpsChildPropertyName) && !unselectByMaster && (item.oldAction == 'ALTERAR' || item.action == "EXCLUIR")){
+      this.notificationService.error('Você desmarcou um registro vinculado a um registro principal. Caso esse registro já exista na base de dados, ele será excluído.');
     }
     
     this.setHasChangeSelected(true);
