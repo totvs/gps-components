@@ -312,7 +312,7 @@ export class CheckingExecuteComponent implements OnInit, OnChanges, AfterViewIni
   }
 
   adjustActionOnUnselect(item, unselectByMaster = false){
-    if(item.hasOwnProperty(this.gpsChildPropertyName) || unselectByMaster){
+    if(!this.gpsChildPropertyName || item.hasOwnProperty(this.gpsChildPropertyName) || unselectByMaster){
       return;
     }
     if(item.action == "ALTERAR"){
