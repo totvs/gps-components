@@ -110,13 +110,15 @@ export class CheckingExecuteComponent implements OnInit, OnChanges, AfterViewIni
           if(this.gpsChildPropertyName){
             item[this.gpsChildPropertyName].sort((a,b) => a.lineNumber-b.lineNumber);
           }
-          if(item.GpsStatus != 'S'){
+          if(item.GpsStatus == 'E'){
             item['$selected'] = false;
             if(this.gpsChildPropertyName){
               for (const child of item[this.gpsChildPropertyName]) {
                 child['$selected'] = false;
               }
             }        
+          }
+          if(item.GpsStatus != 'S'){            
             this.setErrorColumnAsVisible();
           }
           itemsAux.push(item);
@@ -124,11 +126,11 @@ export class CheckingExecuteComponent implements OnInit, OnChanges, AfterViewIni
       }
       else{      
         for (const item of this.gpsImportItems) {
-          item['$selected'] = item.GpsStatus == 'S';
+          item['$selected'] = item.GpsStatus != 'E';
           if(this.gpsChildPropertyName){
             item[this.gpsChildPropertyName].sort((a,b) => a.lineNumber-b.lineNumber);
             for (const child of item[this.gpsChildPropertyName]) {
-              child['$selected'] = item.GpsStatus == 'S';
+              child['$selected'] = item.GpsStatus != 'E';
             }
           }        
           if (item.GpsStatus != 'S'){
