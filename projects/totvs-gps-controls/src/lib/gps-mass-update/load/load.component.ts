@@ -72,6 +72,10 @@ export class LoadComponent implements OnInit, AfterViewInit {
   onLoadFile(event: HttpResponse<any>){
     this.importItems = event.body?.items;
     this.hideLoading();
+    if(this.importItems.length == 0){
+      this.notificationService.warning("Não foram encontrados registros válidos, verifique o arquivo e tente novamente.");
+      this.selectedFile = null;
+    }
     this.gpsOnCheckFile.emit(this.importItems);
   }
 
