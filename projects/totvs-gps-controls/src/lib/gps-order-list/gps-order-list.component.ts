@@ -117,9 +117,11 @@ export class GpsOrderListComponent implements OnChanges {
     }
 
     private sortList() {
-        this.itemList.sort((a, b) => (a.order < b.order) ? -1 : 1);
+        let itemListAux = JSON.parse(JSON.stringify(this.itemList));
+        itemListAux.sort((a, b) => (a.order < b.order) ? -1 : 1);
         let _order = 0;
-        this.itemList.forEach(item => { item.order = ++_order });
+        itemListAux.forEach(item => { item.order = ++_order });
+        this.itemList = itemListAux;
         this.updateOutputList();
     }
 
