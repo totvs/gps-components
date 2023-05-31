@@ -16,21 +16,23 @@ export class LedgerAccountZoomComponent {
       public ledgerAccountZoom: LedgerAccountZoom,
       public costCenterZoom: CostCenterZoom) {}
 
-  ngOnInit() {}    
+  ngOnInit() {}
 
   @Input('gps-limit-date') limitDate: Date;
+
+  @Input('gps-kind-account-different') kindAccountDifferent: string;
 
   @Input('gps-orientation') orientation:GpsOrientation = GpsOrientation.Vertical;
 
   @Input('gps-ledger-account-disabled') disabledLedgerAccount: boolean = false;
-  
+
   @Input('gps-cost-center-disabled') disabledCostCenter: boolean = false;
 
   @Input('gps-required') required: boolean = false;
 
   @Input('gps-ledger-account-label') ledgerAccountLabel: string = 'Conta contábil';
   @Input('gps-cost-center-label') costCenterLabel: string = 'Centro de custo';
-    
+
   @Input('gps-ledger-account-class') ledgerAccountClass: string;
   @Input('gps-cost-center-class') costCenterClass: string;
 
@@ -38,8 +40,8 @@ export class LedgerAccountZoomComponent {
   @Output('gps-change-cost-center') _onChangeCostCenter = new EventEmitter<any>();
 
   @Output('gps-selected-ledger-account') _onSelectedLedgerAccount = new EventEmitter<any>();
-  @Output('gps-selected-cost-center') _onSelectedCostCenter = new EventEmitter<any>();  
-  
+  @Output('gps-selected-cost-center') _onSelectedCostCenter = new EventEmitter<any>();
+
   @Output() gpsLedgerAccountModelChange = new EventEmitter<any>();
   @Input()
     get gpsLedgerAccountModel(): string { return this._ledgerAccount; }

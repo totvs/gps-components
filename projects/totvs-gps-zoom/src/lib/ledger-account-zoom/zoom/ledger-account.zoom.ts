@@ -2,6 +2,7 @@ import { Observable, from, of } from 'rxjs';
 import { LedgerAccountService } from 'totvs-gps-api';
 import { Injectable } from '@angular/core';
 import { PoLookupFilter, PoLookupColumn, PoLookupFilteredItemsParams, PoLookupResponseApi } from '@po-ui/ng-components';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class LedgerAccountZoom implements PoLookupFilter {
@@ -9,7 +10,7 @@ export class LedgerAccountZoom implements PoLookupFilter {
     constructor(private service:LedgerAccountService) {
         this.createColumns();
     }
- 
+
     private readonly columnNames = [
         'code',
         'description',
@@ -21,7 +22,7 @@ export class LedgerAccountZoom implements PoLookupFilter {
         'kindAccount': <PoLookupColumn> { property: 'kindAccount', label: 'Tipo'}
     };
 
-    public COLUMNS: Array<PoLookupColumn>; 
+    public COLUMNS: Array<PoLookupColumn>;
     public FIELD_LABEL: string = 'description';
     public FIELD_VALUE: string = 'code';
 
@@ -41,11 +42,30 @@ export class LedgerAccountZoom implements PoLookupFilter {
     }
 
     getFilteredItems(params: PoLookupFilteredItemsParams): Observable<PoLookupResponseApi> {
-        let result = this.service.getByFilter({q:params.filter}, params.page, params.pageSize);
+        let _filter = {
+            q: params.filter,
+            kindAccountDifferent: null
+        };
+
+        if (params.filterParams[0])
+            _filter.kindAccountDifferent = params.filterParams[0];
+
+        let result = this.service.getByFilter(_filter, params.page, params.pageSize);
         return from(result);
     }
 
-    getObjectByValue(code): Observable<any> {
-        return from(this.service.get(code));
-    }  
+    getObjectByValue(code, params): Observable<any> {
+        let _filter = {
+            kindAccountDifferent: null,
+            code: code,
+        };
+
+        if (params[0])
+            _filter.kindAccountDifferent = params[0];
+
+        let result = this.service.getByFilter(_filter, params.page, params.pageSize);
+        return from(result).pipe(map(collection => {
+            return collection.items[0];
+        }));
+    }
 }
