@@ -1,11 +1,12 @@
 <div class="po-row" *ngIf="orientation == 'Vertical'">
-  <po-lookup 
+  <po-lookup
     name="ledgerAccount"
     [class]="ledgerAccountClass"
     [p-label]="ledgerAccountLabel"
     [p-required]="required"
     [(ngModel)]="gpsLedgerAccountModel"
     [p-disabled]="disabledLedgerAccount"
+    [p-filter-params]="[kindAccountDifferent]"
     [p-columns]="ledgerAccountZoom.COLUMNS"
     [p-filter-service]="ledgerAccountZoom"
     [p-field-label]="ledgerAccountZoom.FIELD_LABEL"
@@ -16,7 +17,7 @@
   </po-lookup>
 </div>
 <div class="po-row" *ngIf="orientation == 'Vertical'">
-  <po-lookup 
+  <po-lookup
     name="costCenter"
     [class]="costCenterClass"
     [p-label]="costCenterLabel"
@@ -33,13 +34,14 @@
   </po-lookup>
 </div>
 <div class="po-row" *ngIf="orientation == 'Horizontal'">
-  <po-lookup 
+  <po-lookup
     name="ledgerAccount"
     [class]="ledgerAccountClass"
     [p-label]="ledgerAccountLabel"
     [p-required]="required"
     [(ngModel)]="gpsLedgerAccountModel"
     [p-disabled]="disabledLedgerAccount"
+    [p-filter-params]="[kindAccountDifferent]"
     [p-columns]="ledgerAccountZoom.COLUMNS"
     [p-filter-service]="ledgerAccountZoom"
     [p-field-label]="ledgerAccountZoom.FIELD_LABEL"
@@ -48,7 +50,7 @@
     (p-change)="onChangeLedgerAccount($event)"
     (p-selected)="onSelectLedgerAccount($event)">
   </po-lookup>
-  <po-lookup 
+  <po-lookup
     name="costCenter"
     [class]="costCenterClass"
     [p-label]="costCenterLabel"
