@@ -45,8 +45,10 @@ po-widget::ng-deep > div.po-widget > * {
 /* Classe para definir altura e posicionamento do rodapé */
 .footer {
     position: fixed;
-    left: 0;
+    margin-left: 0 !important;
     bottom: 0;
+    padding-left: 0;
+    padding-right: 17px;
     background-color: white;
 }
 

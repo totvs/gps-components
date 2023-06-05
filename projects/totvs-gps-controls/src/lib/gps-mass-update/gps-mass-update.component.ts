@@ -47,6 +47,10 @@ export class GpsMassUpdateComponent implements OnInit, AfterViewInit {
       // Get the header
       var header:any = document.getElementsByClassName("po-stepper-container")[0];
       
+      if (!header) {
+        return;
+      }
+
       // Get the offset position of the navbar
       var sticky = header.offsetTop;
       if (document.getElementsByClassName("po-page-content")[0].scrollTop > sticky) {
@@ -63,7 +67,7 @@ export class GpsMassUpdateComponent implements OnInit, AfterViewInit {
     //Criação de observer para detectar a mudança de tamanho e recalcular largura do stepper
     const resize_ob = new ResizeObserver((entries) => {
       stepper = document.getElementsByClassName('po-stepper-horizontal')[0];
-      stepperWidth = stepper.clientWidth + 'px';
+      stepperWidth = stepper?.clientWidth + 'px';
       adjustheader();
     });
     
