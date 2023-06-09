@@ -19,7 +19,7 @@ po-widget::ng-deep > div.po-widget > po-container > div.po-container > div.po-wi
     position: fixed;
     top: 92px;
     background-color: white;
-    z-index: 99998;
+    z-index: 999;
     padding-bottom: 12px;
     padding-top: 12px;
     width: 97%;
