@@ -2,6 +2,7 @@ import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { GpsOrientation } from '../../utils/enum/gps-orientation.enum';
 import { LedgerAccountZoom } from './zoom/ledger-account.zoom';
 import { CostCenterZoom } from './zoom/cost-center.zoom';
+import { IGPSZoom } from '../interface/gps-zoom.interface';
 
 @Component({
   selector: 'gps-ledger-account-zoom',
@@ -29,6 +30,10 @@ export class LedgerAccountZoomComponent {
   @Input('gps-cost-center-disabled') disabledCostCenter: boolean = false;
 
   @Input('gps-required') required: boolean = false;
+
+  @Input('gps-ledger-account-service') ledgerAccountService: IGPSZoom = this.ledgerAccountZoom;
+
+  @Input('gps-cost-center-service') costCenterService: IGPSZoom = this.costCenterZoom;
 
   @Input('gps-ledger-account-label') ledgerAccountLabel: string = 'Conta contábil';
   @Input('gps-cost-center-label') costCenterLabel: string = 'Centro de custo';
