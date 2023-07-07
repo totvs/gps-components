@@ -2,10 +2,11 @@ import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { CostCenterService } from 'totvs-gps-api';
 import { Injectable } from '@angular/core';
-import { PoLookupFilter, PoLookupColumn, PoLookupFilteredItemsParams, PoLookupResponseApi } from '@po-ui/ng-components';
+import { PoLookupColumn, PoLookupFilteredItemsParams, PoLookupResponseApi } from '@po-ui/ng-components';
+import { IGPSZoom } from '../../interface/gps-zoom.interface';
 
 @Injectable()
-export class CostCenterZoom implements PoLookupFilter {
+export class CostCenterZoom implements IGPSZoom {
 
     constructor(private service:CostCenterService) {
         this.createColumns();

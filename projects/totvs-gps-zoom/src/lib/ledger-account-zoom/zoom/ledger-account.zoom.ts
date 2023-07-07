@@ -1,11 +1,12 @@
-import { Observable, from, of } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import { LedgerAccountService } from 'totvs-gps-api';
 import { Injectable } from '@angular/core';
-import { PoLookupFilter, PoLookupColumn, PoLookupFilteredItemsParams, PoLookupResponseApi } from '@po-ui/ng-components';
+import { PoLookupColumn, PoLookupFilteredItemsParams, PoLookupResponseApi } from '@po-ui/ng-components';
 import { map } from 'rxjs/operators';
+import { IGPSZoom } from '../../interface/gps-zoom.interface';
 
 @Injectable()
-export class LedgerAccountZoom implements PoLookupFilter {
+export class LedgerAccountZoom implements IGPSZoom {
 
     constructor(private service:LedgerAccountService) {
         this.createColumns();
