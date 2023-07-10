@@ -1,4 +1,4 @@
-import { Component, Input, EventEmitter, Output } from '@angular/core';
+import { Component, Input, EventEmitter, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { GpsOrientation } from '../../utils/enum/gps-orientation.enum';
 import { LedgerAccountZoom } from './zoom/ledger-account.zoom';
 import { CostCenterZoom } from './zoom/cost-center.zoom';
@@ -8,7 +8,7 @@ import { IGPSZoom } from '../interface/gps-zoom.interface';
   selector: 'gps-ledger-account-zoom',
   templateUrl: './ledger-account-zoom.component.html'
 })
-export class LedgerAccountZoomComponent {
+export class LedgerAccountZoomComponent implements OnChanges{
 
   public _ledgerAccount: string;
   public _costCenter: string;
@@ -16,6 +16,13 @@ export class LedgerAccountZoomComponent {
   constructor (
       public ledgerAccountZoom: LedgerAccountZoom,
       public costCenterZoom: CostCenterZoom) {}
+          
+  ledgerAccountFilterParamsAux:any = {};
+  costCenterFilterParamsAux:any = {};
+  ngOnChanges(changes: SimpleChanges): void {
+    this.ledgerAccountFilterParamsAux = {limitDate: this.limitDate, kindAccountDifferent: this.kindAccountDifferent, ...this.ledgerAccountFilterParams};
+    this.costCenterFilterParamsAux = {limitDate: this.limitDate,gpsLedgerAccountModel: this.gpsLedgerAccountModel, ...this.costCenterFilterParams};
+  }
 
   ngOnInit() {}
 
@@ -32,8 +39,10 @@ export class LedgerAccountZoomComponent {
   @Input('gps-required') required: boolean = false;
 
   @Input('gps-ledger-account-service') ledgerAccountService: IGPSZoom = this.ledgerAccountZoom;
+  @Input('gps-ledger-account-filter-params') ledgerAccountFilterParams: any = {};
 
   @Input('gps-cost-center-service') costCenterService: IGPSZoom = this.costCenterZoom;
+  @Input('gps-cost-center-filter-params') costCenterFilterParams: any = {};
 
   @Input('gps-ledger-account-label') ledgerAccountLabel: string = 'Conta contábil';
   @Input('gps-cost-center-label') costCenterLabel: string = 'Centro de custo';
