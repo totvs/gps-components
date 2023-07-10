@@ -45,21 +45,22 @@ export class LedgerAccountZoom implements IGPSZoom {
     getFilteredItems(params: PoLookupFilteredItemsParams): Observable<PoLookupResponseApi> {
         let _filter = {
             q: params.filter,
-            kindAccountDifferent: null,
-            limitDate: null
+            ...params.filterParams
         };
-
-        if (params.filterParams[0])
-            _filter.kindAccountDifferent = params.filterParams[0];
-
-        if (params.filterParams[1])
-            _filter.limitDate = params.filterParams[1];
 
         let result = this.service.getByFilter(_filter, params.page, params.pageSize);
         return from(result);
     }
 
-    getObjectByValue(code, params): Observable<any> {        
-        return from(this.service.get(code));        
+    getObjectByValue(code, params): Observable<any> {
+        let _filter = {
+            code: code,
+            ...params
+        };
+
+        let result = this.service.getByFilter(_filter, params.page, params.pageSize);
+        return from(result).pipe(map(collection => {
+            return collection.items[0];
+        }));
     }
 }

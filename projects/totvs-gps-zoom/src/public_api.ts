@@ -9,4 +9,6 @@ export * from "./lib/provider-zoom/provider-zoom.component";
 export * from "./lib/ledger-account-zoom/ledger-account-zoom.component";
 export * from "./lib/authorization-zoom/authorization-zoom.component";
 
-export * from "./lib/ledger-account-zoom//enum/kind-account-different.enum";
+export * from "./lib/ledger-account-zoom/enum/kind-account-different.enum";
+export * from "./lib/ledger-account-zoom/zoom/cost-center.zoom";
+export * from "./lib/ledger-account-zoom/zoom/ledger-account.zoom";
