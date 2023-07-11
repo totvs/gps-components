@@ -21,7 +21,7 @@ export class LedgerAccountZoomComponent implements OnChanges{
   costCenterFilterParamsAux:any = {};
   ngOnChanges(changes: SimpleChanges): void {
     this.ledgerAccountFilterParamsAux = {limitDate: this.limitDate, kindAccountDifferent: this.kindAccountDifferent, ...this.ledgerAccountFilterParams};
-    this.costCenterFilterParamsAux = {limitDate: this.limitDate,gpsLedgerAccountModel: this.gpsLedgerAccountModel, ...this.costCenterFilterParams};
+    this.costCenterFilterParamsAux = {limitDate: this.limitDate, ledgerAccountCode: this.gpsLedgerAccountModel, ...this.costCenterFilterParams};
   }
 
   ngOnInit() {}
