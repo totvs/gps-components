@@ -52,15 +52,7 @@ export class LedgerAccountZoom implements IGPSZoom {
         return from(result);
     }
 
-    getObjectByValue(code, params): Observable<any> {
-        let _filter = {
-            code: code,
-            ...params
-        };
-
-        let result = this.service.getByFilter(_filter, params.page, params.pageSize);
-        return from(result).pipe(map(collection => {
-            return collection.items[0];
-        }));
+    getObjectByValue(code, params): Observable<any> {        
+        return from(this.service.get(code));        
     }
 }
