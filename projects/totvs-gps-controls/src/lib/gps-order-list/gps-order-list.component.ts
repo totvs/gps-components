@@ -16,6 +16,7 @@ export class GpsOrderListComponent implements OnChanges {
     @Input('items') items: IOrderListItem[];
     @Input('columnLabel') columnLabel: string;
     @Input('orderedItems') orderedItems: IOrderListItem[] = [];
+    @Input('gpsHideBatchActions') gpsHideBatchActions: boolean = false;
     @Output('orderedItemsChange') orderedItemsChange: EventEmitter<IOrderListItem[]> = new EventEmitter();
     @Input('canChoose') 
         get canChoose() { return this._canChoose }
@@ -27,6 +28,8 @@ export class GpsOrderListComponent implements OnChanges {
         ABOVE: 'above',
         BELOW: 'below'
     };
+
+
 
     itemList: IOrderListItemActions[] = [];
     tableColumns: Array<PoTableColumn> = [
