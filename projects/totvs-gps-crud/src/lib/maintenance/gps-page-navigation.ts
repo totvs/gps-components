@@ -50,4 +50,7 @@ export class GpsPageNavigation {
         }
     }
 
+    public getState() {
+        return this.router.getCurrentNavigation().extras.state;
+    }
 }
