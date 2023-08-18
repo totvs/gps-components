@@ -30,20 +30,24 @@ export class GpsPageNavigation {
         this.navigate('/');
     }
 
-    public newRegisterPage(){
-        this.navigate('/new');
+    public newRegisterPage(stateObject?:any){
+        this.navigate('/new', stateObject);
     }
 
-    public detailRegisterPage(crudObject){
-        this.navigate(GpsMaintenanceUrl.getNavigationUrl(crudObject,'/'));
+    public detailRegisterPage(crudObject,stateObject?:any){
+        this.navigate(GpsMaintenanceUrl.getNavigationUrl(crudObject,'/'), stateObject);
     }
 
-    public editRegisterPage(crudObject){
-        this.navigate(GpsMaintenanceUrl.getNavigationUrl(crudObject,'/edit'));
+    public editRegisterPage(crudObject, stateObject?:any){
+        this.navigate(GpsMaintenanceUrl.getNavigationUrl(crudObject,'/edit'), stateObject);
     }
 
-    public navigate(route:string){
-        this.router.navigate([route]);
+    public navigate(route:string, stateObject?:any){
+        if(stateObject) {
+            this.router.navigate([route], {state: stateObject});
+        } else {
+            this.router.navigate([route]);
+        }
     }
 
 }
