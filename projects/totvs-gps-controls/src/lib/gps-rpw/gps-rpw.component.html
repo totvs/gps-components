@@ -32,7 +32,7 @@
                 </po-combo>
             </div>
             <div class="po-row">
-                <po-switch name="repeatExec" p-label-on="Repetir ocorrência" p-label-off="Repetir ocorrência"
+                <po-switch name="repeatExec" p-label=" " p-label-on="Repetir ocorrência" p-label-off="Repetir ocorrência"
                     [(ngModel)]="model.repeatExecution" (ngModelChange)="rpwNgModelChange()" *ngIf="!repeatExecHidden"
                     class="po-xl-6 po-lg-6 po-md-6 po-sm-6" ngDefaultControl>
                 </po-switch>
@@ -118,7 +118,7 @@
             </div>
             <div class="po-row">
                 <po-switch class="po-xl-2 po-lg-2 po-md-2 po-sm-2" name="multisession" p-label-on="Multisessão"
-                    p-label-off="Multisessão" [(ngModel)]="model.multisession" *ngIf="model.allowMultipleSessions"
+                    p-label-off="Multisessão" p-label=" " [(ngModel)]="model.multisession" *ngIf="model.allowMultipleSessions"
                     (ngModelChange)="rpwNgModelChange()" ngDefaultControl>
                 </po-switch>
             </div>
