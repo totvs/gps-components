@@ -16,7 +16,6 @@ import { CheckingExecuteComponent } from './checking-execute/checking-execute.co
   imports: [
     PoModule,
     PoFieldModule,
-    BrowserModule,
     CommonModule,
     FormsModule 
   ],

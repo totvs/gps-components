@@ -1,0 +1,55 @@
+
+.feedback-container{
+    display: flex;
+    align-items: center;
+}
+
+po-container.feedback-message{
+    width: 100%;
+}
+
+po-container.feedback-message-info::ng-deep > div{
+    background-color: var(--color-feedback-info-lightest);
+    color:var(--color-feedback-info-base)
+}
+
+po-container.feedback-message-warning::ng-deep > div{
+    background-color: var(--color-feedback-warning-lightest);
+    color: var(--color-feedback-warning-base);
+}
+
+po-container.feedback-message-error::ng-deep > div{
+    background-color: var(--color-feedback-negative-lightest);
+    color: var(--color-feedback-negative-base);
+}
+
+po-container.feedback-message-success::ng-deep > div{
+    background-color: var(--color-feedback-positive-lightest);
+    color: var(--color-feedback-positive-base);
+}
+
+svg.feedback-message-icon-info > path{
+    fill: var(--color-feedback-info-base)
+}
+
+svg.feedback-message-icon-warning > path{
+    fill: var(--color-feedback-warning-base);
+}
+
+svg.feedback-message-icon-error > path{
+    fill: var(--color-feedback-negative-base);
+}
+
+svg.feedback-message-icon-success > path{
+    fill: var(--color-feedback-positive-base);
+}
+
+po-link.link-action-warning{
+    --text-color: var(--color-feedback-warning-base);
+}
+
+.feedback-message{
+    display: flex;
+    align-content: center;
+    flex-wrap: wrap;
+}

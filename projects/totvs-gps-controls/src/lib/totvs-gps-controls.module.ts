@@ -16,6 +16,7 @@ import { BooleanPipe } from './pipes/boolean.pipe';
 import { GpsLookupToggleComponent } from './gps-lookup-toggle/gps-lookup-toggle.component';
 import { TotvsGpsCustomService } from 'totvs-gps-custom';
 import { GpsMassUpdateModule } from './gps-mass-update/gps-mass-update.module';
+import { GpsNotificationComponent } from './gps-notification/gps-notification.component';
 
 const components = [
   GpsOrderListComponent,
@@ -25,7 +26,8 @@ const components = [
   GpsPageListComponent,
   GpsPageDetailComponent,
   GpsPageEditComponent,
-  GpsLookupToggleComponent
+  GpsLookupToggleComponent,
+  GpsNotificationComponent
 ];
 const directives = [
   GpsAdvancedSearchDirective
@@ -36,7 +38,6 @@ const pipes = [
 
 @NgModule({
   imports: [
-    BrowserModule,
     CommonModule,
     FormsModule,
     PoModule,
