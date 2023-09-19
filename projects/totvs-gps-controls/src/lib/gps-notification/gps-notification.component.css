@@ -15,12 +15,12 @@ po-container.feedback-message-info::ng-deep > div{
 
 po-container.feedback-message-warning::ng-deep > div{
     background-color: var(--color-feedback-warning-lightest);
-    color: var(--color-feedback-warning-base);
+    color: var(--color-feedback-warning-dark);
 }
 
 po-container.feedback-message-error::ng-deep > div{
     background-color: var(--color-feedback-negative-lightest);
-    color: var(--color-feedback-negative-base);
+    color: var(--color-feedback-negative-dark);
 }
 
 po-container.feedback-message-success::ng-deep > div{
@@ -33,11 +33,11 @@ svg.feedback-message-icon-info > path{
 }
 
 svg.feedback-message-icon-warning > path{
-    fill: var(--color-feedback-warning-base);
+    fill: var(--color-feedback-warning-dark);
 }
 
 svg.feedback-message-icon-error > path{
-    fill: var(--color-feedback-negative-base);
+    fill: var(--color-feedback-negative-dark);
 }
 
 svg.feedback-message-icon-success > path{
@@ -45,7 +45,7 @@ svg.feedback-message-icon-success > path{
 }
 
 po-link.link-action-warning{
-    --text-color: var(--color-feedback-warning-base);
+    --text-color: var(--color-feedback-warning-dark);
 }
 
 .feedback-message{
