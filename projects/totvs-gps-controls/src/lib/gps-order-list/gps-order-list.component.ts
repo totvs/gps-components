@@ -34,7 +34,7 @@ export class GpsOrderListComponent implements OnChanges {
     itemList: IOrderListItemActions[] = [];
     tableColumns: Array<PoTableColumn> = [
         { property: 'label', label: '' },
-        { property: '$actions', label: ' ', type: 'icon', width: '4em', icons:
+        { property: '$actions', label: ' ', type: 'icon', width: '10%', icons:
             [
                 { 
                     value: this.TABLE_ACTIONS.ABOVE,
