@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from "@angular/core";
+import { Component, EventEmitter, Input, Output } from "@angular/core";
 
 @Component({
   selector: 'gps-notification',
@@ -7,6 +7,7 @@ import { Component, EventEmitter, Output } from "@angular/core";
 })
 export class GpsNotificationComponent{  
   @Output('gps-action') gpsAction = new EventEmitter<void>();
+  @Input('gps-show-close') gpsShowClose: boolean = false;
 
   protected isShowFeedbackMessage: boolean = false;
   protected feedbackMessage: String;
@@ -18,7 +19,7 @@ export class GpsNotificationComponent{
     
   }
 
-  showfeedbackMessage(type, icon, message, action?){
+  showFeedbackMessage(type, icon, message, action?){
     this.isShowFeedbackMessage = true;
     this.feedbackMessage = message;
     this.feedbackMessageType = type;
@@ -26,7 +27,7 @@ export class GpsNotificationComponent{
     this.feedbackMessageAction = action;
   }
 
-  hidefeedbackMessage(){
+  hideFeedbackMessage(){
     this.isShowFeedbackMessage = false;
     this.feedbackMessage = '';
     this.feedbackMessageType = '';

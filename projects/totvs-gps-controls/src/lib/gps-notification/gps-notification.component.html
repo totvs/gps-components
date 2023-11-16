@@ -5,12 +5,28 @@
     p-no-border="true"
     >
     <div class="po-row">
-      <div [ngClass]="feedbackMessageAction ? 'po-sm-9' : 'po-sm-12'" class="feedback-container po-pt-1 po-pb-1 po-pl-1">
+      <div [ngClass]="feedbackMessageAction || gpsShowClose ? 'po-sm-9' : 'po-sm-12'" class="feedback-container po-pt-1 po-pb-1 po-pl-1">
         <i [ngClass]="'fa-solid fa-2xl fa-' + feedbackMessageIcon"></i>
         <font class="po-font-text-bold po-ml-2 feedback-message">{{feedbackMessage}}</font>
       </div>
-      <div *ngIf="feedbackMessageAction" class="po-sm-3 feedback-message">
-        <po-link [ngClass]="'link-action-' + feedbackMessageType" [p-label]="feedbackMessageAction" (p-action)="onExecuteAction()"></po-link>
+      <div *ngIf="feedbackMessageAction || gpsShowClose" class="po-sm-3 feedback-message right-align">
+
+        <po-button 
+          *ngIf="feedbackMessageAction" 
+          p-kind="tertiary" 
+          [p-label]="feedbackMessageAction" 
+          (p-action)="onExecuteAction()">
+        </po-button>
+
+        <div *ngIf="gpsShowClose" class="po-toaster-divider"></div>
+
+        <po-button *ngIf="gpsShowClose"
+          p-icon="fa-solid fa-xmark" 
+          p-kind="tertiary" 
+          class="po-toaster-button-close" 
+          (click)="hideFeedbackMessage()">
+        </po-button>
+
       </div>
     </div>
   </po-container>

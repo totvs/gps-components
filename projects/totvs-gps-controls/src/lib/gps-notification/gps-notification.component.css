@@ -48,8 +48,16 @@ po-link.link-action-warning{
     --text-color: var(--color-feedback-warning-dark);
 }
 
+po-button.link-action-warning{
+    --text-color: var(--color-feedback-warning-dark);
+}
+
 .feedback-message{
     display: flex;
     align-content: center;
     flex-wrap: wrap;
+}
+
+.right-align{
+    justify-content: flex-end;
 }
