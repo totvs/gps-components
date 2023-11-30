@@ -15,7 +15,7 @@
           *ngIf="feedbackMessageAction" 
           p-kind="tertiary" 
           [p-label]="feedbackMessageAction" 
-          (p-action)="onExecuteAction()">
+          (p-click)="onExecuteAction()">
         </po-button>
 
         <div *ngIf="gpsShowClose" class="po-toaster-divider"></div>
