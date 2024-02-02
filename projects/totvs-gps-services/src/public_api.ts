@@ -14,3 +14,5 @@ export * from './lib/totvs-gps-zoom.service';
 // serviço de cache de dados
 export * from './lib/totvs-gps-cache.model';
 export * from './lib/totvs-gps-cache.service';
+// serviço de verificação de permissões
+export * from './lib/totvs-gps-permission.service';
