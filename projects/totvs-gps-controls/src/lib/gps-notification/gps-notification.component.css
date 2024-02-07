@@ -61,3 +61,18 @@ po-button.link-action-warning{
 .right-align{
     justify-content: flex-end;
 }
+
+po-dropdown::ng-deep > div > div {
+    border: none !important;
+    padding: 0px 14px 0px 14px;
+    height: 24px;
+}
+
+po-dropdown::ng-deep > div > div > div {
+    margin-left: 0;
+    font-size: 22px;
+}
+
+po-dropdown::ng-deep > po-popup::ng-deep > div {
+    left: 20vw !important;
+}

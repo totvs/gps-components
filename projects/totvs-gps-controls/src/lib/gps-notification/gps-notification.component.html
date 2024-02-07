@@ -8,9 +8,17 @@
       <div [ngClass]="feedbackMessageAction || gpsShowClose ? 'po-sm-9' : 'po-sm-12'" class="feedback-container po-pt-1 po-pb-1 po-pl-1">
         <i [ngClass]="'fa-solid fa-2xl fa-' + feedbackMessageIcon"></i>
         <font class="po-font-text-bold po-ml-2 feedback-message">{{feedbackMessage}}</font>
+
+        <po-dropdown 
+          *ngIf="feedbackMessageArrayOptions.length > 0"
+          [p-actions]="feedbackMessageArrayOptions">
+        </po-dropdown>
+        
       </div>
       <div *ngIf="feedbackMessageAction || gpsShowClose" class="po-sm-3 feedback-message right-align">
 
+        <div *ngIf="gpsAction" class="po-toaster-divider"></div>
+        
         <po-button 
           *ngIf="feedbackMessageAction" 
           p-kind="tertiary" 
