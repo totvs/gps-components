@@ -20,7 +20,7 @@
     </po-lookup>
 
     <po-switch
-        [ngModel]="input == 0"
+        [ngModel]="input === 0 || input === '0'"
         (p-change)="handlerToggleChange($event)"
         [p-disabled]="isDisable"
         [p-label-off]="toggleLabel"
