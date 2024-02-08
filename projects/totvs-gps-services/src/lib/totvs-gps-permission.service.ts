@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { BehaviorSubject, Observable, of } from "rxjs";
 import { filter, switchMap, take } from 'rxjs/operators';
-import { MenuDatasulService } from "totvs-gps-api";
+import { TotvsGpsServices } from './totvs-gps-services.component';
 
 export enum PermissionServiceOption {
   CREATE = "create",
@@ -19,13 +19,16 @@ export interface IPermissionService {
 
 @Injectable({ providedIn: 'root' })
 export class PermissionService {
+
+    private readonly userPermissionsUrl = 'hgp/v1/userPermissions/';  
+    private readonly getProgamPermissionUrl = this.userPermissionsUrl + '{{programName}}';
     
     private loadingSubject = new BehaviorSubject<boolean>(true);
     public loading$ = this.loadingSubject.asObservable();
 
     public permissions: { [key in PermissionServiceOption]?: boolean } = {};
 
-    constructor(private menuService: MenuDatasulService) {
+    constructor() {
       this.initializePermissions();
     }
 
@@ -41,11 +44,15 @@ export class PermissionService {
   
       for (const permission in this.permissions) {
           if (this.permissions.hasOwnProperty(permission)) {
-              let promise = this.menuService.getProgamPermission(app + "." + permission)
-                  .then((result) => { 
-                      this.permissions[permission] = (result['programPermission'] === true);
-                  });
-              promises.push(promise);
+            let promise = TotvsGpsServices
+              .getInstance<Object>(Object,this.getProgamPermissionUrl)
+              .setPathParams({programName: app + "." + permission})
+              .get()
+              .then((result) => { 
+                this.permissions[permission] = (result['programPermission'] === true);
+              });
+
+            promises.push(promise);
           }
       }
   
