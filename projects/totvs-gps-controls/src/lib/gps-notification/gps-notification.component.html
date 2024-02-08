@@ -10,7 +10,7 @@
         <font class="po-font-text-bold po-ml-2 feedback-message">{{feedbackMessage}}</font>
 
         <po-dropdown 
-          *ngIf="feedbackMessageArrayOptions.length > 0"
+          *ngIf="feedbackMessageArrayOptions?.length > 0"
           [p-actions]="feedbackMessageArrayOptions">
         </po-dropdown>
         

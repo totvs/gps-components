@@ -30,7 +30,7 @@ export class GpsNotificationComponent{
     this.feedbackMessageArrayOptions = array;
     
 
-    if (this.feedbackMessageArrayOptions.length > 0) {
+    if (this.feedbackMessageArrayOptions?.length > 0) {
       this.feedbackMessageArrayOptions.forEach((item) => {
         item['action'] = this.onChangeOption.bind(this)
       })
