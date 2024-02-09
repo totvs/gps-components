@@ -1,9 +1,31 @@
-import { Input } from "@angular/core";
 import { TotvsGpsCustomService, TotvsGpsDynamicForm } from "totvs-gps-custom";
-import { UrlSegment } from "@angular/router";
+import { ActivatedRoute, UrlSegment } from "@angular/router";
 import { ICRUDService } from "./models/gps-page.model";
+import { PermissionServiceOption } from "totvs-gps-services";
 
 export class GpsPageBaseComponent {
+
+    //#region Permissões do usuário
+    protected _permissions: { [key in PermissionServiceOption]?: boolean } = {};
+
+    /**
+     * Obtém as permissões de acesso do usuário (create, edit, detail, delete e massUpdate).
+     */
+    public initPermissions(route: ActivatedRoute) {
+        route.data.subscribe(data => {
+            this._permissions = data.permission;
+        }).unsubscribe();
+    }
+    
+    /**
+     * Verifica se o usuário possui determinada permissão.
+     * @param option - (create, edit, detail, delete e massUpdate).
+     * @returns true ou false
+     */
+    public hasPermission(option: PermissionServiceOption) {
+        return this._permissions[option] || false;
+    }
+    //#endregion
 
     //#region Custom fields
     hasCustomFields = false;

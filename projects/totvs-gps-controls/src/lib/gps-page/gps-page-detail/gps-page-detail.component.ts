@@ -3,7 +3,6 @@ import { GpsPageBaseComponent } from "../gps-page-base.component";
 import { ILoadingData } from "../gps-page.internal-model";
 import { PoPageDetailComponent } from "@po-ui/ng-components";
 import { UrlSegment } from "@angular/router";
-import { ICRUDService } from "../models/gps-page.model";
 import { TotvsGpsCustomService } from "totvs-gps-custom";
 
 @Component({
