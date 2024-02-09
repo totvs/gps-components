@@ -55,7 +55,6 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
     }
 
     private totvsStringUtils = TotvsStringUtils.getInstance();
-
     //#endregion
 
     //#region loading
