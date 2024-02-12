@@ -1,8 +1,14 @@
-import { Input } from "@angular/core";
 import { TotvsGpsCustomService, TotvsGpsDynamicForm } from "totvs-gps-custom";
 import { ActivatedRoute, UrlSegment } from "@angular/router";
 import { ICRUDService } from "./models/gps-page.model";
-import { PermissionServiceOption } from "totvs-gps-services";
+
+enum PermissionServiceOption {
+    CREATE = "create",
+    DELETE = "delete",
+    DETAIL = "detail",
+    UPDATE = "update",
+    MASSUPDATE = "massUpdate",
+}
 
 export class GpsPageBaseComponent {
 
