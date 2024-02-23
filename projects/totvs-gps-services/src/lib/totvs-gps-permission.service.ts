@@ -5,10 +5,7 @@ import { filter, switchMap, take } from 'rxjs/operators';
 import { TotvsGpsServices } from './totvs-gps-services.component';
 
 export enum PermissionServiceOption {
-  CREATE = "create",
-  DELETE = "delete",
-  DETAIL = "detail",
-  UPDATE = "update",
+  EDIT = "edit",
   MASSUPDATE = "massUpdate",
 }
 
