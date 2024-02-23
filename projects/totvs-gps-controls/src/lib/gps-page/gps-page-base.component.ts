@@ -3,10 +3,7 @@ import { ActivatedRoute, UrlSegment } from "@angular/router";
 import { ICRUDService } from "./models/gps-page.model";
 
 enum PermissionServiceOption {
-    CREATE = "create",
-    DELETE = "delete",
-    DETAIL = "detail",
-    UPDATE = "update",
+    EDIT = "edit",
     MASSUPDATE = "massUpdate",
 }
   
@@ -16,7 +13,7 @@ export class GpsPageBaseComponent {
     protected _permissions: { [key in PermissionServiceOption]?: boolean } = {};
 
     /**
-     * Obtém as permissões de acesso do usuário (create, edit, detail, delete e massUpdate).
+     * Obtém as permissões de acesso do usuário (edit e massUpdate).
      */
     public initPermissions(route: ActivatedRoute) {
         route.data.subscribe(data => {
@@ -26,7 +23,7 @@ export class GpsPageBaseComponent {
     
     /**
      * Verifica se o usuário possui determinada permissão.
-     * @param option - (create, edit, detail, delete e massUpdate).
+     * @param option - (edit e massUpdate).
      * @returns true ou false
      */
     public hasPermission(option: PermissionServiceOption) {
