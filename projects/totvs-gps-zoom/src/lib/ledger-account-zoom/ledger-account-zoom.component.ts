@@ -21,7 +21,7 @@ export class LedgerAccountZoomComponent implements OnChanges{
   costCenterFilterParamsAux:any = {};
   ngOnChanges(changes: SimpleChanges): void {
     this.ledgerAccountFilterParamsAux = {limitDate: this.limitDate, kindAccountDifferent: this.kindAccountDifferent, ...this.ledgerAccountFilterParams};
-    this.costCenterFilterParamsAux = {limitDate: this.limitDate, ledgerAccountCode: this.gpsLedgerAccountModel, useParamepp: this.useParamepp ? true : false, ...this.costCenterFilterParams};
+    this.costCenterFilterParamsAux = {limitDate: this.limitDate, ledgerAccountCode: this.gpsLedgerAccountModel, gpsModule: this.gpsModule.length > 0 ? this.gpsModule : "", ...this.costCenterFilterParams};
   }
 
   ngOnInit() {}
@@ -34,7 +34,7 @@ export class LedgerAccountZoomComponent implements OnChanges{
 
   @Input('gps-ledger-account-disabled') disabledLedgerAccount: boolean = false;
 
-  @Input('gps-use-paramepp') useParamepp: boolean = false;
+  @Input('gps-module') gpsModule: string = "";
 
   @Input('gps-cost-center-disabled') disabledCostCenter: boolean = false;
 
