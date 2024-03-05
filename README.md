@@ -34,6 +34,7 @@ Angular 11 compatibility
 - Http Interceptor for Datasul-REST
 - GenericZoom
 - Cache Service
+- From version 5.0.16 it is possible to send HTTPClient.options to the get, post, put and delete methods.
 
 ### Build
 - Change the version number in projects/totvs-gps-services/package.json.

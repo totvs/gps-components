@@ -20,10 +20,10 @@ export interface ITotvsGpsJsonParse<T> {
  * Dados para requisições HTTP
  */
 export interface IServiceRequest {
-  get(url:string): Observable<Object>;
-  post(url:string, data:Object): Observable<Object>;
-  put(url:string, data:Object): Observable<Object>;
-  delete(url:string): Observable<Object>;
+  get(url:string, options?:Object): Observable<Object>;
+  post(url:string, data:Object, options?:Object): Observable<Object>;
+  put(url:string, data:Object, options?:Object): Observable<Object>;
+  delete(url:string, options?:Object): Observable<Object>;
 }
 
 export enum HTTPMethod {
