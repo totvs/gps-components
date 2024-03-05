@@ -40,6 +40,7 @@ Angular 15 compatibility
 - Http Interceptor for Datasul-REST
 - GenericZoom
 - Cache Service
+- From version 15.0.5 it is possible to send HTTPClient.options to the get, post, put and delete methods.
 
 ### Build
 - Change the version number in projects/totvs-gps-services/package.json.

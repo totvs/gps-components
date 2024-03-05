@@ -217,14 +217,14 @@ export class TotvsGpsServices<T> {
     //#endregion
 
     //#region Métodos de chamada HTTP
-    private _get(url?: string, ttalk?:boolean): Promise<T | TTalkCollection<T>> {
+    private _get(url?: string, ttalk?:boolean, options?: Object): Promise<T | TTalkCollection<T>> {
         let requestUrl = (url || this._url);
         requestUrl = this.appendPathParams(requestUrl);
         requestUrl = this.appendQueryParams(requestUrl);
         let requestHttp = this.getServiceRequest(requestUrl);
         let resultFactory = this.resultFactory.bind(this);
         return new Promise(function(resolve, reject) {
-            requestHttp.get(requestUrl).pipe(take(1)).subscribe(
+            requestHttp.get(requestUrl, options).pipe(take(1)).subscribe(
                 data => {
                     resolve(resultFactory(data, ttalk));
                 },
@@ -236,32 +236,35 @@ export class TotvsGpsServices<T> {
     /**
      * Realiza a requisição GET de um objeto ou de uma coleção de objetos (array)
      * @param url URL do endpoint (caso não informado, será utilizada a URL atribuida como padrão da instância)
+     * @param options Objeto HTTPClient.options enviado no header da requisição
      */
-    public get(url?: string): Promise<T> {
-        return <Promise<T>>this._get(url, false);
+    public get(url?: string, options?: Object): Promise<T> {
+        return <Promise<T>>this._get(url, false, options);
     }
 
     /**
      * Realiza a requisição GET de um coleção de objetos, retornando no formato TTalkCollection
      * @param url URL do endpoint (caso não informado, será utilizada a URL atribuida como padrão da instância)
+     * @param options Objeto HTTPClient.options enviado no header da requisição
      */
-    public getCollection(url?: string): Promise<TTalkCollection<T>> {
-        return <Promise<TTalkCollection<T>>>this._get(url, true);
+    public getCollection(url?: string, options?: Object): Promise<TTalkCollection<T>> {
+        return <Promise<TTalkCollection<T>>>this._get(url, true, options);
     }
 
     /**
      * Realiza a requisição POST
      * @param data Objeto a ser enviado no corpo (body) da requisição
      * @param url URL do endpoint (caso não informado, será utilizada a URL atribuida como padrão da instância)
+     * @param options Objeto HTTPClient.options enviado no header da requisição
      */
-    public post(data: any, url?: string): Promise<T> {
+    public post(data: any, url?: string, options?: Object): Promise<T> {
         let requestUrl = (url || this._url);
         requestUrl = this.appendPathParams(requestUrl);
         requestUrl = this.appendQueryParams(requestUrl);
         let requestHttp = this.getServiceRequest(requestUrl);
         let resultFactory = this.resultFactory.bind(this);
         return new Promise(function(resolve, reject) {
-            requestHttp.post(requestUrl, data).pipe(take(1)).subscribe(
+            requestHttp.post(requestUrl, data, options).pipe(take(1)).subscribe(
                 data => {
                     resolve(resultFactory(data));
                 },
@@ -274,15 +277,16 @@ export class TotvsGpsServices<T> {
      * Realiza a requisição PUT
      * @param data Objeto a ser enviado no corpo (body) da requisição
      * @param url URL do endpoint (caso não informado, será utilizada a URL atribuida como padrão da instância)
+     * @param options Objeto HTTPClient.options enviado no header da requisição
      */
-    public put(data: any, url?: string): Promise<T> {
+    public put(data: any, url?: string, options?: Object): Promise<T> {
         let requestUrl = (url || this._url);
         requestUrl = this.appendPathParams(requestUrl);
         requestUrl = this.appendQueryParams(requestUrl);
         let requestHttp = this.getServiceRequest(requestUrl);
         let resultFactory = this.resultFactory.bind(this);
         return new Promise(function(resolve, reject) {
-            requestHttp.put(requestUrl, data).pipe(take(1)).subscribe(
+            requestHttp.put(requestUrl, data, options).pipe(take(1)).subscribe(
                 data => {
                     resolve(resultFactory(data));
                 },
@@ -294,15 +298,16 @@ export class TotvsGpsServices<T> {
     /**
      * Realiza a requisição DELETE
      * @param url URL do endpoint (caso não informado, será utilizada a URL atribuida como padrão da instância)
+     * @param options Objeto HTTPClient.options enviado no header da requisição
      */
-    public delete(url?: string): Promise<T> {
+    public delete(url?: string, options?: Object): Promise<T> {
         let requestUrl = (url || this._url);
         requestUrl = this.appendPathParams(requestUrl);
         requestUrl = this.appendQueryParams(requestUrl);
         let requestHttp = this.getServiceRequest(requestUrl);
         let resultFactory = this.resultFactory.bind(this);
         return new Promise(function(resolve, reject) {
-            requestHttp.delete(requestUrl).pipe(take(1)).subscribe(
+            requestHttp.delete(requestUrl, options).pipe(take(1)).subscribe(
                 data => {
                     resolve(resultFactory(data));
                 },
