@@ -1,4 +1,5 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { HttpHeaders } from '@angular/common/http';
+import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { PoBreadcrumb, PoStepperComponent, PoTableColumn } from '@po-ui/ng-components';
 
 @Component({
@@ -8,7 +9,7 @@ import { PoBreadcrumb, PoStepperComponent, PoTableColumn } from '@po-ui/ng-compo
 })
 export class GpsMassUpdateComponent implements OnInit, AfterViewInit {
   @Input('gps-url') gpsUrl: string;  
-  @Input('gps-headers') gpsHeaders: Object;
+  @Input('gps-headers') gpsHeaders: Object; //Objeto simples {chave:valor}
 
   @Input('gps-main-page-label') gpsMainPageLabel: string = '';  
   @Input('gps-columns') gpsColumns: Array<PoTableColumn>;
@@ -26,18 +27,27 @@ export class GpsMassUpdateComponent implements OnInit, AfterViewInit {
 
   importItems:Array<any>;
   selectedFile: Array<any> = [];
+  gpsHeadersModified: Object = {};
 
   breadcrumb: PoBreadcrumb = {
     items: []
   }
 
-  constructor() { }
+  constructor(private changeDetectorRef:ChangeDetectorRef) { }
 
   ngOnInit(): void {
-    this.setbreadcrumbItems()
+    this.setbreadcrumbItems();
   }
   
-  ngAfterViewInit(){   
+  ngAfterViewInit(){  
+    //O componente po-upload (propriedade p-headers) espera somente um objeto simples ({chave:valor})
+    //Já para funcionar nas demais requisições ao backend precisamos alterar o gpsHeaders conforme código a seguir
+    for (const key in this.gpsHeaders) {
+      this.gpsHeadersModified = {
+        headers: new HttpHeaders().set(key,this.gpsHeaders[key])
+      }
+    }    
+    
     let stepper:any = document.getElementsByClassName('po-stepper-horizontal')[0];
     let stepperWidth = stepper.clientWidth + 'px';
 
@@ -75,6 +85,8 @@ export class GpsMassUpdateComponent implements OnInit, AfterViewInit {
     // iniciar observer de redimensionamento
     resize_ob.observe(element);
 
+
+    this.changeDetectorRef.detectChanges();
   }
 
   onPassExport(stepperComponent: PoStepperComponent){
