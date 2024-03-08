@@ -5,6 +5,7 @@
         name="upload" 
         p-drag-drop="true"
         [p-url]="uploadUrl"
+        [p-headers]="gpsHeaders"
         p-hide-send-button="true"
         p-auto-upload="true"
         (p-upload)="beforeLoadFile($event)"

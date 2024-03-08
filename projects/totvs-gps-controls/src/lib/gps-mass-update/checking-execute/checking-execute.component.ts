@@ -12,6 +12,7 @@ import { GpsMassUpdateService } from '../service/gps-mass-update.service';
 export class CheckingExecuteComponent implements OnInit, OnChanges, AfterViewInit {
   
   @Input('gps-url') gpsUrl: string;
+  @Input('gps-headers') gpsHeaders: Object;
   @Input('gps-import-items') gpsImportItems: Array<any>;
   @Input('gps-columns') gpsColumns: Array<PoTableColumn>;
   @Input('gps-child-property-name') gpsChildPropertyName: string;
@@ -192,7 +193,7 @@ export class CheckingExecuteComponent implements OnInit, OnChanges, AfterViewIni
 
   onConfirm(){
     this.showLoading('Salvando...');
-    this.service.massExecute(this.items, this.gpsUrl)
+    this.service.massExecute(this.items, this.gpsUrl, this.gpsHeaders)
     .then(result =>{
       this.notificationService.success(`Movimentação em massa realizada com sucesso, verifique os relatórios de sucesso e complementar na central de documentos.`);
       this.pageNavigation.back();
@@ -219,7 +220,7 @@ export class CheckingExecuteComponent implements OnInit, OnChanges, AfterViewIni
       }
     })
 
-    this.service.massExecuteCheck(selected_items, this.gpsUrl)
+    this.service.massExecuteCheck(selected_items, this.gpsUrl, this.gpsHeaders)
     .then(result =>{
       let items_updated = this.items.map(item =>{
         let result_item = result.find(res_item =>{
