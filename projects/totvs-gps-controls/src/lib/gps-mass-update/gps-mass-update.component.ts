@@ -8,7 +8,8 @@ import { PoBreadcrumb, PoStepperComponent, PoTableColumn } from '@po-ui/ng-compo
 })
 export class GpsMassUpdateComponent implements OnInit, AfterViewInit {
   @Input('gps-url') gpsUrl: string;  
-
+  @Input('gps-headers') gpsHeaders: Object;
+  
   @Input('gps-main-page-label') gpsMainPageLabel: string = '';  
   @Input('gps-columns') gpsColumns: Array<PoTableColumn>;
   @Input('gps-items') gpsItems: Array<PoTableColumn>;

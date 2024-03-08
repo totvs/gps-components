@@ -11,6 +11,7 @@ import { GpsMassUpdateService } from '../service/gps-mass-update.service';
 export class ExportComponent implements OnInit, AfterViewInit {
 
   @Input('gps-url') gpsUrl: string;
+  @Input('gps-headers') gpsHeaders: Object;
 
   @Input('filter')
     get parameterGpsFilter() { return this._parameterGpsFilter }
@@ -56,7 +57,7 @@ export class ExportComponent implements OnInit, AfterViewInit {
     this.showLoading();
     
     let promise: Promise<Export>;
-    promise = this.exportType == 1 ? this.service.exportEmpty(this.gpsUrl) : this.service.exportByFilter(this._parameterGpsFilter, this.gpsUrl);
+    promise = this.exportType == 1 ? this.service.exportEmpty(this.gpsUrl, this.gpsHeaders) : this.service.exportByFilter(this._parameterGpsFilter, this.gpsUrl, this.gpsHeaders);
 
     promise.then(result =>{
       this.notificationService.success(`Layout exportado com sucesso. Arquivo ${result.fileName} enviado para a Central de documentos.`);

@@ -11,6 +11,7 @@ import { GpsMassUpdateService } from '../service/gps-mass-update.service';
 export class LoadComponent implements OnInit, AfterViewInit {
 
   @Input('gps-url') gpsUrl: string;
+  @Input('gps-headers') gpsHeaders: Object;
 
   loadingMessage: string = "Enviando arquivo...";
   isLoading: boolean = false;
