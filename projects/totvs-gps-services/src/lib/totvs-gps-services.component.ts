@@ -224,7 +224,7 @@ export class TotvsGpsServices<T> {
         let requestHttp = this.getServiceRequest(requestUrl);
         let resultFactory = this.resultFactory.bind(this);
         return new Promise(function(resolve, reject) {
-            requestHttp.get(requestUrl, options).pipe(take(1)).subscribe(
+            requestHttp.get(requestUrl, options?? undefined).pipe(take(1)).subscribe(
                 data => {
                     resolve(resultFactory(data, ttalk));
                 },
@@ -264,7 +264,7 @@ export class TotvsGpsServices<T> {
         let requestHttp = this.getServiceRequest(requestUrl);
         let resultFactory = this.resultFactory.bind(this);
         return new Promise(function(resolve, reject) {
-            requestHttp.post(requestUrl, data, options).pipe(take(1)).subscribe(
+            requestHttp.post(requestUrl, data, options?? undefined).pipe(take(1)).subscribe(
                 data => {
                     resolve(resultFactory(data));
                 },
@@ -286,7 +286,7 @@ export class TotvsGpsServices<T> {
         let requestHttp = this.getServiceRequest(requestUrl);
         let resultFactory = this.resultFactory.bind(this);
         return new Promise(function(resolve, reject) {
-            requestHttp.put(requestUrl, data, options).pipe(take(1)).subscribe(
+            requestHttp.put(requestUrl, data, options?? undefined).pipe(take(1)).subscribe(
                 data => {
                     resolve(resultFactory(data));
                 },
@@ -307,7 +307,7 @@ export class TotvsGpsServices<T> {
         let requestHttp = this.getServiceRequest(requestUrl);
         let resultFactory = this.resultFactory.bind(this);
         return new Promise(function(resolve, reject) {
-            requestHttp.delete(requestUrl, options).pipe(take(1)).subscribe(
+            requestHttp.delete(requestUrl, options?? undefined).pipe(take(1)).subscribe(
                 data => {
                     resolve(resultFactory(data));
                 },
