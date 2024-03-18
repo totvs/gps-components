@@ -2,6 +2,13 @@
 
 > TOTVS Healthcare Components
 
+## Changelog
+
+## 15.0.7 - (2024-03-18)
+* TotvsGpsSmartViewService
+  * Serviço para geração de relatórios com Smartview utilizando api fornecida pelo framework Datasul  
+
+
 ## Versions
 
 ### 0.X / 1.X
