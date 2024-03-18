@@ -8,6 +8,10 @@
 * TotvsGpsSmartViewService
   * Serviço para geração de relatórios com Smartview utilizando api fornecida pelo framework Datasul  
 
+## 5.0.18 - (2024-03-18)
+* TotvsGpsSmartViewService
+  * Serviço para geração de relatórios com Smartview utilizando api fornecida pelo framework Datasul  
+
 
 ## Versions
 
