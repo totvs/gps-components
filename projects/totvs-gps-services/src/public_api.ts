@@ -16,3 +16,5 @@ export * from './lib/totvs-gps-cache.model';
 export * from './lib/totvs-gps-cache.service';
 // serviço de verificação de permissões
 export * from './lib/totvs-gps-permission.service';
+// servico de geração de relatórios com a api do framework Datasul
+export * from './lib/totvs-gps-smart-view.service';
