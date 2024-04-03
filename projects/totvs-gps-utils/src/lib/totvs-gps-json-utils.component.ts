@@ -43,6 +43,11 @@ export class TotvsGpsJsonUtils {
           else if (typeTarget == "boolean") {
             newObject[field] = Boolean(newObject[field] || false).valueOf();
           }
+          else if (typeTarget == "undefined") {
+            if ((typeSource == "string") && (dateUtils.isISODate(newObject[field]))) {
+              newObject[field] = dateUtils.convertDate(newObject[field]);
+            }
+          }
         }
       }
       else {
