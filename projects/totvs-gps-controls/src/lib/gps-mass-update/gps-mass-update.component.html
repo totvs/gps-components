@@ -5,7 +5,7 @@
         <div class="po-row">
             Com a ferramenta de atualização em massa, você pode realizar operações de inclusão, edição e exclusão em grande volume. Exporte um layout modelo, faça as mudanças necessárias no CSV e importe o arquivo para concretizar as atualizações no TOTVS Saúde Planos
         </div>
-        <div class="po-row po-mt-2">
+        <div class="po-row po-mt-2" id="mass-update-data-container">
             <po-widget p-no-shadow="true" class="po-sm-12 po-ml-0 po-mr-0 po-mt-1 po-mb-2">
                 <po-stepper #stepper (p-change-step)="changeStep($event)">
                     <po-step p-label="Exportar">

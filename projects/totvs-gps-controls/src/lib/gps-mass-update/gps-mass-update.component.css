@@ -24,3 +24,7 @@ po-widget::ng-deep > div.po-widget > po-container > div.po-container > div.po-wi
     padding-top: 12px;
     width: 97%;
 } 
+
+#mass-update-data-container{
+    height: 85vh;
+}
