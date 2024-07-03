@@ -110,9 +110,9 @@ export class LoadComponent implements OnInit, AfterViewInit {
           this.selectedFile = null;
         }
       });
+    } else {
+      this.gpsOnCheckFile.emit(this.importItems);
     }
-
-    this.gpsOnCheckFile.emit(this.importItems);
   }
 
   onLoadFileError(error){
