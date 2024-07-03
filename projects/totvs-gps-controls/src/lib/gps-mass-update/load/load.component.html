@@ -1,8 +1,8 @@
 <div id="loadContent" class="po-row po-mb-4 upload-content">
-    <po-upload 
+    <po-upload
         [(ngModel)]="selectedFile"
-        class="po-sm-12 po-ml-2 po-mr-2 po-mt-2" 
-        name="upload" 
+        class="po-sm-12 po-ml-2 po-mr-2 po-mt-2"
+        name="upload"
         p-drag-drop="true"
         [p-url]="uploadUrl"
         [p-headers]="gpsHeaders"
@@ -30,7 +30,7 @@
                 class="po-ml-1"
                 p-type="primary"
                 p-kind="primary"
-                [p-disabled]="this.importItems?.length == 0"
+                [p-disabled]="disableVisualizationButton"
                 (click)="goToChecking()"
                 p-label="Pré-visualizar">
             </po-button>
