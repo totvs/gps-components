@@ -4,6 +4,16 @@
 
 ## Changelog
 
+## 15.0.28 - (2024-07-04)
+* totvs-gps-controls
+  * GpsMassUpdate: Tratamento para arquivos para upload com 500 linhas ou mais.
+  * GpsMassUpdate: Redução no limite padrão do arquivo para 1mb.
+
+## 5.4.24 - (2024-07-04)
+* totvs-gps-controls
+  * GpsMassUpdate: Tratamento para arquivos para upload com 500 linhas ou mais.
+  * GpsMassUpdate: Redução no limite padrão do arquivo para 1mb.
+
 ## 15.0.7 - (2024-03-18)
 * TotvsGpsSmartViewService
   * Serviço para geração de relatórios com Smartview utilizando api fornecida pelo framework Datasul  
