@@ -30,7 +30,8 @@ export class LoadComponent implements OnInit, AfterViewInit {
   uploadUrl: string;
   uploadRestrictions: PoUploadFileRestrictions = {
     allowedExtensions: ['.csv'],
-    maxFiles: 1
+    maxFiles: 1,
+    maxFileSize: 1048576
   }
 
   disableVisualizationButton: boolean = true;
