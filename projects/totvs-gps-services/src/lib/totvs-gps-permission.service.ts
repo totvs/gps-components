@@ -1,95 +1,125 @@
-import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot, Router } from '@angular/router';
-import { BehaviorSubject, Observable, of } from "rxjs";
-import { filter, switchMap, take } from 'rxjs/operators';
-import { TotvsGpsServices } from './totvs-gps-services.component';
+import { Injectable } from "@angular/core";
+import { Resolve, ActivatedRouteSnapshot, Router } from "@angular/router";
+import { TotvsGpsServices } from "./totvs-gps-services.component";
 
 export enum PermissionServiceOption {
   EDIT = "edit",
   MASSUPDATE = "massUpdate",
 }
 
+const createLoadBox = (message: string) => {
+  const loadBox = document.createElement("div");
+  loadBox.innerHTML = `
+   <div class="po-overlay-fixed">
+  <po-loading class="po-loading-overlay-content" ng-reflect-text="${message}"
+    ><div class="po-loading">
+      <po-loading-icon
+        ><div class="po-loading-icon">
+          <span class="po-loading-icon-bar po-loading-icon-bar-1"></span
+          ><span class="po-loading-icon-bar po-loading-icon-bar-2"></span
+          ><span class="po-loading-icon-bar po-loading-icon-bar-3"></span
+          ><span class="po-loading-icon-bar po-loading-icon-bar-4"></span
+          ><span class="po-loading-icon-bar po-loading-icon-bar-5"></span
+          ><span class="po-loading-icon-bar po-loading-icon-bar-6"></span
+          ><span class="po-loading-icon-bar po-loading-icon-bar-7"></span
+          ><span
+            class="po-loading-icon-bar po-loading-icon-bar-8"
+          ></span></div></po-loading-icon
+      ><span class="po-loading-label po-text-ellipsis">${message}</span>
+    </div></po-loading
+  >
+</div>
+`;
+  return loadBox;
+};
+
+const showLoadBox = (message: string) => {
+  const loadBox = createLoadBox(message);
+  document.body.appendChild(loadBox);
+  return loadBox;
+}
+
+const removeLoadBox = (loadBox: HTMLElement) => {
+  loadBox.remove();
+}
+
+const PermisionKeys = Object.keys(PermissionServiceOption);
+
+type PermissionValues = Partial<Record<PermissionServiceOption, boolean>>;
+
 export interface IPermissionService {
   permissions: { [key in PermissionServiceOption]?: boolean };
-  hasPermission(permission :PermissionServiceOption): boolean;
+  hasPermission(permission: PermissionServiceOption): boolean;
 }
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class PermissionService {
+  private readonly userPermissionsUrl = "hgp/v1/userPermissions/";
+  private readonly getProgamPermissionUrl =
+    this.userPermissionsUrl + "{{programName}}";
 
-    private readonly userPermissionsUrl = 'hgp/v1/userPermissions/';  
-    private readonly getProgamPermissionUrl = this.userPermissionsUrl + '{{programName}}';
-    
-    private loadingSubject = new BehaviorSubject<boolean>(true);
-    public loading$ = this.loadingSubject.asObservable();
+  public permissionByApp = new Map<string, PermissionValues>();
 
-    public permissions: { [key in PermissionServiceOption]?: boolean } = {};
-
-    constructor() {
-      this.initializePermissions();
+  async loadPermissions(app: string) {
+    if (this.permissionByApp.has(app)) {
+      return this.permissionByApp.get(app);
     }
-
-    private initializePermissions(): void {
-        const actions = Object.values(PermissionServiceOption) as string[];
-        actions.forEach((action) => {
-            this.permissions[action as PermissionServiceOption] = false;
+    let promises = [];
+    let permissions: PermissionValues =  PermisionKeys.reduce((acc, key) => {
+      acc[PermissionServiceOption[key]] = false;
+      return acc;
+    }, {});
+    this.permissionByApp.set(app, permissions);
+    for (const permission of PermisionKeys) {
+      let promise = TotvsGpsServices.getInstance<Object>(
+        Object,
+        this.getProgamPermissionUrl
+      )
+        .setPathParams({ programName: app + "." + PermissionServiceOption[permission] })
+        .get()
+        .then((result) => {
+          permissions[PermissionServiceOption[permission]] = result["programPermission"] === true;
         });
+      promises.push(promise);
     }
+    await Promise.all(promises);
+    this.permissionByApp.set(app, permissions);
+    return permissions;
+  }
 
-    loadPermissions(app: string){
-      let promises = [];
-  
-      for (const permission in this.permissions) {
-          if (this.permissions.hasOwnProperty(permission)) {
-            let promise = TotvsGpsServices
-              .getInstance<Object>(Object,this.getProgamPermissionUrl)
-              .setPathParams({programName: app + "." + permission})
-              .get()
-              .then((result) => { 
-                this.permissions[permission] = (result['programPermission'] === true);
-              });
-
-            promises.push(promise);
-          }
-      }
-  
-      Promise.all(promises).finally(() => {
-          this.loadingSubject.next(false);
-      });
+  hasPermission(app: string, action: PermissionServiceOption): boolean {
+    if (this.permissionByApp.has(app)) {
+      return this.permissionByApp.get(app)[action];
     }
-    
-    hasPermission(action: PermissionServiceOption): boolean {
-      return this.permissions[action] || false;
-    }
+    return false;
+  }
 }
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class PermissionResolver implements Resolve<any> {
   constructor(
     private permissionService: PermissionService,
     private router: Router
   ) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<any> {
-    const app = route.data['app'];
+  async resolve(route: ActivatedRouteSnapshot) {
+    const app = route.data["app"];
+    const requiredPermission = route.data[
+      "requiredPermission"
+    ] as PermissionServiceOption;
+    
+    const box = showLoadBox("Carregando...");
+    await this.permissionService.loadPermissions(app);
+    removeLoadBox(box);
 
-    this.permissionService.loadPermissions(app);
-    return this.permissionService.loading$.pipe(
-      filter(loading => !loading),
-      take(1),
-      switchMap(() => {
-        const requiredPermission = route.data['requiredPermission'] as PermissionServiceOption;
+    if (
+      requiredPermission &&
+      !this.permissionService.hasPermission(app, requiredPermission)
+    ) {
+      this.router.navigate([""]);
+      return null;
+    }
 
-        if(requiredPermission !== undefined){
-
-          if (!this.permissionService.hasPermission(requiredPermission)) {
-            this.router.navigate(['']);
-            return of(null);
-          }
-        }
-
-        return of(this.permissionService.permissions);
-      })
-    );
+    return this.permissionService.permissionByApp.get(app);
   }
 }
