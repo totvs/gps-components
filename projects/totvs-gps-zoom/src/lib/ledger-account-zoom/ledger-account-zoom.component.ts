@@ -24,7 +24,10 @@ export class LedgerAccountZoomComponent implements OnChanges{
     this.costCenterFilterParamsAux = {limitDate: this.limitDate, ledgerAccountCode: this.gpsLedgerAccountModel, gpsModule: this.gpsModule.length > 0 ? this.gpsModule : "", ...this.costCenterFilterParams};
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.ledgerAccountService = this.ledgerAccountZoom;
+    this.costCenterService = this.costCenterZoom;
+  }
 
   @Input('gps-limit-date') limitDate: Date;
 
@@ -40,10 +43,10 @@ export class LedgerAccountZoomComponent implements OnChanges{
 
   @Input('gps-required') required: boolean = false;
 
-  @Input('gps-ledger-account-service') ledgerAccountService: IGPSZoom = this.ledgerAccountZoom;
+  @Input('gps-ledger-account-service') ledgerAccountService: IGPSZoom;
   @Input('gps-ledger-account-filter-params') ledgerAccountFilterParams: any = {};
 
-  @Input('gps-cost-center-service') costCenterService: IGPSZoom = this.costCenterZoom;
+  @Input('gps-cost-center-service') costCenterService: IGPSZoom;
   @Input('gps-cost-center-filter-params') costCenterFilterParams: any = {};
 
   @Input('gps-ledger-account-label') ledgerAccountLabel: string = 'Conta contábil';

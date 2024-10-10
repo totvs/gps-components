@@ -4,6 +4,15 @@
 
 ## Changelog
 
+## 18.0.0 - (2024-10-09)
+Atualização para o Angular 18
+* totvs-gps-custom
+* totvs-gps-services
+* totvs-gps-utils
+* totvs-gps-zoom
+* totvs-gps-controls
+* totvs-gps-crud
+
 ## 15.0.28 - (2024-07-04)
 * totvs-gps-controls
   * GpsMassUpdate: Tratamento para arquivos para upload com 500 linhas ou mais.
@@ -43,6 +52,9 @@ Angular 11 compatibility
 ### 15.X
 Angular 15 compatibility
 
+### 18.X
+Angular 18 compatibility
+
 ## Breaking changes
 
 ### 3.0.0
@@ -53,6 +65,9 @@ Angular 15 compatibility
 
 ### 15.0.1
 - Angular version: updated to version 15
+
+### 18.0.0
+- Angular version: updated to version 18
 
 ## TotvsGpsServices
 
