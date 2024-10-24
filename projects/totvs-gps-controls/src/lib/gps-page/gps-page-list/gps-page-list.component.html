@@ -13,7 +13,7 @@
     <form #mainForm>
         <ng-content></ng-content>
     </form>
-    <form #advancedSearchForm (keypress)="advancedSearchKeyPress($event)">
+    <form #advancedSearchForm>
         <ng-container *ngTemplateOutlet="advancedSearchTemplate"></ng-container>
     </form>
 </po-page-list>
