@@ -41,6 +41,7 @@ export class CostCenterZoom implements IGPSZoom {
     }
 
     getFilteredItems(params: PoLookupFilteredItemsParams): Observable<PoLookupResponseApi> {
+        params.filterParams.code = params.filter;
         let result = this.service.getByFilter({...params.filterParams}, params.page, params.pageSize);
         return from(result);
     }
