@@ -20,11 +20,13 @@ export class LedgerAccountZoomComponent implements OnChanges{
   ledgerAccountFilterParamsAux:any = {};
   costCenterFilterParamsAux:any = {};
   ngOnChanges(changes: SimpleChanges): void {
-    this.ledgerAccountFilterParamsAux = {limitDate: this.limitDate, kindAccountDifferent: this.kindAccountDifferent, ...this.ledgerAccountFilterParams};
+    this.ledgerAccountFilterParamsAux = {filterByLimitDate:this.filterByLimitDate, limitDate: this.limitDate, kindAccountDifferent: this.kindAccountDifferent, ...this.ledgerAccountFilterParams};
     this.costCenterFilterParamsAux = {limitDate: this.limitDate, ledgerAccountCode: this.gpsLedgerAccountModel, gpsModule: this.gpsModule.length > 0 ? this.gpsModule : "", ...this.costCenterFilterParams};
   }
 
   ngOnInit() {}
+
+  @Input('gps-filter-by-limit-date') filterByLimitDate: boolean = false;
 
   @Input('gps-limit-date') limitDate: Date;
 
