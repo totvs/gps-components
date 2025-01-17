@@ -1,5 +1,5 @@
 import { Component, Input, ChangeDetectorRef, ViewChild, ContentChild, Output, EventEmitter } from "@angular/core";
-import { PoPageFilter, PoDisclaimer, PoDisclaimerGroup, PoModalComponent, PoModalAction, PoDisclaimerGroupRemoveAction } from "@po-ui/ng-components";
+import { PoPageFilter, PoDisclaimer, PoDisclaimerGroup, PoModalComponent, PoDisclaimerGroupRemoveAction, PoButtonComponent } from "@po-ui/ng-components";
 import { isNull } from "totvs-gps-utils";
 import { GpsPageBaseComponent } from "../gps-page-base.component";
 import { TotvsGpsDateUtils } from "totvs-gps-utils";
@@ -16,6 +16,9 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
 
     @ContentChild(GpsAdvancedSearchDirective, { static: true }) advancedSearchTemplateRef: GpsAdvancedSearchDirective;
     @ViewChild('advancedSearchModal', { static: false }) advancedSearchModal: PoModalComponent;
+    @ViewChild('buttonSubmitAdvancedFilter', {static: false}) buttonSubmitAdvancedFilter: PoButtonComponent;
+    @ViewChild('buttonCancelAdvancedFilter', {static: false}) buttonCancelAdvancedFilter: PoButtonComponent;
+    @ViewChild('buttonClearFieldsAdvancedFilter', {static: false}) buttonClearFieldsAdvancedFilter: PoButtonComponent;
 
     //#region Common properties
     @Input('p-title') parameterTitle: string;
@@ -43,6 +46,9 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
     @Input('loading-advanced-search') 
         get parameterLoadingAdvancedSearch() { return this._parameterLoadingAdvancedSearch }
         set parameterLoadingAdvancedSearch(value:any) { this.setParameterLoadingAdvancedSearch(value) }
+    @Input('showButtonClearFields')
+        get showButtonClearFields() { return this._showButtonClearFields }
+        set showButtonClearFields(value:any) {this.setParametersShowButtonClearFields(value) }
 
     @Output('on-search') onSearch: EventEmitter<any> = new EventEmitter();
     @Output('before-advanced-search') beforeAdvancedSearch: EventEmitter<any> = new EventEmitter();
@@ -123,6 +129,9 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
     }
 
     refreshDisclaimers() {
+        if(this._isClearFields) 
+            return;
+            
         if (isNull(this._parameterGpsFilter) || isNull(this._parameterGpsDisclaimerConfig))
             this._defaultDisclaimerGroup.disclaimers = [];
         else
@@ -214,19 +223,29 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
     private _parameterGpsFilter;
     private _parameterDisableAdvancedSearch: boolean;
     private _parameterLoadingAdvancedSearch: boolean;
+    private _showButtonClearFields: boolean;
+    private _isClearFields: boolean = false;
+    private oldParametersGpsFilter;
 
     private setParameterDisableAdvancedSearch(value:any) {
         const v = this.totvsStringUtils.toBoolean(value);
         if (v !== this._parameterDisableAdvancedSearch) {
             this._parameterDisableAdvancedSearch = v;
-            this.modalSearchAction.disabled = this._parameterDisableAdvancedSearch;
+            this.buttonSubmitAdvancedFilter.disabled = this._parameterDisableAdvancedSearch;
         }
     }
     private setParameterLoadingAdvancedSearch(value:any) {
         const v = this.totvsStringUtils.toBoolean(value);
         if (v !== this._parameterLoadingAdvancedSearch) {
             this._parameterLoadingAdvancedSearch = v;
-            this.modalSearchAction.loading = this._parameterLoadingAdvancedSearch;
+            this.buttonSubmitAdvancedFilter.loading = this._parameterLoadingAdvancedSearch;
+        }
+    }
+
+    private setParametersShowButtonClearFields(value:any){
+        const v = this.totvsStringUtils.toBoolean(value);
+        if(v !== this._showButtonClearFields) {
+            this._showButtonClearFields = v;
         }
     }
 
@@ -234,22 +253,44 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
         return !isNull(this.advancedSearchTemplateRef);
     }
 
-    modalSearchAction: PoModalAction = { label: 'Aplicar filtros', action: null, disabled: false, loading: false };
-    modalSearchCloseAction: PoModalAction = { label: 'Cancelar', action: null };
     openAdvancedSearch() {
         let _oldValue = Object.assign({}, this._parameterGpsFilter);
+
         let _fncRollback = () => {
-            this._parameterGpsFilter = _oldValue;
-            this.onGpsFilterChange.emit(this._parameterGpsFilter);
+            if(!this._isClearFields){
+                this._parameterGpsFilter = _oldValue;
+                this.onGpsFilterChange.emit(this._parameterGpsFilter);
+            }
         };
+
         this.beforeAdvancedSearch.emit();
+
         this.openAdvancedSearchModal()
-            .then(model => {
-                if (model) {
-                    this._parameterGpsFilter = model;
+            .then(value => {
+                
+                // Aplicar filtros
+                if (value && value !== 'clear') {
+
+                    this._isClearFields = false;
+
+                    this._parameterGpsFilter = value;
                     this.onGpsFilterChange.emit(this._parameterGpsFilter);
                     this.onAdvancedSearch.emit(this._parameterGpsFilter);
                     this.refreshDisclaimers();
+                }
+                // Limpar campos
+                else if(value === 'clear'){
+
+                    this._isClearFields = true;
+                    
+                    Object.assign(this.oldParametersGpsFilter, this._parameterGpsFilter);
+
+                    this._parameterGpsFilter = {}
+                    this.onGpsFilterChange.emit(this._parameterGpsFilter);
+                    this.advancedSearchModal.close();
+
+                    this.openAdvancedSearch();
+
                 }
                 else
                     _fncRollback();
@@ -259,18 +300,39 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
 
     private openAdvancedSearchModal(): Promise<any> {
         let _modal = this.advancedSearchModal;
-        let _searchAction = this.modalSearchAction;
-        let _closeAction = this.modalSearchCloseAction;
+        let _searchButton = this.buttonSubmitAdvancedFilter;
+        let _closeButton = this.buttonCancelAdvancedFilter;
+        let _clearButton = this.buttonClearFieldsAdvancedFilter;
         let _filter = this._parameterGpsFilter;
+
         return new Promise(resolve => {
-            _searchAction.action = () => {
+
+            _searchButton.onClick = () => {
+                this.oldParametersGpsFilter = {};
                 _modal.close();
                 resolve(_filter);
-            };
-            _closeAction.action = () => {
+            }
+
+            _closeButton.onClick = () => {
+                if(!isNull(this.oldParametersGpsFilter)){
+                    if(Object.keys(this.oldParametersGpsFilter).length > 0){
+                        Object.assign(this._parameterGpsFilter, this.oldParametersGpsFilter);
+                        this.onGpsFilterChange.emit(this._parameterGpsFilter);
+                    }
+                }
+                
+                this.oldParametersGpsFilter = {};
+
                 _modal.close();
                 resolve(null);
-            };
+            }
+
+            if(_clearButton !== undefined){
+                _clearButton.onClick = () => {
+                    resolve('clear');
+                }
+            }
+
             _modal.open();
         });
     }
@@ -282,7 +344,7 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
 
     private submitAdvancedSearchForm() {
         if (this.hasAdvancedSearch)
-            this.modalSearchAction.action.call(this);
+            this.buttonSubmitAdvancedFilter.onClick.call(this)
     }
     //#endregion
 }
