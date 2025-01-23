@@ -283,7 +283,10 @@ export class GpsPageListComponent extends GpsPageBaseComponent {
 
                     this._isClearFields = true;
                     
-                    Object.assign(this.oldParametersGpsFilter, this._parameterGpsFilter);
+                    if(this.oldParametersGpsFilter 
+                    && this.parameterGpsDisclaimerConfig){
+                        Object.assign(this.oldParametersGpsFilter, this._parameterGpsFilter);
+                    }
 
                     this._parameterGpsFilter = {}
                     this.onGpsFilterChange.emit(this._parameterGpsFilter);
