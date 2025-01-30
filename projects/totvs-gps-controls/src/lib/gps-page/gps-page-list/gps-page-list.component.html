@@ -23,13 +23,28 @@
         <po-modal #advancedSearchModal
             p-title="Busca avançada"
             p-click-out="false"
-            p-hide-close
-            [p-primary-action]="modalSearchAction"
-            [p-secondary-action]="modalSearchCloseAction">
+            p-hide-close>
             <ng-template 
                 [ngTemplateOutlet]="advancedSearchTemplateRef.templateRef"
                 [ngTemplateOutletContext]="{ $implicit: parameterGpsFilter }">
             </ng-template>
+
+            <po-modal-footer>
+                <po-button 
+                    *ngIf="showButtonClearFields"
+                    #buttonClearFieldsAdvancedFilter 
+                    p-label="Limpar campos">
+                </po-button>
+                <po-button 
+                    #buttonCancelAdvancedFilter
+                    p-label="Cancelar">
+                </po-button>
+                <po-button 
+                    #buttonSubmitAdvancedFilter
+                    p-label="Aplicar filtros" 
+                    p-kind="primary">
+                </po-button>
+            </po-modal-footer>
         </po-modal>
     </ng-container>
 </ng-template>

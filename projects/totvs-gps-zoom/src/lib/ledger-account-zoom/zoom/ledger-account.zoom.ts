@@ -62,8 +62,7 @@ export class LedgerAccountZoom implements IGPSZoom {
             return from(result).pipe(map(collection => {
                 return collection.items[0];
             }));
-        } 
-               
+        }        
         return from(this.service.get(code));        
     }
 }
