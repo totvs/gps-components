@@ -4,15 +4,16 @@ import { PoSwitchLabelPosition } from '@po-ui/ng-components';
 
 
 @Component({
-  selector: 'gps-lookup-toggle',
-  templateUrl: './gps-lookup-toggle.component.html',
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => GpsLookupToggleComponent),
-      multi: true
-    }
-  ]
+    selector: 'gps-lookup-toggle',
+    templateUrl: './gps-lookup-toggle.component.html',
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => GpsLookupToggleComponent),
+            multi: true
+        }
+    ],
+    standalone: false
 })
 export class GpsLookupToggleComponent implements ControlValueAccessor {
   @Input() input: any;

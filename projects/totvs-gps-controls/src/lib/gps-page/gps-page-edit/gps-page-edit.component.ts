@@ -10,7 +10,8 @@ import { TotvsGpsCustomService } from "totvs-gps-custom";
 @Component({
     selector: 'gps-page-edit',
     templateUrl: './gps-page-edit.component.html',
-    providers: []
+    providers: [],
+    standalone: false
 })
 export class GpsPageEditComponent extends GpsPageBaseComponent implements OnInit {
 

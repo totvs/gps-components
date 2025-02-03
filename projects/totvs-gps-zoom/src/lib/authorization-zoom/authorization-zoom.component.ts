@@ -3,9 +3,10 @@ import { PoDynamicFormField, PoLookupLiterals } from '@po-ui/ng-components';
 import { AuthorizationZoomService } from './authorization-zoom.service';
 
 @Component({
-  selector: 'gps-authorization-zoom',
-  templateUrl: './authorization-zoom.component.html',
-  styleUrls: ['./authorization-zoom.component.css']
+    selector: 'gps-authorization-zoom',
+    templateUrl: './authorization-zoom.component.html',
+    styleUrls: ['./authorization-zoom.component.css'],
+    standalone: false
 })
 export class AuthorizationZoomComponent {
 

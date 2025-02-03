@@ -5,8 +5,9 @@ import { GpsOrientation } from '../../utils/enum/gps-orientation.enum';
 import { PoSwitchLabelPosition } from '@po-ui/ng-components';
 
 @Component({
-  selector: 'gps-provider-zoom',
-  templateUrl: './provider-zoom.component.html'
+    selector: 'gps-provider-zoom',
+    templateUrl: './provider-zoom.component.html',
+    standalone: false
 })
 export class ProviderZoomComponent {
 

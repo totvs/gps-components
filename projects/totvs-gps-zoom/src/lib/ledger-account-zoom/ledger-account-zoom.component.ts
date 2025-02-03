@@ -5,8 +5,9 @@ import { CostCenterZoom } from './zoom/cost-center.zoom';
 import { IGPSZoom } from '../interface/gps-zoom.interface';
 
 @Component({
-  selector: 'gps-ledger-account-zoom',
-  templateUrl: './ledger-account-zoom.component.html'
+    selector: 'gps-ledger-account-zoom',
+    templateUrl: './ledger-account-zoom.component.html',
+    standalone: false
 })
 export class LedgerAccountZoomComponent implements OnChanges{
 

@@ -8,6 +8,7 @@ import { TotvsGpsCustomService } from "totvs-gps-custom";
 @Component({
     selector: 'gps-page-detail',
     templateUrl: './gps-page-detail.component.html',
+    standalone: false
 })
 export class GpsPageDetailComponent extends GpsPageBaseComponent implements OnInit {
 

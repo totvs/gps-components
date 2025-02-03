@@ -11,6 +11,7 @@ import { TotvsStringUtils } from "totvs-gps-utils";
 @Component({
     selector: 'gps-page-list',
     templateUrl: './gps-page-list.component.html',
+    standalone: false
 })
 export class GpsPageListComponent extends GpsPageBaseComponent {
 

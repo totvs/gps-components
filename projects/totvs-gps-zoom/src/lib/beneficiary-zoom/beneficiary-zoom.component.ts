@@ -11,7 +11,8 @@ import { toBoolean } from "../../utils/convert.utils";
 @Component({
     selector: 'beneficiary-zoom',
     templateUrl: './beneficiary-zoom.component.html',
-    providers: [TotvsGpsCacheService,BeneficiaryService,KinshipDegreeService]
+    providers: [TotvsGpsCacheService, BeneficiaryService, KinshipDegreeService],
+    standalone: false
 })
 export class BeneficiaryZoomComponent {
   private _title = 'Pesquisa de Beneficiários';
