@@ -4,6 +4,15 @@
 
 ## Changelog
 
+## 19.0.0 - (2025-02-03)
+Atualização para o Angular 19
+* totvs-gps-custom
+* totvs-gps-services
+* totvs-gps-utils
+* totvs-gps-zoom
+* totvs-gps-controls
+* totvs-gps-crud
+
 ## 18.0.0 - (2024-10-09)
 Atualização para o Angular 18
 * totvs-gps-custom
