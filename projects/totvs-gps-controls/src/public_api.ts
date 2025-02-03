@@ -26,3 +26,5 @@ export * from './lib/totvs-gps-controls.module';
 export * from './lib/gps-mass-update/gps-mass-update.component'
 export * from './lib/gps-mass-update/gps-mass-update.module'
 export * from './lib/gps-mass-update/gps-mass-update.config' 
+
+export * from './lib/gps-export-data-backend/gps-export-data-backend.component';

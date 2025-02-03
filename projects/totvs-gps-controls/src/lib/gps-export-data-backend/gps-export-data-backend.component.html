@@ -1,0 +1,16 @@
+<po-modal #modal
+    p-title="Exportação de Dados"
+    [p-primary-action]="confirmAction"
+    [p-secondary-action]="cancelAction">
+    <div class="po-row">
+        <gps-rpw 
+            class="po-sm-12"
+            [(model)]="rpw"
+            [repeatExecHidden]="true"
+            [setDefaultServer]="true"
+        ></gps-rpw>
+    </div>
+</po-modal>
+
+<po-loading-overlay *ngIf="isShowLoading" [p-text]="'Criando pedido...'">
+</po-loading-overlay>
