@@ -5,9 +5,10 @@ import { GpsPageNavigation } from 'totvs-gps-crud';
 import { GpsMassUpdateService } from '../service/gps-mass-update.service';
 
 @Component({
-  selector: 'checking-execute',
-  templateUrl: './checking-execute.component.html',
-  styleUrls: ['./checking-execute.component.css']
+    selector: 'checking-execute',
+    templateUrl: './checking-execute.component.html',
+    styleUrls: ['./checking-execute.component.css'],
+    standalone: false
 })
 export class CheckingExecuteComponent implements OnInit, OnChanges, AfterViewInit {
   

@@ -3,9 +3,10 @@ import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnIni
 import { PoBreadcrumb, PoStepperComponent, PoTableColumn } from '@po-ui/ng-components';
 
 @Component({
-  selector: 'gps-mass-update',
-  templateUrl: './gps-mass-update.component.html',
-  styleUrls: ['./gps-mass-update.component.css']
+    selector: 'gps-mass-update',
+    templateUrl: './gps-mass-update.component.html',
+    styleUrls: ['./gps-mass-update.component.css'],
+    standalone: false
 })
 export class GpsMassUpdateComponent implements OnInit, AfterViewInit {
   @Input('gps-url') gpsUrl: string;  

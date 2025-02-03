@@ -6,9 +6,10 @@ import { GpsPageNavigation } from 'totvs-gps-crud';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'load',
-  templateUrl: './load.component.html',
-  styleUrls: ['./load.component.css']
+    selector: 'load',
+    templateUrl: './load.component.html',
+    styleUrls: ['./load.component.css'],
+    standalone: false
 })
 export class LoadComponent implements OnInit, AfterViewInit {
 

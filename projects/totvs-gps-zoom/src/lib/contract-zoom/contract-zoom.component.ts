@@ -3,9 +3,10 @@ import { PoDynamicFormField, PoLookupLiterals, PoSwitchLabelPosition } from '@po
 import { ContractZoomService } from './contract-zoom.service';
 
 @Component({
-  selector: 'gps-contract-zoom',
-  templateUrl: './contract-zoom.component.html',
-  styleUrls: []
+    selector: 'gps-contract-zoom',
+    templateUrl: './contract-zoom.component.html',
+    styleUrls: [],
+    standalone: false
 })
 export class ContractZoomComponent {
 

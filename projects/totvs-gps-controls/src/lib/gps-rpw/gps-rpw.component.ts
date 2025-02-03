@@ -5,9 +5,10 @@ import { PoComboFilterMode, PoComboOption } from '@po-ui/ng-components';
 import { TotvsStringUtils } from 'totvs-gps-utils';
 
 @Component({
-  selector: 'gps-rpw',
-  templateUrl: './gps-rpw.component.html',
-  providers:[GpsRpwService]
+    selector: 'gps-rpw',
+    templateUrl: './gps-rpw.component.html',
+    providers: [GpsRpwService],
+    standalone: false
 })
 export class GpsRpwComponent implements OnInit {
   @Input() model:TotvsGpsRpw;

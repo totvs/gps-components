@@ -4,9 +4,10 @@ import { Export } from '../models/export';
 import { GpsMassUpdateService } from '../service/gps-mass-update.service';
 
 @Component({
-  selector: 'export',
-  templateUrl: './export.component.html',
-  styleUrls: ['./export.component.css']
+    selector: 'export',
+    templateUrl: './export.component.html',
+    styleUrls: ['./export.component.css'],
+    standalone: false
 })
 export class ExportComponent implements OnInit, AfterViewInit {
 

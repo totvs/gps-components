@@ -10,6 +10,7 @@ interface IOrderListItemActions extends IOrderListItem {
 @Component({
     selector: 'gps-order-list',
     templateUrl: './gps-order-list.component.html',
+    standalone: false
 })
 export class GpsOrderListComponent implements OnChanges {
 
@@ -38,12 +39,12 @@ export class GpsOrderListComponent implements OnChanges {
             [
                 { 
                     value: this.TABLE_ACTIONS.ABOVE,
-                    icon: 'po-icon-arrow-down',
+                    icon: 'an an-caret-down',
                     action: this.onBelow.bind(this)
                 },
                 { 
                     value: this.TABLE_ACTIONS.BELOW,
-                    icon: 'po-icon-arrow-up',
+                    icon: 'an an-caret-up',
                     action: this.onAbove.bind(this)
                 }
             ]

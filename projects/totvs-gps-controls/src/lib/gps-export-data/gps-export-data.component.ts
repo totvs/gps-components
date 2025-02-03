@@ -13,8 +13,9 @@ export interface IExportColumn {
 }
 
 @Component({
-  selector: 'gps-export-data',
-  templateUrl: './gps-export-data.component.html'
+    selector: 'gps-export-data',
+    templateUrl: './gps-export-data.component.html',
+    standalone: false
 })
 export class GpsExportDataComponent {
 

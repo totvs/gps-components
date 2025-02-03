@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core";
 
 @Component({
-  selector: 'gps-notification',
-  templateUrl: './gps-notification.component.html',
-  styleUrls: ['./gps-notification.component.css']
+    selector: 'gps-notification',
+    templateUrl: './gps-notification.component.html',
+    styleUrls: ['./gps-notification.component.css'],
+    standalone: false
 })
 export class GpsNotificationComponent{  
   @Output('gps-action') gpsAction = new EventEmitter<void>();
