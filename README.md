@@ -4,6 +4,22 @@
 
 ## Changelog
 
+## 19.0.1 - (2025-02-04)
+* totvs-gps-controls
+  * gpsExportDataBackend: Criação de componente para exportação de dados a partir do backend.
+
+## 18.0.4 - (2025-02-04)
+* totvs-gps-controls
+  * gpsExportDataBackend: Criação de componente para exportação de dados a partir do backend.
+
+## 15.0.29 - (2025-02-04)
+* totvs-gps-controls
+  * gpsExportDataBackend: Criação de componente para exportação de dados a partir do backend.
+
+## 5.4.26 - (2025-02-04)
+* totvs-gps-controls
+  * gpsExportDataBackend: Criação de componente para exportação de dados a partir do backend.
+
 ## 19.0.0 - (2025-02-03)
 Atualização para o Angular 19
 * totvs-gps-custom
