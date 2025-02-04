@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { GpsRpwService } from './gps-rpw.service';
 import { TotvsGpsRpw } from "../totvs-gps-controls.model"
 import { PoComboFilterMode, PoComboOption } from '@po-ui/ng-components';
@@ -20,6 +20,7 @@ export class GpsRpwComponent implements OnInit {
     get fileNameHidden() { return this._fileNameHidden; }
     set fileNameHidden(value:boolean) { this.setFileNameHidden(value) };
   @Input() allowMultipleSessions:boolean;
+  @Input() setDefaultServer:boolean = false;
   
   private _repeatExecHidden: boolean = false;
   @Input() 
@@ -29,6 +30,16 @@ export class GpsRpwComponent implements OnInit {
 	}
 	get repeatExecHidden(): boolean {
 		return this._repeatExecHidden;
+	}
+  
+  private _executionTimeHidden: boolean = false;
+  @Input() 
+    set executionTimeHidden(value: boolean) {
+	   this._executionTimeHidden = value;
+	   if(this._executionTimeHidden) this.model.executionTime = '1';
+	}
+	get executionTimeHidden(): boolean {
+		return this._executionTimeHidden;
 	}
 
   @Output() modelChange:EventEmitter<TotvsGpsRpw> = new EventEmitter();
@@ -51,7 +62,10 @@ export class GpsRpwComponent implements OnInit {
   filterMode: PoComboFilterMode.contains;
   
   rpwServerOptions:Array<PoComboOption> = [];
-  constructor(private totvsGpsRpwService:GpsRpwService) { }
+  constructor(
+    private totvsGpsRpwService:GpsRpwService,
+    private cdRef: ChangeDetectorRef
+  ) { }
   
   ngOnInit() {
     this.model = new TotvsGpsRpw();
@@ -79,6 +93,16 @@ export class GpsRpwComponent implements OnInit {
       this.rpwServerOptions = servers.map((s) => {
         return {label:s.serverName, value:s.serverCode}
       });
+
+      if(this.setDefaultServer){
+        this.totvsGpsRpwService.getUserServerDefault().then(server => {
+          
+          this.model.executionServer = server.serverCode;
+          this.cdRef.detectChanges();
+          this.rpwNgModelChange();
+          
+        });
+      }
     });
   }
 
