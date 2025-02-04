@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "totvs-gps-services": {
+    "@gps-components/totvs-gps-services": {
       "root": "projects/totvs-gps-services",
       "sourceRoot": "projects/totvs-gps-services/src",
       "projectType": "library",
@@ -38,7 +38,7 @@
         }
       }
     },
-    "totvs-gps-controls": {
+    "@gps-components/totvs-gps-controls": {
       "root": "projects/totvs-gps-controls",
       "sourceRoot": "projects/totvs-gps-controls/src",
       "projectType": "library",
@@ -73,7 +73,7 @@
         }
       }
     },
-    "totvs-gps-utils": {
+    "@gps-components/totvs-gps-utils": {
       "root": "projects/totvs-gps-utils",
       "sourceRoot": "projects/totvs-gps-utils/src",
       "projectType": "library",
@@ -108,7 +108,7 @@
         }
       }
     },
-    "totvs-gps-zoom": {
+    "@gps-components/totvs-gps-zoom": {
       "root": "projects/totvs-gps-zoom",
       "sourceRoot": "projects/totvs-gps-zoom/src",
       "projectType": "library",
@@ -143,7 +143,7 @@
         }
       }
     },
-    "totvs-gps-crud": {
+    "@gps-components/totvs-gps-crud": {
       "root": "projects/totvs-gps-crud",
       "sourceRoot": "projects/totvs-gps-crud/src",
       "projectType": "library",
@@ -178,7 +178,7 @@
         }
       }
     },
-    "totvs-gps-custom": {
+    "@gps-components/totvs-gps-custom": {
       "root": "projects/totvs-gps-custom",
       "sourceRoot": "projects/totvs-gps-custom/src",
       "projectType": "library",

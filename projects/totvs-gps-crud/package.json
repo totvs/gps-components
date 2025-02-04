@@ -1,5 +1,5 @@
 {
-  "name": "totvs-gps-crud",
+  "name": "@gps-components/totvs-gps-crud",
   "version": "19.0.0",
   "peerDependencies": {
     "@angular/common": "^19.0.0",
