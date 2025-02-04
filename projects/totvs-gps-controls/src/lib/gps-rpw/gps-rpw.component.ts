@@ -30,6 +30,16 @@ export class GpsRpwComponent implements OnInit {
 	get repeatExecHidden(): boolean {
 		return this._repeatExecHidden;
 	}
+  
+  private _executionTimeHidden: boolean = false;
+  @Input() 
+    set executionTimeHidden(value: boolean) {
+	   this._executionTimeHidden = value;
+	   if(this._executionTimeHidden) this.model.executionTime = '1';
+	}
+	get executionTimeHidden(): boolean {
+		return this._executionTimeHidden;
+	}
 
   @Output() modelChange:EventEmitter<TotvsGpsRpw> = new EventEmitter();
 

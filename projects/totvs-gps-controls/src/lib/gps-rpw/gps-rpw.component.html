@@ -10,7 +10,8 @@
                     [(ngModel)]="model.executionTime" (ngModelChange)="rpwNgModelChange()" p-required
                     p-label="Data de execução"
                     [p-options]="[{ label: 'Executar hoje', value: '1' }, { label: 'Agendar execução', value: '2' }]"
-                    ngDefaultControl>
+                    ngDefaultControl
+                    *ngIf="!executionTimeHidden">
                 </po-radio-group>
 
                 <po-datepicker *ngIf="model.executionTime == '2'" [p-min-date]="currentDate"

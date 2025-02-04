@@ -4,8 +4,7 @@ import { TotvsGpsRpw } from "../totvs-gps-controls.model";
 
 @Component({
   selector: 'gps-export-data-backend',
-  templateUrl: './gps-export-data-backend.component.html',
-  styleUrls: ['./gps-export-data-backend.component.css']
+  templateUrl: './gps-export-data-backend.component.html'
 })
 export class GpsExportDataBackendComponent {
     @ViewChild('modal', {static:true}) modal: PoModalComponent;

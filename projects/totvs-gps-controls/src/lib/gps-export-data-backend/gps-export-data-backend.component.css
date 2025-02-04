@@ -1,4 +1,0 @@
-/* Removendo campo 'Data de execução' */
-gps-rpw::ng-deep > form > po-list-view::ng-deep > div > div > div > div > div.po-list-view-content > div:nth-child(1) > po-radio-group{
-    display: none;
-}
