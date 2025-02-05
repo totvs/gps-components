@@ -1,5 +1,5 @@
 {
-  "name": "@gps-components/totvs-gps-zoom",
+  "name": "totvs-gps-zoom",
   "version": "19.0.0",
   "peerDependencies": {
     "@angular/common": "^19.0.0",
