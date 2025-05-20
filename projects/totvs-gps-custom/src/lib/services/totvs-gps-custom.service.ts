@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TotvsGpsServices, TTalkCollection } from 'totvs-gps-services';
-import { UrlSegment } from '@angular/router';
+import { UrlSegment, ActivatedRoute } from '@angular/router';
 import { TotvsGpsDynamicForm } from '../models/totvs-gps-dynamic-form';
 import { TotvsGpsCustomMenu } from '../models/totvs-gps-custom-menu';
 import { TotvsGpsCustomColumn } from '../models/totvs-gps-custom-column';
@@ -10,9 +10,12 @@ import { CustomAction, PageAction, TotvsGpsCustomAction } from '../models/totvs-
 export class TotvsGpsCustomService {
  
     private readonly _url:string = "hgp/v1/customFields/";
-    private readonly _urlMenu:string = 'menu/';
+    private readonly _urlMenu:string = this._url + 'menu/';
     private readonly _urlOtherActions:string = 'otherActions/';
+    private readonly _urlCustomJson:string = 'customJson/';
     private readonly _urlColumns:string = 'columns/';
+    private readonly _urlSearchData:string = 'searchData/';
+    private readonly _urlChangeValues:string = 'changeValues/';
     private readonly _urlParameters:string = '{{menu}}/{{programName}}/';  
 
     public getCustomFields(params:UrlSegment[], menu:string, programName:string):Promise<TotvsGpsDynamicForm>{
@@ -57,11 +60,25 @@ export class TotvsGpsCustomService {
     
     public getCustomMenus(params:UrlSegment[], menu:string, programName:string): Promise<TTalkCollection<TotvsGpsCustomMenu>> {
         return TotvsGpsServices
-          .getInstance<TotvsGpsCustomMenu>(TotvsGpsCustomMenu, this.generateParametersAction(params,this._urlMenu , this._url))
+          .getInstance<TotvsGpsCustomMenu>(TotvsGpsCustomMenu, this.generateParameters(params,this._urlMenu))
           .setPathParams({menu: menu, programName: programName, params: params})
           .getCollection();
     }
  
+    public getCustomJson(params:any[], menu:string, programName:string): Promise<TTalkCollection<any>> {
+      return TotvsGpsServices
+      .getInstance<any>(Object, this.generateParametersAction(params,this._urlCustomJson,this._url))
+      .setPathParams({menu: menu, programName: programName, params: params})
+      .getCollection();
+    }
+
+    public updateCustomJson(value:Object,params:any[], menu:string, programName:string): Promise<TTalkCollection<any>> {
+      return TotvsGpsServices
+      .getInstance<any>(Object, this.generateParametersAction(params,this._urlCustomJson,this._url)) 
+      .setPathParams({menu: menu, programName: programName, params: params})
+      .post(value);
+    }
+
     public getCustomOtherActions(params:UrlSegment[], pageActions:Array<any>, menu:string, programName:string): Promise<Array<PageAction>>{
         return TotvsGpsServices
           .getInstance<TotvsGpsCustomAction>(TotvsGpsCustomAction, this.generateParametersAction(params, this._urlOtherActions,this._url))
@@ -72,6 +89,13 @@ export class TotvsGpsCustomService {
               return pageActions;
           });
     }
+
+    public searchData(value:Object,params:UrlSegment[], menu:string, programName:string): Promise<any>{
+      return TotvsGpsServices
+      .getInstance<any>(Object, (this.generateParameters(params,this._url) + this._urlSearchData))
+      .setPathParams({menu: menu, programName: programName, params: params})
+      .post(value);
+  }
 
     public createCustomAction(newPageActions:Array<PageAction>, data:any) {
         // trecho para limpar possiveis ações custom que já estavam na página
@@ -101,7 +125,9 @@ export class TotvsGpsCustomService {
     private generateParameters(params:UrlSegment[],targetUrl:string):string{
         var paramsUrl = targetUrl + this._urlParameters;
         params.forEach(param => {
+        if (param.path != '') {
             paramsUrl = paramsUrl + param.path + "/";
+        }
         });
         return paramsUrl;
     }
@@ -121,6 +147,13 @@ export class TotvsGpsCustomService {
         });
 		paramsUrl = paramsUrl + targetActionUrl;
         return paramsUrl;
+    }
+
+    public changeValues(value:Object,params:UrlSegment[], menu:string, programName:string): Promise<any>{
+      return TotvsGpsServices
+      .getInstance<any>(Object, (this.generateParameters(params,this._url) + this._urlChangeValues))
+      .setPathParams({menu: menu, programName: programName, params: params})
+      .post(value);
     }
 
 }
