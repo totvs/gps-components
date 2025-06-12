@@ -97,10 +97,11 @@ export class GpsRpwComponent implements OnInit {
       if(this.setDefaultServer){
         this.totvsGpsRpwService.getUserServerDefault().then(server => {
           
-          this.model.executionServer = server.serverCode;
+          if (server && server.serverCode)
+            this.model.executionServer = server.serverCode;
+
           this.cdRef.detectChanges();
           this.rpwNgModelChange();
-          
         });
       }
     });
