@@ -8,22 +8,22 @@ po-container.feedback-message{
     width: 100%;
 }
 
-po-container.feedback-message-info::ng-deep > div{
+po-container.feedback-message-info::ng-deep > div > div{
     background-color: var(--color-feedback-info-lightest);
     color:var(--color-feedback-info-base)
 }
 
-po-container.feedback-message-warning::ng-deep > div{
+po-container.feedback-message-warning::ng-deep > div > div{
     background-color: var(--color-feedback-warning-lightest);
     color: var(--color-feedback-warning-dark);
 }
 
-po-container.feedback-message-error::ng-deep > div{
+po-container.feedback-message-error::ng-deep > div > div{
     background-color: var(--color-feedback-negative-lightest);
     color: var(--color-feedback-negative-dark);
 }
 
-po-container.feedback-message-success::ng-deep > div{
+po-container.feedback-message-success::ng-deep > div > div{
     background-color: var(--color-feedback-positive-lightest);
     color: var(--color-feedback-positive-base);
 }
