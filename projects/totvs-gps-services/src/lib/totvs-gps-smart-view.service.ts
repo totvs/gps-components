@@ -25,17 +25,14 @@ export class TotvsGpsSmartViewService{
             .post(this.proccessParams(parameters), this._apiUrl, {headers})
 
         if(attachment == false){
-            return promise.then((res) => this.processFile(res));
+            return promise.then((res) => this.proccessFile(res));
         }
         return promise;
     }
 
-    private processFile(file){                        
-        var base64 = btoa(String.fromCharCode(...new Uint8Array(file.fileByte)));        
-        const blb = TotvsFileUtils.base64ToArray(base64);
-        //retorna o nome e blob do arquivo para que o download ocorra na aplicacao
-        return {fileName: file.fileName, content: blb};
-        //return TotvsFileUtils.getInstance().downloadFile(file.fileName, blb);
+    private proccessFile(file){                        
+        const blob = new Blob([new Uint8Array(file.fileByte)], {type : "application/octet-stream"});
+        return {fileName: file.fileName, content: blob};
     }
 
     public getToken(){
