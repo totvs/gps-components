@@ -1,9 +1,9 @@
 {
   "name": "totvs-gps-custom",
-  "version": "19.0.1",
+  "version": "21.0.0",
   "peerDependencies": {
-    "@angular/common": "^19.0.0",
-    "@angular/core": "^19.0.0",
-    "@po-ui/ng-components": "^19.0.0"
+    "@angular/common": "^21.0.0",
+    "@angular/core": "^21.0.0",
+    "@po-ui/ng-components": "^21.0.0"
   }
 }

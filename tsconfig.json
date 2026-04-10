@@ -5,8 +5,8 @@
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
-    "module": "es2020",
-    "moduleResolution": "node",
+    "module": "preserve",
+    "moduleResolution": "bundler",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "ES2022",
@@ -15,7 +15,7 @@
     ],
     "types": ["resize-observer-browser"],
     "lib": [
-      "es2018",
+      "es2022",
       "dom"
     ],
     "paths": {
