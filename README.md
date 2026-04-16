@@ -4,6 +4,16 @@
 
 ## Changelog
 
+## 21.2.7 - (2026-04-09)
+Atualização para o Angular 21
+
+totvs-gps-custom
+totvs-gps-services
+totvs-gps-utils
+totvs-gps-zoom
+totvs-gps-controls
+totvs-gps-crud
+
 ## 19.0.1 - (2025-02-04)
 * totvs-gps-controls
   * gpsExportDataBackend: Criação de componente para exportação de dados a partir do backend.
