@@ -39,15 +39,6 @@ Atualização para o Angular 19
 * totvs-gps-controls
 * totvs-gps-crud
 
-## 21.0.0 - (2026-04-06)
-Atualização para o Angular 19
-* totvs-gps-custom
-* totvs-gps-services
-* totvs-gps-utils
-* totvs-gps-zoom
-* totvs-gps-controls
-* totvs-gps-crud
-
 ## 18.0.0 - (2024-10-09)
 Atualização para o Angular 18
 * totvs-gps-custom
