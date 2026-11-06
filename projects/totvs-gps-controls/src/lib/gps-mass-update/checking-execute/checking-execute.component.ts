@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { PoModalAction, PoModalComponent, PoNotificationService, PoTableColumn, PoTableDetail } from '@po-ui/ng-components';
 import { GpsPageNavigation } from 'totvs-gps-crud';
 import { GpsMassUpdateService } from '../service/gps-mass-update.service';
+import { alignFooterToCard } from '../footer-alignment';
 
 @Component({
     selector: 'checking-execute',
@@ -65,21 +66,18 @@ export class CheckingExecuteComponent implements OnInit, OnChanges, AfterViewIni
 
   ngAfterViewInit(): void {
     let component = document.getElementById('checkingExecuteComponent');
-    let mainContent:any = document.getElementsByTagName('po-widget')[0];
-    let footer = document.getElementById('checking-execute-footer');    
 
     this.calculateContentHeigth(component)
-    
+
     //Criação de observer para detectar a mudança de tamanho e recalcular altura da tabela
     const resize_ob = new ResizeObserver((entries) => {
       this.calculateContentHeigth(component);
-      
-      footer.style.width = mainContent.clientWidth + 'px';   
-      footer.style.marginLeft = mainContent.offsetLeft + 'px';
     });
-    
+
     // iniciar observer de redimensionamento
     resize_ob.observe(component);
+
+    alignFooterToCard(document.getElementById('checking-execute-footer'));
   }
 
   calculateContentHeigth(element){
