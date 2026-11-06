@@ -2,6 +2,7 @@ import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@
 import { PoNotificationService, PoRadioGroupOption } from '@po-ui/ng-components';
 import { Export } from '../models/export';
 import { GpsMassUpdateService } from '../service/gps-mass-update.service';
+import { alignFooterToCard } from '../footer-alignment';
 
 @Component({
     selector: 'export',
@@ -41,17 +42,7 @@ export class ExportComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    let mainContent:any = document.getElementsByTagName('po-widget')[0];
-    let footer = document.getElementById('export-footer');    
-    
-    //Criação de observer para detectar a mudança de tamanho e recalcular altura da tabela
-    const resize_ob = new ResizeObserver((entries) => {
-      footer.style.width = mainContent.clientWidth + 'px';   
-      footer.style.marginLeft = mainContent.offsetLeft + 'px';
-    });
-    
-    // iniciar observer de redimensionamento
-    resize_ob.observe(mainContent);
+    alignFooterToCard(document.getElementById('export-footer'));
   }
 
   onExport(){

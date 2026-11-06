@@ -2,6 +2,7 @@ import { HttpResponse } from '@angular/common/http';
 import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { PoNotificationService, PoUploadFileRestrictions, PoDialogService } from '@po-ui/ng-components';
 import { GpsMassUpdateService } from '../service/gps-mass-update.service';
+import { alignFooterToCard } from '../footer-alignment';
 import { GpsPageNavigation } from 'totvs-gps-crud';
 import { Router } from '@angular/router';
 
@@ -55,17 +56,7 @@ export class LoadComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    let mainContent:any = document.getElementsByTagName('po-widget')[0];
-    let footer = document.getElementById('load-footer');
-
-    //Criação de observer para detectar a mudança de tamanho e recalcular altura da tabela
-    const resize_ob = new ResizeObserver((entries) => {
-      footer.style.width = mainContent.clientWidth + 'px';
-      footer.style.marginLeft = mainContent.offsetLeft + 'px';
-    });
-
-    // iniciar observer de redimensionamento
-    resize_ob.observe(mainContent);
+    alignFooterToCard(document.getElementById('load-footer'));
   }
 
   showLoading(message?){
