@@ -4,7 +4,11 @@
 
 ## Changelog
 
-## 21.2.7 - (2026-04-09)
+## 21.0.1 - (2026-11-06)
+* totvs-gps-controls
+  * gps-mass-update: correção do alinhamento do rodapé fixo (Pular exportação/Exportar, Pré-visualizar, Efetivar), que ficava deslocado em relação ao card
+
+## 21.0.0 - (2026-04-09)
 Atualização para o Angular 21
 
 totvs-gps-custom
