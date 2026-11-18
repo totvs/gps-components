@@ -1,0 +1,30 @@
+<po-page-default
+    p-title="{{ title }}"
+    p-subtitle="{{ subtitle }}">
+    <div class="po-row">
+        <div class="po-sm-12 table-wrapper">
+            <po-button
+                class="reload-button"
+                p-label="Atualizar"
+                p-icon="an an-arrow-clockwise"
+                [p-disabled]="isLoading"
+                (p-click)="loadDocuments()">
+            </po-button>
+            <po-table
+                [p-columns]="columns"
+                [p-items]="items"
+                p-hide-table-search="false"
+                p-hide-columns-manager="true"
+                p-sort="true"
+                p-hide-text-overflow="true">
+            </po-table>
+        </div>
+    </div>
+</po-page-default>
+
+<!-- LOADING -->
+<po-loading-overlay
+    *ngIf="isLoading"
+    p-screen-lock="true"
+    [p-text]="loadingMessage">
+</po-loading-overlay>

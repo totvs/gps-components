@@ -1,0 +1,11 @@
+/* Posiciona o botão na mesma linha do campo "Pesquisar" do po-table, alinhado à esquerda */
+.table-wrapper {
+    position: relative;
+}
+
+.reload-button {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    z-index: 1;
+}

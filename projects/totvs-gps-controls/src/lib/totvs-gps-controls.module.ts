@@ -18,6 +18,7 @@ import { TotvsGpsCustomService } from 'totvs-gps-custom';
 import { GpsMassUpdateModule } from './gps-mass-update/gps-mass-update.module';
 import { GpsNotificationComponent } from './gps-notification/gps-notification.component';
 import { GpsExportDataBackendComponent } from './gps-export-data-backend/gps-export-data-backend.component';
+import { GpsDocumentCenterComponent } from './gps-document-center/gps-document-center.component';
 
 const components = [
   GpsOrderListComponent,
@@ -29,7 +30,8 @@ const components = [
   GpsPageEditComponent,
   GpsLookupToggleComponent,
   GpsNotificationComponent,
-  GpsExportDataBackendComponent
+  GpsExportDataBackendComponent,
+  GpsDocumentCenterComponent
 ];
 const directives = [
   GpsAdvancedSearchDirective
