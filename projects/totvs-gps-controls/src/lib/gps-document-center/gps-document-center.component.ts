@@ -21,9 +21,9 @@ export class GpsDocumentCenterComponent implements OnInit {
 
   columns: Array<PoTableColumn> = [
     { property: 'name', label: 'Nome do arquivo' },
-    { property: 'date', label: 'Data', type: 'dateTime', format: 'dd/MM/yyyy, HH:mm:ss', width: '200px' },
-    { property: 'typeLabel', label: 'Tipo', width: '120px' },
-    { property: 'sizeLabel', label: 'Tamanho', width: '120px' },
+    { property: 'date', label: 'Data', type: 'dateTime', format: 'dd/MM/yyyy, HH:mm:ss', width: '250px' },
+    { property: 'typeLabel', label: 'Tipo', width: '150px' },
+    { property: 'sizeLabel', label: 'Tamanho', width: '150px' },
     { property: '$actions', label: 'Ações', type: 'icon', width: '100px', icons: [
       {
         value: 'download',
